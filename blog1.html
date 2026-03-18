@@ -1,0 +1,742 @@
+<!-- blog1.html -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I Built a Custom LLM for CS Education with Blix.ai — Sayan Dutta</title>
+<meta name="description" content="A deep dive into training, fine-tuning, and deploying a domain-specific language model for computer science subjects — from dataset curation to self-hosted inference.">
+<meta name="author" content="Sayan Dutta">
+<meta property="og:title" content="How I Built a Custom LLM for CS Education with Blix.ai">
+<meta property="og:description" content="From dataset curation to self-hosted inference — the full technical story of building a custom AI tutor for CS students.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --v:#7C3AED;--c:#06B6D4;--p:#EC4899;--a:#F59E0B;--g:#10B981;--b:#3B82F6;
+  --bg:#04020C;--surface:rgba(255,255,255,.04);
+  --text:#F0EEFF;--text2:#A89EC9;--text3:#5C5280;
+  --acc:#A78BFA;--acc2:#7C3AED;
+  --fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'Share Tech Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:17px;line-height:1.8;overflow-x:hidden}
+
+/* MORPHING BG */
+#morph-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.13}
+#morph-bg svg{width:100%;height:100%}
+
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#7C3AED,#A78BFA,#EC4899);z-index:200;transition:width .1s linear;width:0%}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 5vw;background:rgba(4,2,12,.72);backdrop-filter:blur(28px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-logo{font-family:var(--fd);font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,#7C3AED,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;letter-spacing:-.5px}
+.nav-back{font-family:var(--fd);font-size:.8rem;font-weight:600;color:var(--text2);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;padding:.45rem 1rem;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px);transition:color .2s,border-color .2s,background .2s}
+.nav-back:hover{color:#fff;border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.09)}
+
+/* HERO */
+.post-hero{position:relative;min-height:66vh;display:flex;align-items:flex-end;padding:8rem 5vw 4rem;overflow:hidden}
+.post-hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(167,139,250,.12),rgba(6,182,212,.08))}
+.post-hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(4,2,12,.05),rgba(4,2,12,.88))}
+.hero-emoji{position:absolute;font-size:9rem;top:50%;left:50%;transform:translate(-50%,-58%);opacity:.28;filter:blur(2px);animation:floatE 7s ease-in-out infinite;z-index:1}
+@keyframes floatE{0%,100%{transform:translate(-50%,-58%) scale(1)}50%{transform:translate(-50%,-63%) scale(1.06)}}
+.post-hero-content{position:relative;z-index:2;max-width:820px;width:100%}
+.post-meta-top{display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.post-cat{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .8rem;border-radius:50px;background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.3);color:#A78BFA}
+.post-date{font-size:.82rem;color:var(--text3);font-family:var(--fm)}
+.post-readtime{font-size:.78rem;color:var(--text3);display:inline-flex;align-items:center;gap:.3rem}
+.post-title{font-family:var(--fd);font-size:clamp(2rem,5.5vw,3.7rem);font-weight:800;line-height:1.06;letter-spacing:-1.5px;margin-bottom:1.2rem;background:linear-gradient(135deg,#fff 30%,#A78BFA 60%,#7C3AED 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.post-subtitle{font-size:1.1rem;font-weight:300;color:var(--text2);max-width:640px;line-height:1.75}
+
+/* LAYOUT */
+.post-layout{max-width:1100px;margin:0 auto;padding:4rem 5vw 6rem;display:grid;grid-template-columns:1fr 280px;gap:4rem;align-items:start}
+@media(max-width:900px){.post-layout{grid-template-columns:1fr;gap:3rem}}
+
+/* ARTICLE */
+article{min-width:0}
+article p{color:var(--text2);font-weight:300;margin-bottom:1.5rem;font-size:1rem;line-height:1.88}
+article p strong{color:var(--text);font-weight:500}
+article a{color:#A78BFA;text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+article a:hover{color:#C4B5FD}
+article h2{font-family:var(--fd);font-size:1.65rem;font-weight:700;letter-spacing:-.5px;margin:3rem 0 1rem;background:linear-gradient(135deg,#fff,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+article h3{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--text);margin:2rem 0 .8rem}
+article hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:2.5rem 0}
+article blockquote{margin:2rem 0;padding:1.2rem 1.5rem;background:rgba(124,58,237,.09);border-left:3px solid #7C3AED;border-radius:0 12px 12px 0;font-style:italic;font-size:.98rem;color:var(--text2);backdrop-filter:blur(10px);line-height:1.8}
+article blockquote strong{color:#A78BFA;font-style:normal}
+article ul,article ol{padding-left:1.4rem;margin-bottom:1.5rem;color:var(--text2);font-weight:300}
+article li{margin-bottom:.5rem;line-height:1.75}
+article li strong{color:var(--text);font-weight:500}
+article code{font-family:var(--fm);font-size:.85em;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.22);color:#A78BFA;padding:.12em .45em;border-radius:5px}
+
+/* CODE BLOCKS */
+.code-block{position:relative;margin:1.8rem 0;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08)}
+.code-bar{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.2rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-lang{font-family:var(--fm);font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
+.code-dots{display:flex;gap:.4rem}
+.code-dot{width:10px;height:10px;border-radius:50%}
+.cd-r{background:rgba(248,113,113,.5)}.cd-y{background:rgba(252,211,77,.5)}.cd-g{background:rgba(110,231,183,.5)}
+pre{padding:1.3rem 1.5rem;overflow-x:auto;font-family:var(--fm);font-size:.83rem;line-height:1.75;color:var(--text2);margin:0}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+.kw{color:#A78BFA}.str{color:#6EE7B7}.fn{color:#67E8F9}.cm{color:var(--text3);font-style:italic}.num{color:#FCD34D}.prop{color:#F9A8D4}.cls{color:#F9A8D4}
+
+/* CALLOUTS */
+.callout{margin:2rem 0;padding:1.2rem 1.5rem;border-radius:14px;display:flex;gap:.9rem;align-items:flex-start;backdrop-filter:blur(12px)}
+.callout.tip{background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.22)}
+.callout.warn{background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.22)}
+.callout.info{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25)}
+.callout.danger{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2)}
+.callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
+.callout-body{font-size:.9rem;color:var(--text2);font-weight:300;line-height:1.7}
+.callout-body strong{font-weight:600}
+.callout.tip .callout-body strong{color:#6EE7B7}
+.callout.warn .callout-body strong{color:#FCD34D}
+.callout.info .callout-body strong{color:#A78BFA}
+.callout.danger .callout-body strong{color:#F87171}
+
+/* PHASE CARDS */
+.phases{display:flex;flex-direction:column;gap:1rem;margin:2rem 0}
+.phase{display:grid;grid-template-columns:3rem 1fr;gap:1.2rem;align-items:start;padding:1.2rem 1.4rem;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);transition:border-color .2s}
+.phase:hover{border-color:rgba(167,139,250,.25)}
+.phase-num{font-family:var(--fm);font-size:.78rem;font-weight:700;width:2.2rem;height:2.2rem;border-radius:50%;background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);color:#A78BFA;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem}
+.phase-title{font-family:var(--fd);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.35rem}
+.phase-desc{font-size:.87rem;color:var(--text2);font-weight:300;line-height:1.65}
+.phase-tag{display:inline-flex;margin-top:.5rem;font-family:var(--fm);font-size:.68rem;padding:.18rem .55rem;border-radius:50px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:#A78BFA}
+
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}}
+.stat-card{border-radius:14px;padding:1.2rem 1rem;text-align:center;background:rgba(255,255,255,.04);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.08);transition:border-color .2s,transform .2s}
+.stat-card:hover{border-color:rgba(167,139,250,.3);transform:translateY(-3px)}
+.stat-num{font-family:var(--fd);font-size:2rem;font-weight:800;display:block;margin-bottom:.2rem;background:linear-gradient(135deg,#A78BFA,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:.72rem;color:var(--text3);letter-spacing:.05em}
+
+/* DATASET TABLE */
+.ds-table{width:100%;border-collapse:separate;border-spacing:0;margin:2rem 0;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08)}
+.ds-table thead{background:rgba(255,255,255,.05)}
+.ds-table th{padding:.8rem 1rem;font-family:var(--fd);font-size:.73rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);text-align:left;border-bottom:1px solid rgba(255,255,255,.08)}
+.ds-table td{padding:.85rem 1rem;font-size:.88rem;color:var(--text2);font-weight:300;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top;line-height:1.5}
+.ds-table tr:last-child td{border-bottom:none}
+.ds-table tr:hover td{background:rgba(255,255,255,.02)}
+.ds-table td:first-child{font-family:var(--fm);font-size:.8rem;color:#A78BFA;font-weight:500}
+.ds-table td:nth-child(2){color:var(--text)}
+.num-pill{font-family:var(--fm);font-size:.75rem;padding:.15rem .55rem;border-radius:50px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.22);color:#A78BFA}
+
+/* CHALLENGE GRID */
+.challenge-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:2rem 0}
+@media(max-width:560px){.challenge-grid{grid-template-columns:1fr}}
+.ch-card{border-radius:14px;padding:1.2rem 1.3rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)}
+.ch-icon{font-size:1.5rem;margin-bottom:.6rem}
+.ch-title{font-family:var(--fd);font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.4rem}
+.ch-desc{font-size:.83rem;color:var(--text2);font-weight:300;line-height:1.65}
+.ch-fix{font-size:.78rem;margin-top:.6rem;color:#6EE7B7;font-weight:400}
+.ch-fix::before{content:'Fix: ';font-family:var(--fm);font-size:.7rem;color:var(--text3)}
+
+/* ARCH DIAGRAM */
+.arch-diagram{margin:2.5rem 0;padding:2rem;border-radius:16px;background:rgba(124,58,237,.05);border:1px solid rgba(124,58,237,.15);backdrop-filter:blur(14px)}
+.arch-layer{display:flex;flex-direction:column;gap:.7rem}
+.arch-row{display:flex;align-items:center;justify-content:center;gap:.8rem;flex-wrap:wrap}
+.arch-box{font-family:var(--fm);font-size:.75rem;padding:.55rem 1rem;border-radius:10px;text-align:center;white-space:nowrap;border:1px solid}
+.ab-user{background:rgba(103,232,249,.1);border-color:rgba(103,232,249,.28);color:#67E8F9}
+.ab-api{background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.38);color:#A78BFA;font-weight:700;padding:.7rem 1.4rem;font-size:.82rem}
+.ab-cache{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.28);color:#FCD34D}
+.ab-model{background:rgba(124,58,237,.18);border-color:rgba(124,58,237,.4);color:#C4B5FD}
+.ab-rag{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.28);color:#6EE7B7}
+.ab-store{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.2);color:#F87171}
+.arch-arrow{font-size:1.2rem;color:var(--text3)}
+.arch-label{font-family:var(--fm);font-size:.65rem;color:var(--text3);text-align:center;margin:.3rem 0;letter-spacing:.06em;text-transform:uppercase}
+.arch-divider{border:none;border-top:1px dashed rgba(255,255,255,.07);margin:.7rem 0}
+
+/* PULL QUOTE */
+.pull-quote{margin:2.5rem 0;padding:2rem;border-radius:18px;text-align:center;background:linear-gradient(135deg,rgba(124,58,237,.1),rgba(167,139,250,.06));border:1px solid rgba(124,58,237,.22);backdrop-filter:blur(14px)}
+.pull-quote p{font-family:var(--fd);font-size:clamp(1.1rem,3vw,1.45rem);font-weight:700;line-height:1.4;letter-spacing:-.3px;background:linear-gradient(135deg,#fff,#A78BFA,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:gf 5s linear infinite;margin:0}
+@keyframes gf{0%{background-position:0%}100%{background-position:200%}}
+.pull-quote cite{display:block;margin-top:.8rem;font-size:.78rem;color:var(--text3);font-style:normal;font-family:var(--fm);letter-spacing:.08em}
+
+/* AUTHOR */
+.author-card{display:flex;align-items:center;gap:1.2rem;padding:1.5rem;border-radius:18px;margin:3rem 0 1.5rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(16px)}
+.author-av{width:56px;height:56px;border-radius:50%;border:2px solid rgba(124,58,237,.45);object-fit:cover;flex-shrink:0}
+.author-name{font-family:var(--fd);font-size:1rem;font-weight:700;color:var(--text)}
+.author-role{font-size:.8rem;color:var(--text3);margin-top:.15rem}
+.author-bio{font-size:.85rem;color:var(--text2);font-weight:300;margin-top:.5rem;line-height:1.6}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:6rem}
+.sidebar-card{border-radius:16px;padding:1.3rem 1.4rem;margin-bottom:1.2rem;background:rgba(255,255,255,.04);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08)}
+.sidebar-title{font-family:var(--fd);font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:1rem}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.toc-list a{font-size:.83rem;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:.5rem;padding:.35rem .5rem;border-radius:8px;transition:background .2s,color .2s}
+.toc-list a::before{content:'';width:4px;height:4px;border-radius:50%;background:#7C3AED;flex-shrink:0}
+.toc-list a:hover{background:rgba(255,255,255,.06);color:#fff}
+.toc-list a.active{color:#A78BFA;background:rgba(124,58,237,.1)}
+.related-post{display:flex;gap:.8rem;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06);text-decoration:none;transition:opacity .2s}
+.related-post:last-child{border-bottom:none}
+.related-post:hover{opacity:.75}
+.related-thumb{width:48px;height:48px;border-radius:10px;flex-shrink:0;font-size:1.4rem;display:flex;align-items:center;justify-content:center}
+.rth-2{background:linear-gradient(135deg,rgba(6,182,212,.3),rgba(103,232,249,.15))}
+.rth-3{background:linear-gradient(135deg,rgba(236,72,153,.3),rgba(249,168,212,.15))}
+.rth-4{background:linear-gradient(135deg,rgba(245,158,11,.3),rgba(252,211,77,.15))}
+.related-ttl{font-family:var(--fd);font-size:.82rem;font-weight:600;color:var(--text);line-height:1.35}
+.related-dt{font-size:.7rem;color:var(--text3);margin-top:.2rem}
+.share-btns{display:flex;flex-wrap:wrap;gap:.6rem}
+.share-btn{font-family:var(--fd);font-size:.75rem;font-weight:600;padding:.4rem .9rem;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;border:1px solid rgba(255,255,255,.12);color:var(--text2);background:rgba(255,255,255,.05);transition:background .2s,color .2s,border-color .2s}
+.share-btn:hover{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25)}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,.06);padding:2rem 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;position:relative;z-index:2;background:rgba(255,255,255,.01)}
+.fl-logo{font-family:var(--fd);font-weight:800;font-size:1.1rem;background:linear-gradient(135deg,#A78BFA,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fl-note{font-size:.78rem;color:var(--text3)}
+.fl-back{font-family:var(--fd);font-size:.76rem;font-weight:600;color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,.12);padding:.4rem 1rem;border-radius:50px;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);transition:background .2s}
+.fl-back:hover{background:rgba(255,255,255,.09)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .post-hero{min-height:52vh;padding:7rem 5vw 3rem}
+  .post-title{font-size:clamp(1.7rem,8vw,2.5rem);letter-spacing:-.5px}
+  .post-layout{padding:3rem 5vw 5rem;gap:2rem}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .challenge-grid{grid-template-columns:1fr}
+  .author-card{flex-direction:column;text-align:center}
+  .ds-table{font-size:.8rem}
+  .ds-table th,.ds-table td{padding:.6rem .7rem}
+  footer{flex-direction:column;align-items:flex-start;gap:.7rem}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- MORPHING BG -->
+<div id="morph-bg">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="rg1" cx="20%" cy="20%"><stop offset="0%" stop-color="#7C3AED" stop-opacity=".9"/><stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg2" cx="80%" cy="15%"><stop offset="0%" stop-color="#A78BFA" stop-opacity=".8"/><stop offset="100%" stop-color="#A78BFA" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg3" cx="50%" cy="88%"><stop offset="0%" stop-color="#EC4899" stop-opacity=".7"/><stop offset="100%" stop-color="#EC4899" stop-opacity="0"/></radialGradient>
+    </defs>
+    <path id="mp1" fill="url(#rg1)" opacity=".65"/>
+    <path id="mp2" fill="url(#rg2)" opacity=".5"/>
+    <path id="mp3" fill="url(#rg3)" opacity=".35"/>
+  </svg>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="nav-logo">SD</a>
+  <a href="./index.html#blog" class="nav-back">← Back to Blog</a>
+</nav>
+
+<!-- HERO -->
+<div class="post-hero">
+  <div class="post-hero-bg"></div>
+  <div class="hero-emoji">🤖</div>
+  <div class="post-hero-content">
+    <div class="post-meta-top">
+      <span class="post-cat">AI / LLMs</span>
+      <span class="post-date">Mar 2025</span>
+      <span class="post-readtime"></span>
+    </div>
+    <h1 class="post-title">How I Built a Custom LLM<br>for CS Education with Blix.ai</h1>
+    <p class="post-subtitle">A deep dive into training, fine-tuning, and deploying a domain-specific language model for computer science subjects — from dataset curation to self-hosted inference on a budget.</p>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="post-layout">
+<article>
+
+  <!-- Author -->
+  <div class="author-card reveal">
+    <img class="author-av" src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+    <div>
+      <div class="author-name">Sayan Dutta</div>
+      <div class="author-role">Full-Stack Developer & AI Enthusiast · IIT Patna</div>
+      <!-- FIX 1: "free, self-hosted AI tutor" → clarify it's currently in closed beta -->
+      <p class="author-bio">Creator of Blix.ai — a privacy-first, self-hosted AI tutor for CS students, currently in closed beta with IIT Patna classmates. This is the complete technical story of how it was built, what failed, and what actually works.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <p class="reveal">Every CS student has been there: it's 1am, you're staring at a question about semaphore implementation, your professor is unreachable, Stack Overflow gives you five contradictory answers, and the textbook explanation assumes you already understand the thing it's supposed to be explaining.</p>
+
+  <p class="reveal">That gap — between needing a clear, contextual answer and getting one — is what Blix.ai exists to close. Not by wrapping GPT-4 with a system prompt (though that's a valid approach), but by training a model specifically on the subjects CS students actually struggle with: Operating Systems, DBMS, Data Structures & Algorithms, Computer Networks, AI/ML fundamentals, and more.</p>
+
+  <p class="reveal">This post is the complete technical account of how that happened — what I built, what broke, what I'd do differently, and why the hardest problem wasn't the model at all.</p>
+
+  <div class="stat-row reveal">
+    <div class="stat-card"><span class="stat-num">6</span><span class="stat-lbl">CS subjects covered</span></div>
+    <div class="stat-card"><span class="stat-num">50k+</span><span class="stat-lbl">Training samples</span></div>
+    <!-- FIX 2: "Free / For every student" is the goal, not the current state — updated to reflect beta -->
+    <div class="stat-card"><span class="stat-num">Free</span><span class="stat-lbl">Goal for public launch</span></div>
+  </div>
+
+  <h2 class="reveal">Why Not Just Use GPT-4?</h2>
+
+  <p class="reveal">This is always the first question. And it's a fair one — frontier models are excellent and getting better. But there are three reasons a fine-tuned domain-specific model made sense for this project:</p>
+
+  <ul class="reveal">
+    <li><strong>Cost at scale.</strong> GPT-4o pricing makes a free, high-usage educational tool economically unsustainable without significant funding. A self-hosted quantised model runs on a single VPS for a fixed monthly cost, regardless of query volume.</li>
+    <li><strong>Depth vs breadth.</strong> General models are trained to be helpful across everything. That breadth means shallower knowledge per domain. A model trained specifically on OS theory, DBMS normalisation, and algorithm complexity has more targeted, reliable knowledge in those areas — and doesn't hallucinate textbook authors or fabricate theorem names.</li>
+    <li><strong>Privacy.</strong> Students sometimes share their actual assignment questions or exam prep notes. A self-hosted model means that data never leaves the server. No vendor sees the queries.</li>
+  </ul>
+
+  <div class="callout info reveal">
+    <span class="callout-icon">ℹ️</span>
+    <div class="callout-body"><strong>Honest caveat:</strong> For truly open-ended reasoning or code generation across arbitrary languages, frontier models still outperform fine-tuned smaller models. Blix.ai is designed specifically for the Q&A and conceptual explanation tasks where domain depth matters most — not as a general replacement for GPT-4.</div>
+  </div>
+
+  <h2 class="reveal">The Build: Four Phases</h2>
+
+  <div class="phases reveal">
+    <div class="phase">
+      <div class="phase-num">01</div>
+      <div>
+        <div class="phase-title">Dataset Curation</div>
+        <div class="phase-desc">Scrape, clean, structure, and quality-filter Q&A pairs across six CS subjects. The most time-consuming phase and the most important one.</div>
+        <span class="phase-tag">~3 weeks</span>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num">02</div>
+      <div>
+        <div class="phase-title">Base Model Selection & Fine-tuning</div>
+        <div class="phase-desc">Choose a quantised base model, configure LoRA adapters, run supervised fine-tuning on a combination of Colab TPUs and a rented A100 instance.</div>
+        <span class="phase-tag">~2 weeks</span>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num">03</div>
+      <div>
+        <div class="phase-title">Alignment & Preference Training</div>
+        <div class="phase-desc">Collect preference pairs — correct vs plausible-but-wrong answers. Apply DPO to reduce confident hallucination, the hardest problem in the project.</div>
+        <span class="phase-tag">~3 weeks</span>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num">04</div>
+      <div>
+        <div class="phase-title">Inference Server & Deployment</div>
+        <div class="phase-desc">Build a FastAPI streaming server, containerise with Docker, deploy on a VPS. Wire up the React frontend and a Redis response cache.</div>
+        <span class="phase-tag">~2 weeks</span>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="reveal">Phase 1: Dataset Curation</h2>
+
+  <p class="reveal">The quality of a fine-tuned model is almost entirely determined by the quality of its training data. I spent more time on this phase than any other, and I'd spend even more if I were doing it again.</p>
+
+  <h3 class="reveal">Sources</h3>
+
+  <p class="reveal">The dataset was assembled from five categories of sources:</p>
+
+  <table class="ds-table reveal">
+    <thead>
+      <tr><th>Source type</th><th>Content</th><th>Volume</th><th>Quality filter</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Textbooks</td><td>Tanenbaum OS, Silberschatz DBMS, CLRS, Forouzan Networks</td><td><span class="num-pill">~8k pairs</span></td><td>Manual review</td></tr>
+      <tr><td>Lecture notes</td><td>IIT NPTEL transcripts, MIT OCW, Stanford CS229</td><td><span class="num-pill">~12k pairs</span></td><td>Perplexity filter</td></tr>
+      <tr><td>Stack Overflow</td><td>CS-tagged, score ≥ 10, accepted answers only</td><td><span class="num-pill">~18k pairs</span></td><td>Score + length</td></tr>
+      <tr><td>Past exam Q&A</td><td>GATE CS, university end-sems, IIT internal exams</td><td><span class="num-pill">~7k pairs</span></td><td>Answer verified</td></tr>
+      <tr><td>Synthetic</td><td>GPT-4 generated then human-verified edge cases</td><td><span class="num-pill">~5k pairs</span></td><td>Human review</td></tr>
+    </tbody>
+  </table>
+
+  <p class="reveal">Total after deduplication and quality filtering: <strong>~50,000 instruction-response pairs</strong> across six subjects, formatted as <code>{"instruction": "...", "response": "..."}</code> with a subject tag on each sample.</p>
+
+  <h3 class="reveal">The Cleaning Pipeline</h3>
+
+  <div class="code-block reveal">
+    <div class="code-bar"><span class="code-lang">python — quality filter pipeline</span><div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div></div>
+    <pre><code><span class="kw">def</span> <span class="fn">is_quality_sample</span>(sample: <span class="cls">dict</span>) -> <span class="cls">bool</span>:
+    instr  = sample[<span class="str">"instruction"</span>]
+    resp   = sample[<span class="str">"response"</span>]
+
+    <span class="cm"># length gates</span>
+    <span class="kw">if</span> <span class="fn">len</span>(instr.split()) < <span class="num">8</span>:   <span class="kw">return</span> <span class="kw">False</span>  <span class="cm"># too vague</span>
+    <span class="kw">if</span> <span class="fn">len</span>(resp.split())  < <span class="num">30</span>:  <span class="kw">return</span> <span class="kw">False</span>  <span class="cm"># too short to be useful</span>
+    <span class="kw">if</span> <span class="fn">len</span>(resp.split())  > <span class="num">800</span>: <span class="kw">return</span> <span class="kw">False</span>  <span class="cm"># likely padded / off-topic</span>
+
+    <span class="cm"># reject samples with uncertainty markers</span>
+    uncertainty = [<span class="str">"i'm not sure"</span>, <span class="str">"i think"</span>, <span class="str">"maybe"</span>,
+                   <span class="str">"i believe"</span>, <span class="str">"not certain"</span>]
+    <span class="kw">if</span> <span class="fn">any</span>(p <span class="kw">in</span> resp.lower() <span class="kw">for</span> p <span class="kw">in</span> uncertainty):
+        <span class="kw">return</span> <span class="kw">False</span>
+
+    <span class="cm"># reject if response doesn't address the instruction topic</span>
+    instr_keywords = <span class="fn">extract_keywords</span>(instr)
+    overlap = <span class="fn">keyword_overlap</span>(instr_keywords, resp)
+    <span class="kw">if</span> overlap < <span class="num">0.15</span>: <span class="kw">return</span> <span class="kw">False</span>
+
+    <span class="kw">return</span> <span class="kw">True</span></code></pre>
+  </div>
+
+  <div class="callout warn reveal">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body"><strong>The deduplication problem:</strong> Many CS Q&A sources repeat the same questions with slightly rephrased answers. Exact dedup using hashing isn't enough — I used MinHash LSH to catch near-duplicates within an 80% similarity threshold. Without this, the model memorises paraphrases instead of learning concepts.</div>
+  </div>
+
+  <h2 class="reveal">Phase 2: Base Model & Fine-Tuning</h2>
+
+  <h3 class="reveal">Choosing the Base Model</h3>
+
+  <p class="reveal">The constraints were clear: the model needed to run on a single consumer-grade VPS (4 vCPU, 16GB RAM, no GPU) at inference time. That ruled out anything above 7B parameters without aggressive quantisation.</p>
+
+  <p class="reveal">I evaluated three candidates — a 7B Llama-2 variant, Mistral 7B, and Phi-2 (2.7B). Mistral 7B with 4-bit GPTQ quantisation hit the best balance of response quality, instruction following, and inference speed (~2.1 tokens/sec on the VPS, which streams acceptably).</p>
+
+  <h3 class="reveal">LoRA Fine-Tuning Setup</h3>
+
+  <p class="reveal">Full fine-tuning a 7B model was out of the question on available compute. LoRA (Low-Rank Adaptation) lets you fine-tune a fraction of the parameters — typically 1–3% — while keeping the rest frozen. The trainable adapter weights are tiny (~50MB) and can be merged back into the base model after training.</p>
+
+  <div class="code-block reveal">
+    <div class="code-bar"><span class="code-lang">python — LoRA configuration</span><div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div></div>
+    <pre><code><span class="kw">from</span> peft <span class="kw">import</span> LoraConfig, get_peft_model
+
+lora_config = <span class="cls">LoraConfig</span>(
+    r=<span class="num">16</span>,                    <span class="cm"># rank — higher = more capacity</span>
+    lora_alpha=<span class="num">32</span>,           <span class="cm"># scaling factor</span>
+    target_modules=[         <span class="cm"># which layers to adapt</span>
+        <span class="str">"q_proj"</span>, <span class="str">"v_proj"</span>,
+        <span class="str">"k_proj"</span>, <span class="str">"o_proj"</span>
+    ],
+    lora_dropout=<span class="num">0.05</span>,
+    bias=<span class="str">"none"</span>,
+    task_type=<span class="str">"CAUSAL_LM"</span>
+)
+
+model = <span class="fn">get_peft_model</span>(base_model, lora_config)
+model.<span class="fn">print_trainable_parameters</span>()
+<span class="cm"># trainable params: 41,943,040 / 7,241,748,480 — 0.58%</span></code></pre>
+  </div>
+
+  <p class="reveal">Training ran on Google Colab's free TPU tier for initial experiments, then on a rented A100 instance (via Vast.ai) for the full run. Total compute cost for the full fine-tuning: approximately <strong>$18</strong>.</p>
+
+  <h2 class="reveal">Phase 3: The Hardest Problem — Alignment</h2>
+
+  <p class="reveal">Fine-tuning on Q&A pairs improved the model's CS knowledge substantially. But it introduced a new problem that was worse than ignorance: <strong>confident wrongness.</strong></p>
+
+  <p class="reveal">A fine-tuned model that has seen many OS questions will, when faced with an unfamiliar edge case, generate a fluent, confident, textbook-sounding answer — that is completely wrong. A student trusting that answer is worse off than a student who got no answer at all.</p>
+
+  <div class="pull-quote reveal">
+    <p>"The goal wasn't a model that always answered. It was a model that knew when not to."</p>
+    <cite>— the core alignment challenge in Blix.ai</cite>
+  </div>
+
+  <h3 class="reveal">DPO: Teaching the Model to Prefer Honesty</h3>
+
+  <p class="reveal">I used Direct Preference Optimisation (DPO) — a simpler alternative to RLHF — to teach the model to prefer correct, hedged answers over confident wrong ones. DPO requires preference pairs: for each prompt, a "chosen" response and a "rejected" response.</p>
+
+  <div class="code-block reveal">
+    <div class="code-bar"><span class="code-lang">json — DPO preference pair example</span><div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div></div>
+    <pre><code>{
+  <span class="prop">"prompt"</span>: <span class="str">"Can a deadlock occur with only one process?"</span>,
+
+  <span class="prop">"chosen"</span>: <span class="str">"No, a deadlock requires at least two processes
+    competing for resources held by each other.
+    A single process can block waiting for a resource
+    it holds itself (self-deadlock in some contexts),
+    but the classical four Coffman conditions require
+    multiple processes."</span>,
+
+  <span class="prop">"rejected"</span>: <span class="str">"Yes, a deadlock can occur with a single process
+    if it requests a resource it already holds and
+    the system does not support recursive locking.
+    This is the most common form of deadlock in
+    single-threaded applications."</span>
+}</code></pre>
+  </div>
+
+  <p class="reveal">I collected ~4,000 preference pairs — roughly half from cases where the SFT model gave confident wrong answers (I verified these manually against textbooks), and half synthetically generated with GPT-4 and verified.</p>
+
+  <div class="callout tip reveal">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body"><strong>Key insight from DPO training:</strong> The rejected responses didn't need to be dramatically wrong — subtle errors were more valuable. Teaching the model to prefer precise answers over plausible-but-imprecise ones had a bigger impact on real-world quality than filtering out completely fabricated answers.</div>
+  </div>
+
+  <h2 class="reveal">Phase 4: Inference Server & Architecture</h2>
+
+  <!-- FIX 3: "production architecture that serves Blix.ai" → beta testing architecture -->
+  <p class="reveal">The model doesn't help anyone sitting in a notebook. The beta testing architecture currently serving Blix.ai to a closed group of IIT Patna students looks like this:</p>
+
+  <div class="arch-diagram reveal">
+    <div class="arch-layer">
+      <div class="arch-label">client</div>
+      <div class="arch-row">
+        <div class="arch-box ab-user">React Frontend</div>
+        <div class="arch-box ab-user">Mobile Browser</div>
+      </div>
+      <div class="arch-row" style="justify-content:center;margin:.4rem 0">
+        <span class="arch-arrow">↓ HTTPS + SSE streaming</span>
+      </div>
+      <div class="arch-row">
+        <div class="arch-box ab-api">FastAPI Inference Server</div>
+      </div>
+      <div class="arch-divider"></div>
+      <div class="arch-label">server-side layers</div>
+      <div class="arch-row">
+        <div class="arch-box ab-cache">Redis Cache</div>
+        <div class="arch-box ab-rag">RAG Retriever</div>
+        <div class="arch-box ab-store">Vector Store</div>
+      </div>
+      <div class="arch-row" style="justify-content:center;margin:.4rem 0">
+        <span class="arch-arrow">↓</span>
+      </div>
+      <div class="arch-row">
+        <div class="arch-box ab-model">Mistral 7B — GPTQ 4-bit</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="reveal">Streaming with Server-Sent Events</h3>
+
+  <p class="reveal">Waiting 8–12 seconds for a full response is unusable. Streaming tokens as they're generated makes the same latency feel fast. The FastAPI endpoint uses Python generators and SSE to push tokens to the browser in real time:</p>
+
+  <div class="code-block reveal">
+    <div class="code-bar"><span class="code-lang">python — streaming inference endpoint</span><div class="code-dots"><div class="code-dot cd-r"></div><div class="code-dot cd-y"></div><div class="code-dot cd-g"></div></div></div>
+    <pre><code><span class="kw">from</span> fastapi <span class="kw">import</span> FastAPI
+<span class="kw">from</span> fastapi.responses <span class="kw">import</span> StreamingResponse
+<span class="kw">import</span> asyncio
+
+app = <span class="cls">FastAPI</span>()
+
+<span class="kw">async def</span> <span class="fn">token_stream</span>(prompt: <span class="cls">str</span>):
+    <span class="cm"># Check Redis cache first</span>
+    cached = <span class="kw">await</span> redis.<span class="fn">get</span>(<span class="fn">cache_key</span>(prompt))
+    <span class="kw">if</span> cached:
+        <span class="kw">yield</span> <span class="str">f"data: {cached}\n\n"</span>
+        <span class="kw">return</span>
+
+    full_response = []
+    <span class="cm"># Stream tokens from the quantised model</span>
+    <span class="kw">for</span> token <span class="kw">in</span> model.<span class="fn">generate_stream</span>(prompt):
+        full_response.<span class="fn">append</span>(token)
+        <span class="kw">yield</span> <span class="str">f"data: {token}\n\n"</span>
+        <span class="kw">await</span> asyncio.<span class="fn">sleep</span>(<span class="num">0</span>)   <span class="cm"># yield to event loop</span>
+
+    <span class="cm"># Cache the full response async</span>
+    <span class="kw">await</span> redis.<span class="fn">setex</span>(<span class="fn">cache_key</span>(prompt),
+                     <span class="num">3600</span>,
+                     <span class="str">""</span>.<span class="fn">join</span>(full_response))
+
+<span class="kw">@app.post</span>(<span class="str">"/ask"</span>)
+<span class="kw">async def</span> <span class="fn">ask</span>(req: <span class="cls">AskRequest</span>):
+    <span class="kw">return</span> <span class="cls">StreamingResponse</span>(
+        <span class="fn">token_stream</span>(req.prompt),
+        media_type=<span class="str">"text/event-stream"</span>
+    )</code></pre>
+  </div>
+
+  <h3 class="reveal">RAG for Grounding</h3>
+
+  <p class="reveal">For complex multi-step questions — like tracing through a specific scheduling algorithm with a given process table — the fine-tuned model alone sometimes drifted. I added a lightweight RAG layer: a FAISS vector store containing chunked sections from the core textbooks. For queries above a complexity threshold, relevant chunks are retrieved and prepended to the prompt as context.</p>
+
+  <!-- FIX 4: "to under 3% in production" → "in beta testing" -->
+  <p class="reveal">This combination — fine-tuned domain knowledge plus retrieval-augmented grounding for edge cases — reduced the confident hallucination rate from approximately <strong>12%</strong> in the SFT-only model to under <strong>3%</strong> in beta testing.</p>
+
+  <h2 class="reveal">The Challenges I Didn't Expect</h2>
+
+  <div class="challenge-grid reveal">
+    <div class="ch-card">
+      <div class="ch-icon">🌡️</div>
+      <div class="ch-title">Temperature calibration</div>
+      <div class="ch-desc">Too high and the model invents plausible-sounding nonsense. Too low and it repeats the question back in different words.</div>
+      <div class="ch-fix">0.35 for factual Q&A, 0.6 for "explain intuitively" prompts. Separate configs per question type.</div>
+    </div>
+    <div class="ch-card">
+      <div class="ch-icon">🔄</div>
+      <div class="ch-title">Repetition loops</div>
+      <div class="ch-desc">The model occasionally got stuck repeating a phrase or sentence fragment 20+ times before the context window ran out.</div>
+      <div class="ch-fix">Repetition penalty of 1.15 in the generation config. Sliding window check to kill generation if the last 50 tokens repeat.</div>
+    </div>
+    <div class="ch-card">
+      <div class="ch-icon">📏</div>
+      <div class="ch-title">Response length variance</div>
+      <div class="ch-desc">Some questions got 4-word answers. Others got 800-word essays. Inconsistency made the UI feel broken.</div>
+      <div class="ch-fix">Min/max token constraints per question category, plus a post-generation length classifier that flags suspiciously short responses for re-generation.</div>
+    </div>
+    <div class="ch-card">
+      <div class="ch-icon">💾</div>
+      <div class="ch-title">Memory under concurrent load</div>
+      <div class="ch-desc">The 4-bit quantised model loads into ~4.5GB VRAM equivalent in CPU RAM. Two concurrent requests caused OOM crashes on the 16GB VPS.</div>
+      <div class="ch-fix">Request queue with max concurrency of 1. Subsequent requests wait — median wait time is under 3 seconds given the cache hit rate.</div>
+    </div>
+  </div>
+
+  <h2 class="reveal">What the Numbers Look Like Now</h2>
+
+  <!-- FIX 5: Entire "numbers" section reworded — clarifies closed beta context throughout,
+       removes "hundreds of queries daily" (too public-scale), changes n=47 framing,
+       and makes VPS cost clearly a beta period cost -->
+  <p class="reveal">After six months of running Blix.ai in closed beta with a group of IIT Patna classmates, here's where things stand:</p>
+
+  <ul class="reveal">
+    <li><strong>Hallucination rate (verified wrong confident answers):</strong> ~2.8% — down from 12% in the initial SFT-only model</li>
+    <li><strong>Cache hit rate:</strong> ~41% — classmates ask very similar CS theory questions</li>
+    <li><strong>Average response latency (uncached):</strong> 9.4 seconds to first token, then streaming</li>
+    <!-- FIX 6: "student satisfaction (informal survey, n=47)" — kept but phrased as beta group survey -->
+    <li><strong>Beta group satisfaction (informal survey, n=47):</strong> 78% rated answers "more useful than a Google search" for conceptual questions</li>
+    <li><strong>Monthly VPS cost during beta:</strong> ~$22 — sustaining the closed beta for free for all testers</li>
+  </ul>
+
+  <div class="callout tip reveal">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body"><strong>The biggest lesson:</strong> The difference between a usable educational LLM and an unusable one isn't model size or training compute. It's alignment — specifically, teaching the model that "I'm not certain about this" is a valid and valuable response. That one change, implemented through DPO, had more real-world impact than doubling the training data.</div>
+  </div>
+
+  <h2 class="reveal">What's Next: Blix.ai v2</h2>
+
+  <!-- FIX 7: Added public launch target date (Feb 2027) consistent with blog5 -->
+  <p class="reveal">Version 2 is currently in development, with a public launch planned for <strong>February 2027</strong>. The main improvements planned for v2:</p>
+
+  <ul class="reveal">
+    <li><strong>Larger, cleaner dataset</strong> — targeting 150k pairs with stricter quality gates and more synthetic verified data across newer topics (LLM fundamentals, cloud architecture, system design)</li>
+    <li><strong>Multi-turn conversation memory</strong> — the current model treats every question as independent. v2 will maintain session context so students can ask follow-up questions naturally</li>
+    <li><strong>Better "I don't know" calibration</strong> — using confidence scoring at inference time to decide when to retrieve rather than generate</li>
+    <li><strong>Structured output for code questions</strong> — a separate generation mode for questions that should produce executable code with test cases</li>
+  </ul>
+
+  <p class="reveal">The code for Blix.ai — the data pipeline, fine-tuning scripts, inference server, and frontend — is open-source on GitHub. If you're building something similar for another domain, it's a reasonable starting point. Contributions and issue reports are welcome.</p>
+
+  <blockquote class="reveal">
+    <strong>"Quality Education for All"</strong> — UN SDG4. That's the north star. A CS student in a tier-3 city with no TA access should have the same quality of conceptual help as someone at a well-resourced institution. Blix.ai is one small step toward that.
+  </blockquote>
+
+  <div class="author-card reveal" style="margin-top:3rem">
+    <img class="author-av" src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+    <div>
+      <div class="author-name">Sayan Dutta</div>
+      <div class="author-role">Full-Stack Developer & AI Enthusiast · IIT Patna</div>
+      <div style="display:flex;gap:.6rem;margin-top:.7rem;flex-wrap:wrap">
+        <a href="https://github.com/SAYANDUTTA8442" target="_blank" style="font-family:var(--fd);font-size:.75rem;font-weight:600;color:#A78BFA;text-decoration:none;border:1px solid rgba(124,58,237,.3);padding:.3rem .8rem;border-radius:50px;background:rgba(124,58,237,.1)">GitHub</a>
+        <a href="./index.html#contact" style="font-family:var(--fd);font-size:.75rem;font-weight:600;color:#67E8F9;text-decoration:none;border:1px solid rgba(6,182,212,.3);padding:.3rem .8rem;border-radius:50px;background:rgba(6,182,212,.1)">Get in touch</a>
+      </div>
+    </div>
+  </div>
+
+</article>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+  <div class="sidebar-card">
+    <div class="sidebar-title">In this article</div>
+    <ul class="toc-list" id="toc">
+      <li><a href="#" data-i="0">Why Not Just Use GPT-4?</a></li>
+      <li><a href="#" data-i="1">The Build: Four Phases</a></li>
+      <li><a href="#" data-i="2">Phase 1: Dataset Curation</a></li>
+      <li><a href="#" data-i="3">Phase 2: Fine-Tuning</a></li>
+      <li><a href="#" data-i="4">Phase 3: Alignment</a></li>
+      <li><a href="#" data-i="5">Phase 4: Inference Server</a></li>
+      <li><a href="#" data-i="6">Unexpected Challenges</a></li>
+      <li><a href="#" data-i="7">The Numbers</a></li>
+      <li><a href="#" data-i="8">What's Next: v2</a></li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-title">Share this post</div>
+    <div class="share-btns">
+      <a href="https://twitter.com/intent/tweet?text=How+I+Built+a+Custom+LLM+for+CS+Education+by+Sayan+Dutta&url=" class="share-btn" target="_blank">𝕏 Tweet</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=" class="share-btn" target="_blank">in Share</a>
+      <a href="#" class="share-btn" onclick="navigator.clipboard.writeText(location.href);this.textContent='✓ Copied!';setTimeout(()=>this.textContent='🔗 Copy link',2000);return false">🔗 Copy link</a>
+    </div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-title">Related articles</div>
+    <a href="blog2.html" class="related-post">
+      <div class="related-thumb rth-2">⚡</div>
+      <div>
+        <div class="related-ttl">Orchestrating Multiple AI Models: Architecture Decisions</div>
+        <div class="related-dt">April 2025</div>
+      </div>
+    </a>
+    <a href="blog3.html" class="related-post">
+      <div class="related-thumb rth-3">🚀</div>
+      <div>
+        <div class="related-ttl">From IIT Patna to Building AI Products: My Dev Journey</div>
+        <div class="related-dt">January 2026</div>
+      </div>
+    </a>
+    <a href="blog4.html" class="related-post">
+      <div class="related-thumb rth-4">🎯</div>
+      <div>
+        <div class="related-ttl">I Was Never a Topper. Here's How I Got Into IIT Patna.</div>
+        <div class="related-dt">December 2025</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="sidebar-card" style="text-align:center">
+    <div class="sidebar-title">Explore more</div>
+    <a href="./index.html" style="font-family:var(--fd);font-size:.82rem;font-weight:600;color:#A78BFA;text-decoration:none;display:block;padding:.6rem 1rem;border-radius:10px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);transition:background .2s">← View Full Portfolio</a>
+  </div>
+
+</aside>
+</div>
+
+<footer>
+  <span class="fl-logo">Sayan Dutta</span>
+  <span class="fl-note">© 2025 · IIT Patna · All rights reserved</span>
+  <a href="./index.html#blog" class="fl-back">← All Articles</a>
+</footer>
+
+<script>
+/* PROGRESS */
+window.addEventListener('scroll',()=>{
+  const e=document.documentElement;
+  document.getElementById('progress').style.width=
+    Math.min((e.scrollTop||document.body.scrollTop)/(e.scrollHeight-e.clientHeight)*100,100)+'%';
+},{passive:true});
+
+/* MORPHING BG */
+function blob(cx,cy,r,n=7){
+  let d='M';
+  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2,rr=r*(.65+Math.random()*.7);d+=`${i?'L':''}${(cx+Math.cos(a)*rr).toFixed(1)},${(cy+Math.sin(a)*rr).toFixed(1)}`}
+  return d+'Z';
+}
+const ME=[
+  {el:document.getElementById('mp1'),cx:230,cy:200,r:290},
+  {el:document.getElementById('mp2'),cx:1180,cy:160,r:260},
+  {el:document.getElementById('mp3'),cx:720,cy:820,r:250},
+];
+ME.forEach(m=>m.el&&m.el.setAttribute('d',blob(m.cx,m.cy,m.r)));
+setInterval(()=>ME.forEach(m=>m.el&&m.el.setAttribute('d',blob(m.cx,m.cy,m.r))),2400);
+
+/* REVEAL */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:.07,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* TOC */
+const h2s=document.querySelectorAll('article h2');
+const tocLinks=document.querySelectorAll('.toc-list a');
+const to=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const i=Array.from(h2s).indexOf(e.target);
+      tocLinks.forEach((a,j)=>a.classList.toggle('active',j===i));
+    }
+  });
+},{rootMargin:'-30% 0px -60% 0px'});
+h2s.forEach(h=>to.observe(h));
+tocLinks.forEach((a,i)=>a.addEventListener('click',e=>{
+  e.preventDefault();
+  h2s[i]&&h2s[i].scrollIntoView({behavior:'smooth',block:'start'});
+}));
+</script>
+</body>
+</html>

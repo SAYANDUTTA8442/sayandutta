@@ -1,0 +1,504 @@
+<!-- blog4.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Was Never a Topper. Here's How I Got Into IIT Patna — Sayan Dutta</title>
+<meta name="description" content="I wasn't a topper, a sportsman, or a cultural star. I was just an average kid who went all-in on one thing — and somehow that was enough.">
+<meta name="author" content="Sayan Dutta">
+<meta property="og:title" content="I Was Never a Topper. Here's How I Got Into IIT Patna.">
+<meta property="og:description" content="Not a rank-holder. Not a sportsman. Just an average kid who was deeply technical and refused to stop.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --v:#7C3AED;--c:#06B6D4;--p:#EC4899;--a:#F59E0B;--g:#10B981;--b:#3B82F6;
+  --bg:#04020C;--bg2:#080D1A;--surface:rgba(255,255,255,.04);
+  --text:#F0EEFF;--text2:#A89EC9;--text3:#5C5280;
+  --gb:rgba(255,255,255,.09);
+  --fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'Share Tech Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--fb);font-size:17px;line-height:1.8;
+  overflow-x:hidden;
+}
+#morph-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.13}
+#morph-bg svg{width:100%;height:100%}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 5vw;background:rgba(4,2,12,.7);backdrop-filter:blur(28px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-logo{font-family:var(--fd);font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,#7C3AED,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;letter-spacing:-.5px}
+.nav-back{font-family:var(--fd);font-size:.8rem;font-weight:600;color:var(--text2);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;padding:.45rem 1rem;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px);transition:color .2s,border-color .2s,background .2s}
+.nav-back:hover{color:#fff;border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.09)}
+.post-hero{position:relative;min-height:65vh;display:flex;align-items:flex-end;padding:8rem 5vw 4rem;overflow:hidden}
+.post-hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(124,58,237,.2),rgba(16,185,129,.1))}
+.post-hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(4,2,12,.1),rgba(4,2,12,.88))}
+.hero-emoji{position:absolute;font-size:9rem;top:50%;left:50%;transform:translate(-50%,-58%);opacity:.28;filter:blur(2px);animation:floatEmoji 7s ease-in-out infinite;z-index:1}
+@keyframes floatEmoji{0%,100%{transform:translate(-50%,-58%) scale(1)}50%{transform:translate(-50%,-63%) scale(1.06)}}
+.post-hero-content{position:relative;z-index:2;max-width:820px;width:100%}
+.post-meta-top{display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.post-cat{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .8rem;border-radius:50px;background:rgba(252,211,77,.15);border:1px solid rgba(252,211,77,.3);color:#FCD34D}
+.post-date{font-size:.82rem;color:var(--text3);font-family:var(--fm)}
+.post-readtime{font-size:.78rem;color:var(--text3);display:inline-flex;align-items:center;gap:.3rem}
+.post-title{font-family:var(--fd);font-size:clamp(2rem,5.5vw,3.7rem);font-weight:800;line-height:1.06;letter-spacing:-1.5px;margin-bottom:1.2rem;background:linear-gradient(135deg,#fff 35%,#FCD34D 65%,#F59E0B 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.post-subtitle{font-size:1.1rem;font-weight:300;color:var(--text2);max-width:640px;line-height:1.75}
+.post-layout{max-width:1100px;margin:0 auto;padding:4rem 5vw 6rem;display:grid;grid-template-columns:1fr 280px;gap:4rem;align-items:start}
+@media(max-width:900px){.post-layout{grid-template-columns:1fr;gap:3rem}}
+article{min-width:0}
+article p{color:var(--text2);font-weight:300;margin-bottom:1.5rem;font-size:1rem;line-height:1.88}
+article p strong{color:var(--text);font-weight:500}
+article a{color:#A78BFA;text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+article a:hover{color:#C4B5FD}
+article h2{font-family:var(--fd);font-size:1.65rem;font-weight:700;letter-spacing:-.5px;margin:3rem 0 1rem;background:linear-gradient(135deg,#fff,#FCD34D);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+article h3{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--text);margin:2rem 0 .8rem}
+article hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:2.5rem 0}
+article blockquote{margin:2rem 0;padding:1.2rem 1.5rem;background:rgba(245,158,11,.08);border-left:3px solid #F59E0B;border-radius:0 12px 12px 0;font-style:italic;font-size:.98rem;color:var(--text2);backdrop-filter:blur(10px);line-height:1.8}
+article blockquote strong{color:#FCD34D;font-style:normal}
+article code{font-family:var(--fm);font-size:.85em;background:rgba(252,211,77,.1);border:1px solid rgba(252,211,77,.2);color:#FCD34D;padding:.12em .45em;border-radius:5px}
+article ul,article ol{padding-left:1.4rem;margin-bottom:1.5rem;color:var(--text2);font-weight:300}
+article li{margin-bottom:.5rem;line-height:1.75}
+article li strong{color:var(--text);font-weight:500}
+.callout{margin:2rem 0;padding:1.2rem 1.5rem;border-radius:14px;display:flex;gap:.9rem;align-items:flex-start;backdrop-filter:blur(12px)}
+.callout.tip{background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.22)}
+.callout.warn{background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.22)}
+.callout.info{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25)}
+.callout.raw{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
+.callout-body{font-size:.9rem;color:var(--text2);font-weight:300;line-height:1.7}
+.callout-body strong{font-weight:600}
+.callout.tip .callout-body strong{color:#6EE7B7}
+.callout.warn .callout-body strong{color:#FCD34D}
+.callout.info .callout-body strong{color:#A78BFA}
+.callout.raw .callout-body strong{color:var(--text)}
+.report-card{margin:2rem 0;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(14px)}
+.report-header{padding:.9rem 1.4rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07);font-family:var(--fm);font-size:.75rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
+.report-row{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.05);font-size:.9rem}
+.report-row:last-child{border-bottom:none}
+.report-label{color:var(--text2);font-weight:300}
+.report-val{font-family:var(--fd);font-weight:700;font-size:.9rem}
+.val-bad{color:#F87171}
+.val-ok{color:#FCD34D}
+.val-good{color:#6EE7B7}
+.val-peak{background:linear-gradient(135deg,#A78BFA,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.journey-tl{position:relative;padding-left:2rem;margin:2rem 0}
+.journey-tl::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1.5px;background:linear-gradient(to bottom,#F59E0B,#7C3AED,#06B6D4,transparent)}
+.jt-item{position:relative;margin-bottom:2.2rem;padding-left:.5rem}
+.jt-dot{position:absolute;left:-2.3rem;top:5px;width:13px;height:13px;border-radius:50%;background:var(--bg);border:2px solid #F59E0B;box-shadow:0 0 10px rgba(245,158,11,.5)}
+.jt-dot.v{border-color:#7C3AED;box-shadow:0 0 10px rgba(124,58,237,.5)}
+.jt-dot.c{border-color:#06B6D4;box-shadow:0 0 10px rgba(6,182,212,.5)}
+.jt-dot.g{border-color:#10B981;box-shadow:0 0 10px rgba(16,185,129,.5)}
+.jt-year{font-family:var(--fm);font-size:.72rem;color:#FCD34D;letter-spacing:.1em;margin-bottom:.25rem}
+.jt-year.v{color:#A78BFA}
+.jt-year.c{color:#67E8F9}
+.jt-year.g{color:#6EE7B7}
+.jt-title{font-family:var(--fd);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.35rem}
+.jt-desc{font-size:.87rem;color:var(--text2);font-weight:300;line-height:1.65}
+.contrast-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:2rem 0}
+@media(max-width:560px){.contrast-grid{grid-template-columns:1fr}}
+.contrast-cell{border-radius:14px;padding:1.2rem 1.3rem;backdrop-filter:blur(12px)}
+.contrast-cell.no{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.18)}
+.contrast-cell.yes{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2)}
+.contrast-head{font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.8rem}
+.contrast-cell.no .contrast-head{color:#F87171}
+.contrast-cell.yes .contrast-head{color:#6EE7B7}
+.contrast-cell ul{padding-left:1.1rem;list-style:none}
+.contrast-cell li{font-size:.87rem;color:var(--text2);font-weight:300;margin-bottom:.45rem;padding-left:.2rem;position:relative}
+.contrast-cell.no li::before{content:'✗';position:absolute;left:-1rem;color:#F87171;font-size:.75rem}
+.contrast-cell.yes li::before{content:'✓';position:absolute;left:-1rem;color:#6EE7B7;font-size:.75rem}
+.pull-quote{margin:2.5rem 0;padding:2rem;border-radius:18px;text-align:center;background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(124,58,237,.08));border:1px solid rgba(245,158,11,.2);backdrop-filter:blur(14px)}
+.pull-quote p{font-family:var(--fd);font-size:clamp(1.1rem,3vw,1.5rem);font-weight:700;line-height:1.4;letter-spacing:-.3px;background:linear-gradient(135deg,#fff,#FCD34D,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:gf 5s linear infinite;margin:0}
+@keyframes gf{0%{background-position:0%}100%{background-position:200%}}
+.pull-quote cite{display:block;margin-top:.8rem;font-size:.78rem;color:var(--text3);font-style:normal;font-family:var(--fm);letter-spacing:.08em}
+.author-card{display:flex;align-items:center;gap:1.2rem;padding:1.5rem;border-radius:18px;margin:3rem 0 1.5rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(16px)}
+.author-av{width:56px;height:56px;border-radius:50%;border:2px solid rgba(245,158,11,.4);object-fit:cover;flex-shrink:0}
+.author-name{font-family:var(--fd);font-size:1rem;font-weight:700;color:var(--text)}
+.author-role{font-size:.8rem;color:var(--text3);margin-top:.15rem}
+.author-bio{font-size:.85rem;color:var(--text2);font-weight:300;margin-top:.5rem;line-height:1.6}
+.sidebar{position:sticky;top:6rem}
+.sidebar-card{border-radius:16px;padding:1.3rem 1.4rem;margin-bottom:1.2rem;background:rgba(255,255,255,.04);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08)}
+.sidebar-title{font-family:var(--fd);font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:1rem}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.toc-list a{font-size:.83rem;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:.5rem;padding:.35rem .5rem;border-radius:8px;transition:background .2s,color .2s}
+.toc-list a::before{content:'';width:4px;height:4px;border-radius:50%;background:#F59E0B;flex-shrink:0}
+.toc-list a:hover{background:rgba(255,255,255,.06);color:#fff}
+.toc-list a.active{color:#FCD34D;background:rgba(245,158,11,.1)}
+.related-post{display:flex;gap:.8rem;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06);text-decoration:none;transition:opacity .2s}
+.related-post:last-child{border-bottom:none}
+.related-post:hover{opacity:.75}
+.related-thumb{width:48px;height:48px;border-radius:10px;flex-shrink:0;font-size:1.4rem;display:flex;align-items:center;justify-content:center}
+.rth-1{background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(167,139,250,.15))}
+.rth-2{background:linear-gradient(135deg,rgba(6,182,212,.3),rgba(103,232,249,.15))}
+.rth-3{background:linear-gradient(135deg,rgba(236,72,153,.3),rgba(249,168,212,.15))}
+.related-ttl{font-family:var(--fd);font-size:.82rem;font-weight:600;color:var(--text);line-height:1.35}
+.related-dt{font-size:.7rem;color:var(--text3);margin-top:.2rem}
+.share-btns{display:flex;flex-wrap:wrap;gap:.6rem}
+.share-btn{font-family:var(--fd);font-size:.75rem;font-weight:600;padding:.4rem .9rem;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;border:1px solid rgba(255,255,255,.12);color:var(--text2);background:rgba(255,255,255,.05);transition:background .2s,color .2s,border-color .2s}
+.share-btn:hover{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25)}
+footer{border-top:1px solid rgba(255,255,255,.06);padding:2rem 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;position:relative;z-index:2;background:rgba(255,255,255,.01)}
+.fl-logo{font-family:var(--fd);font-weight:800;font-size:1.1rem;background:linear-gradient(135deg,#A78BFA,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fl-note{font-size:.78rem;color:var(--text3)}
+.fl-back{font-family:var(--fd);font-size:.76rem;font-weight:600;color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,.12);padding:.4rem 1rem;border-radius:50px;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);transition:background .2s}
+.fl-back:hover{background:rgba(255,255,255,.09)}
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#F59E0B,#7C3AED,#06B6D4);z-index:200;transition:width .1s linear;width:0%}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+@media(max-width:768px){
+  .post-hero{min-height:52vh;padding:7rem 5vw 3rem}
+  .post-title{font-size:clamp(1.7rem,8vw,2.5rem);letter-spacing:-.5px}
+  .post-layout{padding:3rem 5vw 5rem;gap:2rem}
+  .contrast-grid{grid-template-columns:1fr}
+  .author-card{flex-direction:column;text-align:center}
+  footer{flex-direction:column;align-items:flex-start;gap:.7rem}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<div id="morph-bg">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="rg1" cx="25%" cy="20%"><stop offset="0%" stop-color="#F59E0B" stop-opacity=".9"/><stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg2" cx="78%" cy="25%"><stop offset="0%" stop-color="#7C3AED" stop-opacity=".9"/><stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg3" cx="15%" cy="80%"><stop offset="0%" stop-color="#06B6D4" stop-opacity=".9"/><stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/></radialGradient>
+    </defs>
+    <path id="mp1" fill="url(#rg1)" opacity=".6"/>
+    <path id="mp2" fill="url(#rg2)" opacity=".5"/>
+    <path id="mp3" fill="url(#rg3)" opacity=".4"/>
+  </svg>
+</div>
+
+<nav>
+  <a href="./index.html" class="nav-logo">SD</a>
+  <a href="./index.html#blog" class="nav-back">← Back to Blog</a>
+</nav>
+
+<div class="post-hero">
+  <div class="post-hero-bg"></div>
+  <div class="hero-emoji">🎯</div>
+  <div class="post-hero-content">
+    <div class="post-meta-top">
+      <span class="post-cat">Journey</span>
+      <span class="post-date">December 2025</span>
+      <span class="post-readtime"></span>
+    </div>
+    <h1 class="post-title">I Was Never a Topper.<br>Here's How I Got Into IIT Patna.</h1>
+    <p class="post-subtitle">Not a rank-holder. Not a sportsman. Not a cultural star. Just an average kid who was quietly, deeply technical — and refused to stop trying.</p>
+  </div>
+</div>
+
+<div class="post-layout">
+<article>
+
+  <div class="author-card reveal">
+    <img class="author-av" src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+    <div>
+      <div class="author-name">Sayan Dutta</div>
+      <div class="author-role">Full-Stack Developer & AI Enthusiast · IIT Patna</div>
+      <p class="author-bio">BS-MS student in CS & Data Analytics. Builder of Blix.ai and the AI Integration Hub. This is the honest story of how I got here.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <p class="reveal">Let me be clear from the very first line: <strong>I was never the student people pointed to as an example.</strong> My name didn't appear on school honour boards. I didn't win inter-school quiz competitions or medals on sports day. I wasn't in the drama club or the music team. I sat somewhere in the middle of every class, average marks, unremarkable attendance record, no particular reason to be noticed.</p>
+
+  <p class="reveal">But there was one thing. <strong>Give me a computer, a problem, and enough time — and I wouldn't stop.</strong> That was it. That was the only thing I had going for me. And for a long time, I didn't even know if it was enough.</p>
+
+  <div class="pull-quote reveal">
+    <p>"I wasn't the smartest in the room. I was just the one who wouldn't leave."</p>
+    <cite>— the only edge I ever had</cite>
+  </div>
+
+  <h2 class="reveal">The Honest Report Card</h2>
+
+  <p class="reveal">Before I tell you how I got into IIT Patna, let me give you the version of me that no one frames on a wall. This is what my profile actually looked like growing up:</p>
+
+  <div class="report-card reveal">
+    <div class="report-header">// student_profile.json — Sayan Dutta, pre-IIT</div>
+    <div class="report-row"><span class="report-label">Academic rank in class</span><span class="report-val val-ok">Middle of the pack</span></div>
+    <div class="report-row"><span class="report-label">Sports achievements</span><span class="report-val val-bad">None</span></div>
+    <div class="report-row"><span class="report-label">Cultural / arts activities</span><span class="report-val val-bad">None</span></div>
+    <div class="report-row"><span class="report-label">Social confidence</span><span class="report-val val-ok">Average</span></div>
+    <div class="report-row"><span class="report-label">Technical curiosity</span><span class="report-val val-peak">Off the charts</span></div>
+    <div class="report-row"><span class="report-label">Stubbornness</span><span class="report-val val-peak">Dangerously high</span></div>
+  </div>
+
+  <p class="reveal">That last line? That's the one that mattered. Not the blank rows.</p>
+
+  <h2 class="reveal">A Name I Heard Once</h2>
+
+  <p class="reveal">Somewhere in primary school, I came across the name <strong>IIT Kharagpur</strong>. I don't remember the exact moment — maybe a relative mentioned it, maybe a teacher, maybe I overheard a conversation. But the phrase stuck: <em>"it's one of the greatest technical institutions in the country."</em></p>
+
+  <p class="reveal">That was enough. I was a kid who liked taking things apart to see how they worked. A place built entirely around that instinct sounded like somewhere I belonged. I didn't fully understand what IIT meant, what getting in required, or even that there were multiple campuses across India. I just filed the name away somewhere in the back of my mind: <strong>that kind of place — technical, serious, full of people who actually build things.</strong></p>
+
+  <p class="reveal">It wasn't a detailed dream. It was more like a compass needle. Pointing somewhere, even if I couldn't yet see the destination clearly.</p>
+
+  <h2 class="reveal">Class 10 and the Pressure That Comes After</h2>
+
+  <p class="reveal">Madhyamik results came. They were decent — good enough to unlock the next chapter. And like every student in my situation, the chapter was written for me before I could choose it: <strong>Science stream. JEE or NEET. Pick one and start preparing.</strong></p>
+
+  <p class="reveal">I picked JEE. Of course I did — the idea of engineering, of systems, of making computers do things, that had always been the pull. I joined the coaching classes, bought the books, sat in the rows of students who all seemed sharper, faster, and more certain than I was.</p>
+
+  <div class="callout raw reveal">
+    <span class="callout-icon">📋</span>
+    <div class="callout-body"><strong>What nobody tells you about JEE prep as an average student:</strong> the content isn't the hardest part. The hardest part is surviving two years in an environment designed to filter out everyone who isn't already exceptional — and finding a reason to keep going when you're clearly not in that group.</div>
+  </div>
+
+  <p class="reveal">And then, the year I was supposed to sit for JEE — <strong>I couldn't.</strong> Not because I wasn't ready. Life happened. Circumstances happened. The exam cycle passed and I wasn't in it.</p>
+
+  <h2 class="reveal">The Fork in the Road</h2>
+
+  <p class="reveal">This is the part of the story where most people expect a dramatic comeback montage. Drop everything, grind for a year, emerge victorious. I want to be honest about why I didn't do that.</p>
+
+  <p class="reveal"><strong>I didn't have the confidence.</strong> I knew my academic foundation. I knew where I stood. A full year of isolation, betting everything on a single exam, with no safety net — that felt like a gamble I wasn't equipped to take alone.</p>
+
+  <div class="contrast-grid reveal">
+    <div class="contrast-cell no">
+      <div class="contrast-head">What I didn't do</div>
+      <ul>
+        <li>Take a full year drop</li>
+        <li>Bet everything on one shot</li>
+        <li>Give up on engineering</li>
+        <li>Stop preparing</li>
+      </ul>
+    </div>
+    <div class="contrast-cell yes">
+      <div class="contrast-head">What I actually did</div>
+      <ul>
+        <li>Enrolled in Diploma in Engineering</li>
+        <li>Kept JEE prep running in parallel</li>
+        <li>Built things while studying</li>
+        <li>Trusted the process quietly</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="reveal">Diploma in Engineering gets a bad reputation in circles where IIT is the only valid outcome. But for me it was a lifeline — it meant I was still learning, still building, still in the game. I was studying real subjects, working on real projects, and somewhere in the evenings and early mornings, continuing to prepare for JEE.</p>
+
+  <blockquote class="reveal">
+    I had one belief that I held onto during that period: <strong>"If you give everything you have — genuinely everything — then the path opens."</strong> I don't know where that belief came from. But it kept me at the desk on the nights when stopping felt easier.
+  </blockquote>
+
+  <h2 class="reveal">The Parallel Life</h2>
+
+  <!-- FIX 5: Added explicit 2020 coding origin before the Diploma timeline.
+       The original jumped straight to "Diploma Year 1" implying that's where
+       coding began. Blog5 and blog3 both confirm coding started in 2020. -->
+  <p class="reveal">What made this period unusual wasn't the studying — it was what I was doing <em>alongside</em> the studying. The truth is, I'd been deep in code since 2020 — self-teaching during the pandemic lockdown, alone in Beldanga with nothing but free time and a laptop. By the time the Diploma started in 2023, building was already a daily habit. The Diploma just gave it structure and better problems.</p>
+
+  <!-- FIX 1 & 2: Timeline now starts with the 2020 pandemic origin,
+       then flows into Diploma years with accurate year labels.
+       Diploma Year 1 and Year 2 now framed as continuing/deepening
+       existing skills, not as the starting point. -->
+  <div class="journey-tl reveal">
+    <div class="jt-item">
+      <div class="jt-dot"></div>
+      <div class="jt-year">2020 — Pandemic</div>
+      <div class="jt-title">Where it actually started</div>
+      <div class="jt-desc">Self-taught C and Python during the lockdown in Beldanga. No mentor, no coding community nearby — just curiosity and time. The habit that changed everything began here, two years before the Diploma.</div>
+    </div>
+    <div class="jt-item">
+      <div class="jt-dot v"></div>
+      <div class="jt-year v">Diploma Year 1 (2023)</div>
+      <div class="jt-title">Formalising the foundation</div>
+      <div class="jt-desc">Moved to Kolkata. Three years of self-teaching met a structured CS curriculum. Deepened systems knowledge, started building more complex projects with real users in mind.</div>
+    </div>
+    <div class="jt-item">
+      <div class="jt-dot v"></div>
+      <div class="jt-year v">Diploma Year 2 (2024)</div>
+      <div class="jt-title">First deployed real-world project</div>
+      <div class="jt-desc">Built and deployed the Pathology Admin Panel — a full-stack clinical system used by an actual lab. First time code stopped being practice and became infrastructure someone relied on.</div>
+    </div>
+    <div class="jt-item">
+      <div class="jt-dot c"></div>
+      <div class="jt-year c">2023–2025 parallel</div>
+      <div class="jt-title">The quiet JEE grind</div>
+      <div class="jt-desc">No coaching centre. Self-study, past papers, concept maps on paper. Not elegant. Not fast. But consistent. Every single day, something — alongside the Diploma and the building.</div>
+    </div>
+    <div class="jt-item">
+      <div class="jt-dot g"></div>
+      <div class="jt-year g">2025 — Result day</div>
+      <div class="jt-title">IIT Patna</div>
+      <div class="jt-desc">The letter arrived. BS-MS in Computer Science & Data Analytics. Five years after starting to code in a Beldanga lockdown, the destination was reached.</div>
+    </div>
+  </div>
+
+  <h2 class="reveal">What "Average" Actually Means</h2>
+
+  <p class="reveal">I've thought a lot about the word <em>average</em> since getting into IIT Patna. I used to use it as a confession — <em>I'm just average</em> — like it explained a ceiling. Now I think it just describes a starting position.</p>
+
+  <p class="reveal"><strong>Average in academics</strong> meant I had to work harder per concept than the kids who grasped it in class. That's not a disadvantage — it's a training method. You learn something deeper when you have to fight for it.</p>
+
+  <p class="reveal"><strong>Average in everything else</strong> — sports, culture, social standing — meant I had no distraction from the one thing I was genuinely good at. I wasn't being pulled in multiple directions. All of my focus, for years, went into technical depth.</p>
+
+  <div class="callout tip reveal">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body"><strong>The reframe:</strong> "Average" doesn't mean you're not good at things. It often means you haven't found the specific thing yet where your obsession kicks in. When that clicks, average is just the starting line — not the finish.</div>
+  </div>
+
+  <p class="reveal">I wasn't a topper. I wasn't well-rounded. I was lopsided in one direction — technical — and that lopsidedness, which looked like a flaw for most of my school years, turned out to be exactly what was needed.</p>
+
+  <h2 class="reveal">IIT Patna: And Then the Real Work Began</h2>
+
+  <p class="reveal">Getting in was the proof that the approach worked. But the mindset that got me there — build constantly, go deep on one thing, stay in the game even when the path is unconventional — that's what I carried into IIT Patna.</p>
+
+  <p class="reveal">At IIT, for the first time, I was surrounded by people whose obsessions matched mine. People who argued about algorithm complexity at dinner, who pulled all-nighters not because of deadlines but because they were genuinely curious about something. <strong>It was the first environment where being the kid who couldn't stop building was unremarkable — because everyone was like that.</strong></p>
+
+  <!-- FIX 3 & 8: Rewrote project list to correctly separate pre-IIT from IIT-era work.
+       OLD: Listed Pathology Panel alongside Blix.ai as if all happened post-IIT.
+       This was factually wrong — the Panel was built during Diploma years.
+       NEW: Two-sentence structure — "before IIT" and "since IIT" — accurate timeline. -->
+  <p class="reveal">The Diploma years had already produced real work — a deployed pathology system, a blockchain prototype, the coding discipline that made everything else possible. At IIT, the pace accelerated: Blix.ai, the AI Integration Hub, hackathon finals, a HackerRank 5-star rating. None of that post-IIT work would have been possible without the foundation built during the years people might have called the "wrong path."</p>
+
+  <hr>
+
+  <h2 class="reveal">What I Want You to Take From This</h2>
+
+  <p class="reveal">If you're reading this and you're somewhere I was — average marks, no trophies, no dramatic story of early genius — here's what I actually believe, earned through experience rather than inherited from a motivational poster:</p>
+
+  <ul class="reveal">
+    <li><strong>The unconventional path counts.</strong> Diploma → IIT is not a lesser story. It's a harder one. The route matters less than what you do when you arrive.</li>
+    <li><strong>Obsession beats talent at long time horizons.</strong> The kids who were smarter than me in class are not necessarily the ones building things today. Consistency compounds in ways raw ability doesn't.</li>
+    <li><strong>Your specific shape of "average" might be exactly right for something.</strong> I was average at everything except sitting alone with a technical problem for hours. That's not a flaw. That's a skill set.</li>
+    <li><strong>Missing a step doesn't end the journey.</strong> I missed the JEE cycle entirely. I found another route. The destination was the same.</li>
+    <li><strong>Do it quietly if you have to.</strong> I wasn't preparing loudly, posting streaks, performing effort. I was just at the desk. Every day. That's enough.</li>
+  </ul>
+
+  <div class="pull-quote reveal">
+    <p>"The dream doesn't expire. It just waits for you to stop making excuses and start making moves."</p>
+    <cite>— something I had to learn the hard way</cite>
+  </div>
+
+  <p class="reveal">I'm still building. The story isn't finished — it's barely in the second chapter. But the first chapter is proof that the story was always possible, even when I was the only one who believed it.</p>
+
+  <p class="reveal">If this resonated with you — if you're the average kid, the one taking the longer road, the one who doesn't fit the top-rank narrative — I hope you keep going. The technical depth you're building right now is the most valuable thing you own. Don't trade it for someone else's definition of success.</p>
+
+  <div class="author-card reveal" style="margin-top:3rem">
+    <img class="author-av" src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+    <div>
+      <div class="author-name">Sayan Dutta</div>
+      <div class="author-role">Full-Stack Developer & AI Enthusiast · IIT Patna</div>
+      <div style="display:flex;gap:.6rem;margin-top:.7rem;flex-wrap:wrap">
+        <a href="https://github.com/SAYANDUTTA8442" target="_blank" style="font-family:var(--fd);font-size:.75rem;font-weight:600;color:#FCD34D;text-decoration:none;border:1px solid rgba(245,158,11,.3);padding:.3rem .8rem;border-radius:50px;background:rgba(245,158,11,.08)">GitHub</a>
+        <a href="./index.html#contact" style="font-family:var(--fd);font-size:.75rem;font-weight:600;color:#67E8F9;text-decoration:none;border:1px solid rgba(6,182,212,.3);padding:.3rem .8rem;border-radius:50px;background:rgba(6,182,212,.1)">Get in touch</a>
+      </div>
+    </div>
+  </div>
+
+</article>
+
+<aside class="sidebar">
+
+  <div class="sidebar-card">
+    <div class="sidebar-title">In this article</div>
+    <ul class="toc-list" id="toc">
+      <li><a href="#" data-i="0">The Honest Report Card</a></li>
+      <li><a href="#" data-i="1">A Name I Heard Once</a></li>
+      <li><a href="#" data-i="2">Class 10 & The Pressure</a></li>
+      <li><a href="#" data-i="3">The Fork in the Road</a></li>
+      <li><a href="#" data-i="4">The Parallel Life</a></li>
+      <li><a href="#" data-i="5">What "Average" Means</a></li>
+      <li><a href="#" data-i="6">IIT Patna: Real Work</a></li>
+      <li><a href="#" data-i="7">What to Take From This</a></li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-title">Share this post</div>
+    <div class="share-btns">
+      <a href="https://twitter.com/intent/tweet?text=I+Was+Never+a+Topper.+Here%27s+How+I+Got+Into+IIT+Patna+by+Sayan+Dutta&url=" class="share-btn" target="_blank">𝕏 Tweet</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=" class="share-btn" target="_blank">in Share</a>
+      <a href="#" class="share-btn" onclick="navigator.clipboard.writeText(location.href);this.textContent='✓ Copied!';setTimeout(()=>this.textContent='🔗 Copy link',2000);return false">🔗 Copy link</a>
+    </div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-title">Related articles</div>
+    <!-- FIX 4: Updated blog3 related post title to match the renamed blog3 -->
+    <a href="blog5.html" class="related-post">
+      <div class="related-thumb rth-3">🚀</div>
+      <div>
+        <div class="related-ttl">From Beldanga to Building AI Products: My Dev Journey</div>
+        <div class="related-dt">January 2026</div>
+      </div>
+    </a>
+    <a href="blog1.html" class="related-post">
+      <div class="related-thumb rth-1">🤖</div>
+      <div>
+        <div class="related-ttl">How I Built a Custom LLM for CS Education</div>
+        <div class="related-dt">March 2025</div>
+      </div>
+    </a>
+    <a href="blog2.html" class="related-post">
+      <div class="related-thumb rth-2">⚡</div>
+      <div>
+        <div class="related-ttl">Orchestrating Multiple AI Models</div>
+        <div class="related-dt">April 2025</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="sidebar-card" style="text-align:center">
+    <div class="sidebar-title">Explore more</div>
+    <a href="./index.html" style="font-family:var(--fd);font-size:.82rem;font-weight:600;color:#FCD34D;text-decoration:none;display:block;padding:.6rem 1rem;border-radius:10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);transition:background .2s">← View Full Portfolio</a>
+  </div>
+
+</aside>
+</div>
+
+<footer>
+  <span class="fl-logo">Sayan Dutta</span>
+  <span class="fl-note">© 2025 · IIT Patna · All rights reserved</span>
+  <a href="./index.html#blog" class="fl-back">← All Articles</a>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{
+  const e=document.documentElement;
+  document.getElementById('progress').style.width=
+    Math.min((e.scrollTop||document.body.scrollTop)/(e.scrollHeight-e.clientHeight)*100,100)+'%';
+},{passive:true});
+
+function blob(cx,cy,r,n=7){
+  let d='M';
+  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2,rr=r*(.65+Math.random()*.7);d+=`${i?'L':''}${(cx+Math.cos(a)*rr).toFixed(1)},${(cy+Math.sin(a)*rr).toFixed(1)}`}
+  return d+'Z';
+}
+const ME=[
+  {el:document.getElementById('mp1'),cx:250,cy:200,r:290},
+  {el:document.getElementById('mp2'),cx:1150,cy:180,r:260},
+  {el:document.getElementById('mp3'),cx:180,cy:730,r:240},
+];
+ME.forEach(m=>m.el&&m.el.setAttribute('d',blob(m.cx,m.cy,m.r)));
+setInterval(()=>ME.forEach(m=>m.el&&m.el.setAttribute('d',blob(m.cx,m.cy,m.r))),2400);
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:.07,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+const h2s=document.querySelectorAll('article h2');
+const tocLinks=document.querySelectorAll('.toc-list a');
+const to=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const i=Array.from(h2s).indexOf(e.target);
+      tocLinks.forEach((a,j)=>a.classList.toggle('active',j===i));
+    }
+  });
+},{rootMargin:'-30% 0px -60% 0px'});
+h2s.forEach(h=>to.observe(h));
+tocLinks.forEach((a,i)=>a.addEventListener('click',e=>{
+  e.preventDefault();
+  h2s[i]&&h2s[i].scrollIntoView({behavior:'smooth',block:'start'});
+}));
+</script>
+</body>
+</html>

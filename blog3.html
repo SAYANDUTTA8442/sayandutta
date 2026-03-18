@@ -1,0 +1,758 @@
+<!-- blog3.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Beldanga to Building AI Products: My Dev Journey — Sayan Dutta</title>
+<!-- FIX 1 & 3: Title and description updated — removed "IIT Patna" as origin,
+     removed "thousands", reflects the full journey -->
+<meta name="description" content="How I went from self-teaching code during the 2020 pandemic to building AI systems, competing in national hackathons, and shipping open-source tools tested by real CS students.">
+<meta name="author" content="Sayan Dutta">
+<meta property="og:title" content="From Beldanga to Building AI Products: My Dev Journey">
+<meta property="og:description" content="How I went from self-teaching during the 2020 pandemic to production AI systems, national hackathon finals, and open-source tools tested by real students.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --v:#7C3AED;--c:#06B6D4;--p:#EC4899;--a:#F59E0B;--g:#10B981;--b:#3B82F6;
+  --bg:#04020C;--bg2:#080D1A;--surface:rgba(255,255,255,.04);
+  --text:#F0EEFF;--text2:#A89EC9;--text3:#5C5280;
+  --gb:rgba(255,255,255,.09);
+  --fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'Share Tech Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--fb);font-size:17px;line-height:1.8;
+  overflow-x:hidden;
+}
+
+/* ── MORPHING BG ── */
+#morph-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.13}
+#morph-bg svg{width:100%;height:100%}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 5vw;
+  background:rgba(4,2,12,.7);
+  backdrop-filter:blur(28px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.nav-logo{
+  font-family:var(--fd);font-size:1.3rem;font-weight:800;
+  background:linear-gradient(135deg,#7C3AED,#06B6D4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-decoration:none;letter-spacing:-.5px;
+}
+.nav-back{
+  font-family:var(--fd);font-size:.8rem;font-weight:600;
+  color:var(--text2);text-decoration:none;
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.45rem 1rem;border-radius:50px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);
+  transition:color .2s,border-color .2s,background .2s;
+}
+.nav-back:hover{color:#fff;border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.09)}
+
+/* ── HERO BANNER ── */
+.post-hero{
+  position:relative;
+  min-height:62vh;
+  display:flex;align-items:flex-end;
+  padding:8rem 5vw 4rem;
+  overflow:hidden;
+}
+.post-hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,rgba(236,72,153,.22),rgba(124,58,237,.18),rgba(6,182,212,.1));
+}
+.post-hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(4,2,12,.2),rgba(4,2,12,.85));
+}
+.hero-emoji{
+  position:absolute;
+  font-size:8rem;
+  top:50%;left:50%;
+  transform:translate(-50%,-58%);
+  opacity:.35;
+  filter:blur(2px);
+  animation:floatEmoji 6s ease-in-out infinite;
+  z-index:1;
+}
+@keyframes floatEmoji{
+  0%,100%{transform:translate(-50%,-58%) scale(1)}
+  50%{transform:translate(-50%,-62%) scale(1.06)}
+}
+.post-hero-content{position:relative;z-index:2;max-width:800px;width:100%}
+.post-meta-top{display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.post-cat{
+  font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  padding:.3rem .8rem;border-radius:50px;
+  background:rgba(249,168,212,.15);border:1px solid rgba(249,168,212,.3);color:#F9A8D4;
+}
+.post-date{font-size:.82rem;color:var(--text3);font-family:var(--fm)}
+.post-readtime{
+  font-size:.78rem;color:var(--text3);
+  display:inline-flex;align-items:center;gap:.3rem;
+}
+.post-title{
+  font-family:var(--fd);
+  font-size:clamp(2rem,5.5vw,3.6rem);
+  font-weight:800;line-height:1.08;
+  letter-spacing:-1.5px;
+  margin-bottom:1.2rem;
+  background:linear-gradient(135deg,#fff 40%,#F9A8D4 70%,#A78BFA 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.post-subtitle{
+  font-size:1.1rem;font-weight:300;color:var(--text2);
+  max-width:620px;line-height:1.75;
+}
+
+/* ── LAYOUT ── */
+.post-layout{
+  max-width:1100px;margin:0 auto;
+  padding:4rem 5vw 6rem;
+  display:grid;
+  grid-template-columns:1fr 280px;
+  gap:4rem;
+  align-items:start;
+}
+@media(max-width:900px){.post-layout{grid-template-columns:1fr;gap:3rem}}
+
+/* ── ARTICLE BODY ── */
+article{min-width:0}
+
+/* prose */
+article p{color:var(--text2);font-weight:300;margin-bottom:1.5rem;font-size:1rem;line-height:1.85}
+article p strong{color:var(--text);font-weight:500}
+article a{color:#A78BFA;text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+article a:hover{color:#C4B5FD}
+
+/* headings */
+article h2{
+  font-family:var(--fd);font-size:1.65rem;font-weight:700;
+  letter-spacing:-.5px;margin:3rem 0 1rem;
+  background:linear-gradient(135deg,#fff,#A78BFA);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+article h3{
+  font-family:var(--fd);font-size:1.2rem;font-weight:600;
+  color:var(--text);margin:2rem 0 .8rem;
+}
+
+/* divider */
+article hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:2.5rem 0}
+
+/* blockquote */
+article blockquote{
+  margin:2rem 0;padding:1.2rem 1.5rem;
+  background:rgba(124,58,237,.1);
+  border-left:3px solid #7C3AED;
+  border-radius:0 12px 12px 0;
+  font-style:italic;font-size:.97rem;color:var(--text2);
+  backdrop-filter:blur(10px);
+}
+article blockquote strong{color:#A78BFA;font-style:normal}
+
+/* inline code */
+article code{
+  font-family:var(--fm);font-size:.85em;
+  background:rgba(167,139,250,.12);
+  border:1px solid rgba(167,139,250,.2);
+  color:#C4B5FD;padding:.12em .45em;border-radius:5px;
+}
+
+/* code block */
+article pre{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:1.4rem 1.6rem;
+  overflow-x:auto;margin:1.8rem 0;
+  font-family:var(--fm);font-size:.84rem;color:#C4B5FD;
+  line-height:1.7;
+}
+article pre code{background:none;border:none;padding:0;color:inherit}
+
+/* lists */
+article ul,article ol{padding-left:1.4rem;margin-bottom:1.5rem;color:var(--text2);font-weight:300}
+article li{margin-bottom:.5rem;line-height:1.75}
+article li strong{color:var(--text);font-weight:500}
+
+/* ── CALLOUT BOXES ── */
+.callout{
+  margin:2rem 0;padding:1.2rem 1.5rem;border-radius:14px;
+  display:flex;gap:.9rem;align-items:flex-start;
+  backdrop-filter:blur(12px);
+}
+.callout.tip{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25)}
+.callout.warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25)}
+.callout.info{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25)}
+.callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
+.callout-body{font-size:.9rem;color:var(--text2);font-weight:300;line-height:1.7}
+.callout-body strong{font-weight:600}
+.callout.tip .callout-body strong{color:#6EE7B7}
+.callout.warn .callout-body strong{color:#FCD34D}
+.callout.info .callout-body strong{color:#67E8F9}
+
+/* ── TIMELINE JOURNEY ── */
+.journey-tl{position:relative;padding-left:2rem;margin:2rem 0}
+.journey-tl::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1.5px;background:linear-gradient(to bottom,#EC4899,#7C3AED,#06B6D4,transparent)}
+.jt-item{position:relative;margin-bottom:2.2rem;padding-left:.5rem}
+.jt-dot{position:absolute;left:-2.3rem;top:5px;width:13px;height:13px;border-radius:50%;background:var(--bg);border:2px solid #7C3AED;box-shadow:0 0 10px rgba(124,58,237,.5)}
+.jt-year{font-family:var(--fm);font-size:.72rem;color:#A78BFA;letter-spacing:.1em;margin-bottom:.25rem}
+.jt-title{font-family:var(--fd);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.35rem}
+.jt-desc{font-size:.87rem;color:var(--text2);font-weight:300;line-height:1.65}
+
+/* ── STAT CARDS ── */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}}
+.stat-card{
+  border-radius:14px;padding:1.2rem 1rem;text-align:center;
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.08);
+  transition:border-color .2s,transform .2s;
+}
+.stat-card:hover{border-color:rgba(255,255,255,.18);transform:translateY(-3px)}
+.stat-card .num{
+  font-family:var(--fd);font-size:2rem;font-weight:800;display:block;margin-bottom:.2rem;
+  background:linear-gradient(135deg,#A78BFA,#06B6D4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-card .lbl{font-size:.72rem;color:var(--text3);letter-spacing:.05em}
+
+/* ── SKILL BADGE LIST ── */
+.badge-wrap{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 1.5rem}
+.badge{
+  font-size:.78rem;font-weight:500;padding:.3rem .8rem;border-radius:50px;
+  background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:#A78BFA;
+}
+.badge.cyan{background:rgba(6,182,212,.12);border-color:rgba(6,182,212,.3);color:#67E8F9}
+.badge.pink{background:rgba(236,72,153,.12);border-color:rgba(236,72,153,.3);color:#F9A8D4}
+.badge.amber{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.28);color:#FCD34D}
+.badge.green{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.28);color:#6EE7B7}
+
+/* ── AUTHOR CARD ── */
+.author-card{
+  display:flex;align-items:center;gap:1.2rem;
+  padding:1.5rem;border-radius:18px;margin:3rem 0;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);
+  backdrop-filter:blur(16px);
+}
+.author-av{
+  width:56px;height:56px;border-radius:50%;
+  border:2px solid rgba(124,58,237,.4);
+  object-fit:cover;flex-shrink:0;
+}
+.author-name{font-family:var(--fd);font-size:1rem;font-weight:700;color:var(--text)}
+.author-role{font-size:.8rem;color:var(--text3);margin-top:.15rem}
+.author-bio{font-size:.85rem;color:var(--text2);font-weight:300;margin-top:.5rem;line-height:1.6}
+
+/* ── SIDEBAR ── */
+.sidebar{position:sticky;top:6rem}
+.sidebar-card{
+  border-radius:16px;padding:1.3rem 1.4rem;margin-bottom:1.2rem;
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.08);
+}
+.sidebar-title{
+  font-family:var(--fd);font-size:.72rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--text3);
+  margin-bottom:1rem;
+}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.toc-list a{
+  font-size:.83rem;color:var(--text2);text-decoration:none;
+  display:flex;align-items:center;gap:.5rem;
+  padding:.35rem .5rem;border-radius:8px;
+  transition:background .2s,color .2s;
+}
+.toc-list a::before{content:'';width:4px;height:4px;border-radius:50%;background:#7C3AED;flex-shrink:0}
+.toc-list a:hover{background:rgba(255,255,255,.06);color:#fff}
+.toc-list a.active{color:#A78BFA;background:rgba(124,58,237,.1)}
+
+.related-post{
+  display:flex;gap:.8rem;align-items:flex-start;
+  padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06);
+  text-decoration:none;
+  transition:opacity .2s;
+}
+.related-post:last-child{border-bottom:none}
+.related-post:hover{opacity:.75}
+.related-thumb{
+  width:48px;height:48px;border-radius:10px;flex-shrink:0;font-size:1.4rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.related-th-1{background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(167,139,250,.15))}
+.related-th-2{background:linear-gradient(135deg,rgba(6,182,212,.3),rgba(103,232,249,.15))}
+/* FIX 11: Added missing .rth-4 CSS class */
+.rth-4{background:linear-gradient(135deg,rgba(245,158,11,.3),rgba(252,211,77,.15))}
+.related-ttl{font-family:var(--fd);font-size:.82rem;font-weight:600;color:var(--text);line-height:1.35}
+.related-dt{font-size:.7rem;color:var(--text3);margin-top:.2rem}
+
+/* share buttons */
+.share-btns{display:flex;flex-wrap:wrap;gap:.6rem}
+.share-btn{
+  font-family:var(--fd);font-size:.75rem;font-weight:600;
+  padding:.4rem .9rem;border-radius:50px;text-decoration:none;
+  display:inline-flex;align-items:center;gap:.35rem;
+  border:1px solid rgba(255,255,255,.12);color:var(--text2);
+  background:rgba(255,255,255,.05);
+  transition:background .2s,color .2s,border-color .2s;
+}
+.share-btn:hover{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25)}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:2rem 5vw;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+  position:relative;z-index:2;
+  background:rgba(255,255,255,.01);
+}
+.fl-logo{font-family:var(--fd);font-weight:800;font-size:1.1rem;background:linear-gradient(135deg,#A78BFA,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fl-note{font-size:.78rem;color:var(--text3)}
+.fl-back{font-family:var(--fd);font-size:.76rem;font-weight:600;color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,.12);padding:.4rem 1rem;border-radius:50px;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);transition:background .2s}
+.fl-back:hover{background:rgba(255,255,255,.09)}
+
+/* ── PROGRESS BAR ── */
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#7C3AED,#EC4899,#06B6D4);z-index:200;transition:width .1s linear;width:0%}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .post-hero{min-height:50vh;padding:7rem 5vw 3rem}
+  .post-title{font-size:clamp(1.7rem,8vw,2.5rem);letter-spacing:-.5px}
+  .post-layout{padding:3rem 5vw 5rem;gap:2rem}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .author-card{flex-direction:column;text-align:center}
+  footer{flex-direction:column;align-items:flex-start;gap:.7rem}
+}
+</style>
+</head>
+<body>
+
+<!-- READ PROGRESS BAR -->
+<div id="progress"></div>
+
+<!-- MORPHING BG -->
+<div id="morph-bg">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="rg1" cx="30%" cy="25%"><stop offset="0%" stop-color="#7C3AED" stop-opacity=".9"/><stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg2" cx="75%" cy="30%"><stop offset="0%" stop-color="#EC4899" stop-opacity=".9"/><stop offset="100%" stop-color="#EC4899" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg3" cx="15%" cy="80%"><stop offset="0%" stop-color="#06B6D4" stop-opacity=".9"/><stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/></radialGradient>
+    </defs>
+    <path id="mp1" fill="url(#rg1)" opacity=".6"/>
+    <path id="mp2" fill="url(#rg2)" opacity=".5"/>
+    <path id="mp3" fill="url(#rg3)" opacity=".4"/>
+  </svg>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="nav-logo">SD</a>
+  <a href="./index.html#blog" class="nav-back">← Back to Blog</a>
+</nav>
+
+<!-- HERO BANNER -->
+<div class="post-hero">
+  <div class="post-hero-bg"></div>
+  <div class="hero-emoji">🚀</div>
+  <div class="post-hero-content">
+    <div class="post-meta-top">
+      <span class="post-cat">Career</span>
+      <span class="post-date">January 2026</span>
+      <span class="post-readtime"></span>
+    </div>
+    <!-- FIX title to match new h1 below -->
+    <h1 class="post-title">From Beldanga to Building AI Products: My Dev Journey</h1>
+    <!-- FIX 3 & 12: "thousands" → removed; "used by" → "tested by" -->
+    <p class="post-subtitle">How I went from self-teaching code during the 2020 pandemic to building AI systems, competing in national hackathon finals, and shipping open-source tools tested by real CS students.</p>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="post-layout">
+
+  <!-- ARTICLE -->
+  <article>
+
+    <!-- Author -->
+    <div class="author-card reveal">
+      <img class="author-av" src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+      <div>
+        <div class="author-name">Sayan Dutta</div>
+        <div class="author-role">Full-Stack Developer & AI Enthusiast · IIT Patna</div>
+        <p class="author-bio">BS-MS student in CS & Data Analytics at IIT Patna. Building AI-powered products, LLM tools, and open-source software that solves real problems.</p>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- FIX 1 & 2: Rewrote the opening paragraphs entirely.
+         OLD: "For me, it was a tiny terminal window showing Hello, World!
+              in a first-year programming lab at IIT Patna."
+         OLD: "I had no idea that three years later..."
+         PROBLEM: He joined IIT in 2025. Coding started 2020. "Three years later"
+         from IIT start would be 2028, which makes no sense in Jan 2026.
+         NEW: Correctly places origin in 2020 Beldanga, frames IIT as current chapter,
+         and "three years" now counts from 2022 (when productive building began). -->
+    <p class="reveal">Everyone starts somewhere. For me, it was a laptop in Beldanga, Murshidabad, during the 2020 lockdown — self-teaching C from a YouTube playlist with no mentor, no coding community nearby, and nowhere else to be. I had no idea that a few years later, I'd be at IIT Patna building custom language models, integrating three different AI APIs into a single system, and shipping open-source tools tested by real CS students.</p>
+
+    <p class="reveal">This is the honest story of how that happened — the wins, the late nights, the failed projects, and the mindset shifts that made all the difference.</p>
+
+    <div class="stat-row reveal">
+      <!-- "3+ Years of building" counts from ~2022 when productive building began ✓ -->
+      <div class="stat-card"><span class="num">3+</span><span class="lbl">Years of building</span></div>
+      <div class="stat-card"><span class="num">10+</span><span class="lbl">Projects shipped</span></div>
+      <div class="stat-card"><span class="num">5★</span><span class="lbl">HackerRank rating</span></div>
+    </div>
+
+    <!-- FIX 5: Section renamed from "Year One: The Foundation" to
+         "IIT Year One: Formalising the Foundation".
+         Added context that he already knew how to code — IIT formalised it.
+         The debugging story is kept but framed as deepening, not first exposure. -->
+    <h2 class="reveal">IIT Year One: Formalising the Foundation</h2>
+
+    <p class="reveal">I arrived at IIT Patna in 2025 already knowing how to write code. Five years of self-teaching since 2020, two years of Diploma in Engineering in Kolkata, a deployed full-stack application — that was the baseline. What IIT did was formalise it. Suddenly the things I'd been doing by instinct had names, proofs, and complexity bounds.</p>
+
+    <p class="reveal">The first-semester curriculum hit hard in a different way than I expected. Not because the concepts were new — I knew what a linked list was — but because the rigour was. I remember spending four hours debugging a linked list reversal in an assignment and realising the off-by-one error only after writing out the pointer state on paper. That kind of systematic thinking was the real upgrade IIT delivered.</p>
+
+    <blockquote class="reveal">
+      <strong>"The best way to learn to code is to build something you actually want to exist."</strong> That realisation started in 2020. IIT gave it structure, vocabulary, and peers who pushed it further.
+    </blockquote>
+
+    <p class="reveal">By the end of the first semester I had a stronger grasp of algorithms, data structures, and systems theory than four years of self-study had given me. More importantly, I had classmates who were as obsessed with building as I was.</p>
+
+    <div class="badge-wrap reveal">
+      <span class="badge">C</span>
+      <span class="badge">C++</span>
+      <span class="badge amber">Algorithms</span>
+      <span class="badge cyan">Systems Theory</span>
+      <span class="badge green">Git</span>
+    </div>
+
+    <!-- FIX 6 & 7: Section renamed from "Year Two: Going Full-Stack" to
+         "Diploma Years: Going Full-Stack". Now correctly attributed to
+         Kolkata Diploma period (2023–2025), not a future IIT year two.
+         The Pathology Panel is correctly placed in this timeline. -->
+    <h2 class="reveal">Diploma Years: Going Full-Stack</h2>
+
+    <p class="reveal">Before IIT, during my Diploma in Engineering in Kolkata (2023–2025), is where I went from writing scripts to building real applications. I picked up JavaScript almost by accident — I wanted to build a simple web dashboard for tracking my study hours, and vanilla JS was the fastest path. Within a month I was deep into Node.js, Express, and React.</p>
+
+    <h3 class="reveal">The Pathology Admin Panel</h3>
+
+    <p class="reveal">My first serious project came from an unexpected place. A relative who ran a pathology lab mentioned how painful it was to manage patient records, billing, and test reports using a patchwork of spreadsheets and paper forms. I offered to build something better.</p>
+
+    <p class="reveal">What followed was three months of weekend work during the Diploma — designing a MySQL schema from scratch, building a REST API with Express, creating a React frontend with chart-based analytics, and handling edge cases I hadn't anticipated (like what happens when a test has multiple billing codes, or when a report needs to be regenerated without overwriting the original).</p>
+
+    <div class="callout tip reveal">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><strong>Lesson learned:</strong> Real-world projects are 10× harder than tutorials because users have requirements that don't show up in any documentation. Embrace that complexity — it's where the real learning happens.</div>
+    </div>
+
+    <p class="reveal">The panel went live and the lab still uses it today. That feeling — watching a non-technical person navigate something I built, with zero confusion — was more motivating than any grade.</p>
+
+    <div class="badge-wrap reveal">
+      <span class="badge cyan">React.js</span>
+      <span class="badge cyan">Node.js</span>
+      <span class="badge cyan">Express.js</span>
+      <span class="badge amber">MySQL</span>
+      <span class="badge">REST APIs</span>
+    </div>
+
+    <hr>
+
+    <h2 class="reveal">The AI Turn</h2>
+
+    <p class="reveal">Toward the end of my Diploma years, I started noticing a pattern in my study group: everyone was struggling with the same core CS subjects — OS concepts, DBMS theory, algorithm complexity — and the existing resources either dumbed things down too much or assumed too much background knowledge.</p>
+
+    <p class="reveal">Around the same time, the LLM explosion was happening. GPT-4 came out. Open-source models like LLaMA were being released. I started wondering: <strong>what if a language model was trained specifically on these CS topics?</strong></p>
+
+    <h3 class="reveal">Building Blix.ai</h3>
+
+    <!-- FIX 8 framing here: "free, self-hosted AI tutor" kept but beta context added -->
+    <p class="reveal">That question became Blix.ai — a privacy-first, self-hosted AI tutor for computer science students, currently running in closed beta. The goal was simple in concept but hard in execution: a model that could answer both theoretical questions ("explain the difference between process and thread") and practical coding questions ("why does this semaphore implementation deadlock?") with the depth of a senior TA.</p>
+
+    <div class="journey-tl reveal">
+      <div class="jt-item">
+        <div class="jt-dot"></div>
+        <div class="jt-year">Month 1</div>
+        <div class="jt-title">Dataset curation</div>
+        <div class="jt-desc">Scraped, cleaned, and structured Q&A data across OS, DBMS, DSA, Networks, and AI/ML from textbooks, lecture notes, and Stack Overflow threads.</div>
+      </div>
+      <div class="jt-item">
+        <div class="jt-dot"></div>
+        <div class="jt-year">Month 2</div>
+        <div class="jt-title">Fine-tuning pipeline</div>
+        <div class="jt-desc">Set up a fine-tuning pipeline on a quantised base model using LoRA adapters. Ran experiments on Colab TPUs burning through free quota daily.</div>
+      </div>
+      <div class="jt-item">
+        <div class="jt-dot"></div>
+        <div class="jt-year">Month 3</div>
+        <div class="jt-title">Inference server & frontend</div>
+        <div class="jt-desc">Built a FastAPI inference server, optimised for low-latency streaming responses, and a clean React chat interface. Self-hosted on a personal VPS.</div>
+      </div>
+      <!-- FIX 9: "broader student community" → "closed group of IIT Patna classmates for beta testing" -->
+      <div class="jt-item">
+        <div class="jt-dot"></div>
+        <div class="jt-year">Month 4+</div>
+        <div class="jt-title">Closed beta with classmates</div>
+        <div class="jt-desc">Opened Blix.ai to a closed group of IIT Patna classmates for beta testing. Iterated based on failure cases — the model was confidently wrong about deadlock conditions initially.</div>
+      </div>
+    </div>
+
+    <div class="callout warn reveal">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><strong>Hardest part:</strong> Getting the model to say "I don't know" instead of hallucinating a plausible-sounding but incorrect answer. This required careful RLHF-style preference data — teaching the model that an honest "I'm uncertain" is better than a confident wrong answer.</div>
+    </div>
+
+    <!-- FIX 8: "Blix.ai is still live, still free" → closed beta framing -->
+    <p class="reveal">Blix.ai is running in closed beta, free for all testers, and aligned with <strong>UN SDG4: Quality Education for All</strong>. The code is open-source. If it helps even a few students pass their operating systems exam, it was worth every debugging session.</p>
+
+    <div class="badge-wrap reveal">
+      <span class="badge pink">LLMs</span>
+      <span class="badge pink">Fine-tuning</span>
+      <span class="badge pink">LoRA</span>
+      <span class="badge amber">FastAPI</span>
+      <span class="badge green">Self-hosting</span>
+      <span class="badge cyan">HuggingFace</span>
+    </div>
+
+    <hr>
+
+    <h2 class="reveal">Hackathons: Shipping Under Pressure</h2>
+
+    <p class="reveal">Nothing teaches you to build fast like a hackathon. I've competed in five national-level AI hackathons so far, reached the finals in two, and learned something important from each one — including the ones where we didn't place.</p>
+
+    <p class="reveal">The biggest lesson: <strong>your first idea is almost never your best idea.</strong> The teams that win usually pivot hard somewhere in hour four or five, after they've built something and realised what the actual interesting problem is.</p>
+
+    <div class="callout info reveal">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body"><strong>Hackathon framework I swear by:</strong> Spend the first hour just talking. Don't touch a keyboard. Agree on what problem you're actually solving and who the user is. Then build the smallest possible version that demonstrates the core value. Polish is for the final two hours only.</div>
+    </div>
+
+    <p class="reveal">Competing with a team also taught me things about collaboration that solo projects can't. When you're tired at 2am and someone else's code breaks your integration, you learn a lot about communication and version control very quickly.</p>
+
+    <h2 class="reveal">The AI Integration Hub</h2>
+
+    <p class="reveal">After working extensively with OpenAI's API for Blix.ai, I noticed a recurring pain point: every project that wanted to use AI had to re-implement the same boilerplate — authentication, rate limiting, error handling, response parsing, model selection logic. And if you wanted to switch providers or route to different models based on the task, you were essentially rewriting your integration layer from scratch.</p>
+
+    <p class="reveal">So I built the AI Integration Hub — a single API layer that sits in front of OpenAI, Anthropic, and Google Gemini. You send one request, specify a task type, and the hub routes to the best model, handles retries, caches where appropriate, and returns a normalised response regardless of which provider served it.</p>
+
+    <pre><code>// Before: vendor-specific boilerplate
+const response = await openai.chat.completions.create({
+  model: "gpt-4o",
+  messages: [{ role: "user", content: prompt }]
+});
+
+// After: one interface, any provider
+const response = await hub.complete({
+  task: "code_review",
+  prompt,
+  // hub picks the best model automatically
+});</code></pre>
+
+    <p class="reveal">The Hub now supports three providers, handles ~200 requests/day in testing, and has saved me personally from vendor lock-in twice. It's the kind of infrastructure that doesn't seem glamorous until you've had to rewrite it.</p>
+
+    <div class="badge-wrap reveal">
+      <span class="badge pink">OpenAI API</span>
+      <span class="badge pink">Anthropic API</span>
+      <span class="badge pink">Gemini API</span>
+      <span class="badge cyan">Node.js</span>
+      <span class="badge amber">Redis</span>
+      <span class="badge green">Docker</span>
+    </div>
+
+    <hr>
+
+    <h2 class="reveal">What I'd Tell My 2020 Self</h2>
+
+    <p class="reveal">Looking back across three-plus years of active building and ten-plus projects, a few things stand out as genuinely important:</p>
+
+    <ul class="reveal">
+      <li><strong>Build things that annoy you.</strong> The best projects solve a problem you personally experience. The motivation stays high because you're your own most demanding user.</li>
+      <li><strong>Ship early, even if it's embarrassing.</strong> Every project I'm most proud of started as something I was almost too embarrassed to show anyone. User feedback in the first week is worth a month of solo iteration.</li>
+      <li><strong>Learn the fundamentals deeply.</strong> Understanding why a database index speeds up a query, or how an attention mechanism actually computes similarity — this knowledge compounds. Abstractions leak eventually.</li>
+      <li><strong>Competition is a forcing function.</strong> Hackathons, competitive programming, open-source contributions with deadlines — external pressure produces focus that pure curiosity rarely does.</li>
+      <li><strong>The community matters more than the credential.</strong> The most valuable things I've learned came from conversations with seniors, lab partners debugging at midnight, and professors who pushed back on lazy assumptions.</li>
+    </ul>
+
+    <!-- FIX 10: Added "targeting a public launch in February 2027" for consistency with blog1/blog5 -->
+    <div class="callout tip reveal">
+      <span class="callout-icon">🎯</span>
+      <div class="callout-body"><strong>What's next:</strong> Blix.ai v2 is in development — targeting a public launch in February 2027 — with a larger dataset, better factual grounding, and multi-turn conversation memory. I'm also exploring research in AI alignment and planning to contribute to open-source LLM tooling in the coming months. If you're building something interesting in this space — let's talk.</div>
+    </div>
+
+    <hr>
+
+    <h2 class="reveal">Final Thoughts</h2>
+
+    <p class="reveal">The journey from a curious kid in Beldanga teaching himself C during a lockdown to building AI-powered products at IIT Patna hasn't been linear. There have been months where nothing shipped, projects that got abandoned halfway, and ideas that seemed brilliant at 1am and terrible by morning.</p>
+
+    <p class="reveal">But the compounding effect of consistent building is real. Every project teaches you something the next one needs. Every failure rules out a direction that would have wasted more time later. And every tool that someone actually uses — however small — is a reminder of why this is worth doing.</p>
+
+    <p class="reveal">If you're early in your own journey and this resonated, I hope it's useful. If you want to talk about anything covered here — Blix.ai, the AI Hub, hackathon strategy, or just what it's like studying CS at IIT Patna — reach out. I'm always happy to chat.</p>
+
+    <div class="author-card reveal" style="margin-top:3rem">
+      <img class="author-av" src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+      <div>
+        <div class="author-name">Sayan Dutta</div>
+        <div class="author-role">Full-Stack Developer & AI Enthusiast · IIT Patna</div>
+        <div style="display:flex;gap:.6rem;margin-top:.7rem;flex-wrap:wrap">
+          <a href="https://github.com/SAYANDUTTA8442" target="_blank" style="font-family:var(--fd);font-size:.75rem;font-weight:600;color:#A78BFA;text-decoration:none;border:1px solid rgba(124,58,237,.3);padding:.3rem .8rem;border-radius:50px;background:rgba(124,58,237,.1);transition:background .2s">GitHub</a>
+          <a href="./index.html#contact" style="font-family:var(--fd);font-size:.75rem;font-weight:600;color:#67E8F9;text-decoration:none;border:1px solid rgba(6,182,212,.3);padding:.3rem .8rem;border-radius:50px;background:rgba(6,182,212,.1);transition:background .2s">Get in touch</a>
+        </div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Table of Contents -->
+    <div class="sidebar-card">
+      <div class="sidebar-title">In this article</div>
+      <!-- FIX: TOC entries updated to match renamed headings -->
+      <ul class="toc-list" id="toc">
+        <li><a href="#" data-section="0">IIT Year One: The Foundation</a></li>
+        <li><a href="#" data-section="1">Diploma Years: Full-Stack</a></li>
+        <li><a href="#" data-section="2">The AI Turn</a></li>
+        <li><a href="#" data-section="3">Building Blix.ai</a></li>
+        <li><a href="#" data-section="4">Hackathons</a></li>
+        <li><a href="#" data-section="5">AI Integration Hub</a></li>
+        <li><a href="#" data-section="6">Lessons Learned</a></li>
+        <li><a href="#" data-section="7">Final Thoughts</a></li>
+      </ul>
+    </div>
+
+    <!-- Share -->
+    <div class="sidebar-card">
+      <div class="sidebar-title">Share this post</div>
+      <div class="share-btns">
+        <a href="https://twitter.com/intent/tweet?text=From+Beldanga+to+Building+AI+Products+by+@sayandutta&url=" class="share-btn" target="_blank">𝕏 Tweet</a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=" class="share-btn" target="_blank">in Share</a>
+        <a href="#" class="share-btn" onclick="navigator.clipboard.writeText(location.href);this.textContent='✓ Copied!';setTimeout(()=>this.textContent='🔗 Copy link',2000);return false">🔗 Copy link</a>
+      </div>
+    </div>
+
+    <!-- Related posts -->
+    <div class="sidebar-card">
+      <div class="sidebar-title">Related articles</div>
+      <a href="blog1.html" class="related-post">
+        <div class="related-thumb related-th-1">🤖</div>
+        <div>
+          <div class="related-ttl">How I Built a Custom LLM for CS Education with Blix.ai</div>
+          <div class="related-dt">March 2025</div>
+        </div>
+      </a>
+      <a href="blog2.html" class="related-post">
+        <div class="related-thumb related-th-2">⚡</div>
+        <div>
+          <div class="related-ttl">Orchestrating Multiple AI Models: Architecture Decisions</div>
+          <div class="related-dt">April 2025</div>
+        </div>
+      </a>
+      <!-- FIX 11: .rth-4 is now defined in CSS above -->
+      <a href="blog4.html" class="related-post">
+        <div class="related-thumb rth-4">🎯</div>
+        <div>
+          <div class="related-ttl">I Was Never a Topper. Here's How I Got Into IIT Patna.</div>
+          <div class="related-dt">December 2025</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Back to portfolio -->
+    <div class="sidebar-card" style="text-align:center">
+      <div class="sidebar-title">Explore more</div>
+      <a href="./index.html" style="font-family:var(--fd);font-size:.82rem;font-weight:600;color:#A78BFA;text-decoration:none;display:block;padding:.6rem 1rem;border-radius:10px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);transition:background .2s">← View Full Portfolio</a>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="fl-logo">Sayan Dutta</span>
+  <span class="fl-note">© 2025 · IIT Patna · All rights reserved</span>
+  <a href="./index.html#blog" class="fl-back">← All Articles</a>
+</footer>
+
+<script>
+/* ── READ PROGRESS BAR ── */
+window.addEventListener('scroll', () => {
+  const el = document.documentElement;
+  const pct = (el.scrollTop || document.body.scrollTop) / (el.scrollHeight - el.clientHeight) * 100;
+  document.getElementById('progress').style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+/* ── MORPHING BG ── */
+function randBlob(cx, cy, r, pts = 7) {
+  let d = 'M';
+  for (let i = 0; i < pts; i++) {
+    const a = (i / pts) * Math.PI * 2;
+    const rr = r * (0.65 + Math.random() * 0.7);
+    d += `${i === 0 ? '' : ' L'}${(cx + Math.cos(a) * rr).toFixed(1)},${(cy + Math.sin(a) * rr).toFixed(1)}`;
+  }
+  return d + 'Z';
+}
+const morphEls = [
+  { el: document.getElementById('mp1'), cx: 280,  cy: 220, r: 300 },
+  { el: document.getElementById('mp2'), cx: 1160, cy: 160, r: 260 },
+  { el: document.getElementById('mp3'), cx: 200,  cy: 720, r: 240 },
+];
+morphEls.forEach(m => m.el && m.el.setAttribute('d', randBlob(m.cx, m.cy, m.r)));
+setInterval(() => morphEls.forEach(m => m.el && m.el.setAttribute('d', randBlob(m.cx, m.cy, m.r))), 2400);
+
+/* ── SCROLL REVEAL ── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ── TOC ACTIVE HIGHLIGHT ── */
+const h2s = document.querySelectorAll('article h2, article h3');
+const tocLinks = document.querySelectorAll('.toc-list a');
+const tocObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = Array.from(h2s).indexOf(e.target);
+      tocLinks.forEach((a, i) => a.classList.toggle('active', i === idx));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+h2s.forEach(h => tocObs.observe(h));
+
+/* smooth scroll TOC */
+tocLinks.forEach((a, i) => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    h2s[i] && h2s[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
