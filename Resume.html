@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sayan Dutta — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── RESET & BASE ─────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:      #0c0c0c;
+    --body:     #1f1f1f;
+    --sub:      #444;
+    --muted:    #666;
+    --rule:     #c8c4bc;
+    --accent:   #1a4fa3;
+    --bg:       #ffffff;
+    --serif:    'Crimson Pro', Georgia, serif;
+    --sans:     'Source Sans 3', system-ui, sans-serif;
+  }
+
+  html, body {
+    background: #f3f4f6;
+    color: var(--body);
+    font-family: var(--sans);
+    font-size: 13.2px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── RESPONSIVE PAGE SHELL ───────────────────── */
+  .page {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 40px;
+    background: var(--bg);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  /* ── HEADER ──────────────────────────────────── */
+  .hd-name {
+    font-family: var(--serif);
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .hd-title {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .hd-contact {
+    font-size: 12px;
+    color: var(--sub);
+    line-height: 1.8;
+  }
+
+  .hd-contact a { color: var(--sub); font-weight: 600; }
+  .hd-contact a:hover { color: var(--accent); }
+
+  .hd-sep { margin: 0 5px; color: var(--rule); }
+
+  .hd-rule {
+    border: none;
+    border-top: 2px solid var(--ink);
+    margin: 9px 0 0;
+  }
+
+  /* ── SECTION HEADING ─────────────────────────── */
+  .sec {
+    margin-top: 12px;
+    margin-bottom: 6px;
+  }
+
+  .sec-label {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+    padding-bottom: 2px;
+  }
+
+  /* ── ENTRY ───────────────────────────────────── */
+  .entry { margin-bottom: 10px; page-break-inside: avoid; }
+  .entry:last-child { margin-bottom: 0; }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .e-title {
+    font-family: var(--serif);
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .e-date {
+    font-size: 11.5px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .e-sub {
+    font-size: 12.5px;
+    color: var(--sub);
+    font-style: italic;
+    margin-top: 1px;
+    margin-bottom: 4px;
+  }
+
+  .e-sub-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .e-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .e-meta strong { color: var(--body); font-weight: 600; }
+
+  /* ── BULLETS ─────────────────────────────────── */
+  ul.bul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  ul.bul li {
+    padding-left: 13px;
+    position: relative;
+    margin-bottom: 3.5px;
+    font-size: 12.8px;
+    color: var(--body);
+    line-height: 1.45;
+    text-align: justify;
+  }
+
+  ul.bul li::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--accent);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  ul.bul li strong { color: var(--ink); font-weight: 700; }
+
+  /* ── SKILLS TABLE ────────────────────────────── */
+  .skills { border-collapse: collapse; width: 100%; }
+
+  .skills td {
+    padding: 2px 0;
+    font-size: 12.8px;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+
+  .skills td:first-child {
+    font-weight: 700;
+    color: var(--ink);
+    white-space: nowrap;
+    padding-right: 10px;
+    width: 1%;
+  }
+
+  .skills td:last-child { color: var(--body); }
+
+  /* ── STRICT PDF EXPORT RULES ─────────────────── */
+  @page {
+    size: A4;
+    margin: 0; 
+  }
+
+  @media print {
+    html, body { 
+      background: white; 
+      margin: 0; 
+      padding: 0; 
+      height: 100%;
+    }
+    .page { 
+      margin: 0; 
+      padding: 12mm 15mm 10mm; 
+      box-shadow: none; 
+      max-width: 100%;
+      width: 210mm;
+      height: 297mm;
+      max-height: 297mm; 
+      overflow: hidden;  
+    }
+    a { color: var(--sub) !important; text-decoration: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hd-name">Sayan Dutta</div>
+  <div class="hd-title">Software Engineer Intern</div>
+  <div class="hd-contact">
+    duttasayan204@gmail.com<span class="hd-sep">|</span>+91 86531 28442<span class="hd-sep">|</span>Kolkata, West Bengal, India<br>
+    <a href="https://linkedin.com/in/sayandutta8653128442">linkedin.com/in/sayandutta8653128442</a><span class="hd-sep">|</span><a href="https://github.com/SAYANDUTTA8442">github.com/SAYANDUTTA8442</a><span class="hd-sep">|</span><a href="https://sayandutta8442.github.io/sayandutta">sayandutta8442.github.io/sayandutta</a>
+  </div>
+  <hr class="hd-rule">
+
+  <div class="sec"><div class="sec-label">Education</div></div>
+
+  <div class="entry">
+    <div class="row">
+      <span class="e-title">Indian Institute of Technology Patna</span>
+      <span class="e-date">Expected May 2030</span>
+    </div>
+    <div class="e-sub-row">
+      <span class="e-sub">BS-MS in Computer Science and Data Analytics</span>
+      <span class="e-sub" style="font-style:normal; font-weight:700; color:#1a4fa3;">CGPA: 8.32 / 10</span>
+    </div>
+    <div class="e-meta">
+      <strong>Relevant Coursework:</strong> Data Structures &amp; Algorithms, Operating Systems, Computer Networks, Machine Learning, Database Management Systems, Artificial Intelligence, Natural Language Processing, Software Engineering, Object Oriented Programming
+    </div>
+  </div>
+
+  <div class="sec"><div class="sec-label">Technical Skills</div></div>
+
+  <div class="entry">
+    <table class="skills">
+      <tr>
+        <td>Languages</td>
+        <td>Python (Advanced), C++, Java, C, JavaScript, SQL</td>
+      </tr>
+      <tr>
+        <td>AI/ML &amp; Libraries</td>
+        <td>PyTorch, TensorFlow, Transformers, Scikit-learn, OpenCV, RAG Pipelines, Pandas, NumPy, NLTK</td>
+      </tr>
+      <tr>
+        <td>Cloud &amp; Architecture</td>
+        <td>Google Cloud Platform (GCP), REST APIs, React, Node.js, MySQL, Git, Linux, System Design</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="sec"><div class="sec-label">Projects</div></div>
+
+  <div class="entry">
+    <div class="row">
+      <span class="e-title">AgriVision AI — Smart Agriculture Recommendation System</span>
+      <span class="e-date">Aug 2025 – Present</span>
+    </div>
+    <div class="e-sub">Lead ML Architect &nbsp;·&nbsp; Academic Capstone</div>
+    <ul class="bul">
+      <li><strong>Engineered a multi-modal computer vision pipeline</strong> utilizing OpenCV and deep CNNs to classify soil chemical properties from raw imagery, successfully reducing diagnostic latency from <strong>72+ hours to sub-seconds</strong>.</li>
+      <li><strong>Architected an end-to-end predictive machine learning system</strong> deployed on Google Cloud Platform, aggregating real-time meteorological and market APIs to deliver automated yield optimization alerts to end-users.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <span class="e-title">Blix AI — Personalized Adaptive Study Planner</span>
+      <span class="e-date">Aug 2025 – Present</span>
+    </div>
+    <ul class="bul">
+      <li><strong>Developed a hallucination-resistant LLM orchestration backend</strong> by fine-tuning a Mistral model and integrating a custom Retrieval-Augmented Generation (RAG) pipeline against a <strong>10,000+ node curriculum vector space</strong>.</li>
+      <li><strong>Optimized full-stack application performance</strong>, achieving <strong>sub-200ms latency</strong> for live educational analytics by implementing seamless state management across a highly responsive React and Node.js architecture.</li>
+      <li><strong>Implemented dynamic reinforcement learning protocols</strong> alongside Transformers and NLTK to parse live user performance metrics, automatically adapting curriculum difficulty to optimize student mastery outcomes.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row">
+      <span class="e-title">Smart Attendance System using Face Recognition</span>
+      <span class="e-date">Jul 2025</span>
+    </div>
+    <ul class="bul">
+      <li><strong>Trained and deployed a robust computer vision model</strong> via CNN transfer learning, achieving <strong>96% facial detection accuracy</strong> across diverse lighting and occlusion environments using TensorFlow and OpenCV.</li>
+      <li><strong>Designed a scalable, highly-available backend infrastructure</strong> on GCP, utilizing a normalized MySQL relational schema to process concurrent, high-throughput attendance logging with zero data loss.</li>
+    </ul>
+  </div>
+
+  <div class="sec"><div class="sec-label">Leadership &amp; Extracurricular</div></div>
+
+  <div class="entry">
+    <div class="row">
+      <span class="e-title">Google Student Ambassador — Ping Digital</span>
+      <span class="e-date">Jul 2025 – Dec 2025</span>
+    </div>
+    <div class="e-sub">Indian Institute of Technology Patna</div>
+    <ul class="bul">
+      <li><strong>Spearheaded campus-wide cloud technology adoption</strong>, successfully upskilling over <strong>200+ students</strong> by organizing and instructing 6 intensive, hands-on workshops focused on GCP, modern software paradigms, and Google developer tooling.</li>
+    </ul>
+  </div>
+
+  <div class="sec"><div class="sec-label">Achievements &amp; Algorithmic Competency</div></div>
+
+  <div class="entry">
+    <ul class="bul">
+      <li><strong>Algorithmic Mastery (LeetCode):</strong> Conquered 76 complex algorithmic challenges (43 Medium, 14 Hard), demonstrating a strong command of dynamic programming, graph theory, and advanced data structures. (Profile: SAYAN6136)</li>
+      <li><strong>Competitive Programming (GeeksforGeeks):</strong> Secured an Institute Rank of 732 and a coding score of 220 by actively solving 58 rigorous computational problems.</li>
+      <li><strong>Continuous Optimization (HackerRank):</strong> Maintain an active profile dedicated to optimizing computational complexity and mastering theoretical computer science concepts. (hackerrank.com/profile/sd8698621)</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
