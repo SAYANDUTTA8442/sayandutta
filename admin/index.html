@@ -137,7 +137,7 @@
         .modal-box {
             background: var(--white);
             border: 1px solid var(--gold-border);
-            min-width: 420px;
+            width: 420px;
             max-width: 94vw;
             box-shadow: var(--shadow);
             animation: mIn .35s var(--ease);
@@ -1711,12 +1711,57 @@
         }
 
         @media (max-width: 600px) {
+            :root {
+                --sidebar-col: 60px;
+            }
+
+            .topbar {
+                padding: 0 16px;
+                gap: 8px;
+            }
+
+            .tb-right {
+                gap: 8px;
+            }
+
+            .prof-btn .pname,
+            .prof-btn .prole,
+            .prof-btn .pcaret {
+                display: none;
+            }
+
+            .prof-btn {
+                padding: 4px;
+                border: none;
+                background: transparent;
+            }
+
             .stat-grid {
                 grid-template-columns: 1fr;
             }
 
             .pgrid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
+            }
+
+            .frow {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .fbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .sec-hd {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+            }
+
+            .content {
+                padding: 20px 16px 40px;
             }
         }
     </style>
