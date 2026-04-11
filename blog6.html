@@ -1,0 +1,1397 @@
+<!-- blog6.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ── PRIMARY SEO ── -->
+<title>TerSQL — How I Built an Intelligent Multi-Database CLI | Sayan Dutta, IIT Patna</title>
+<meta name="description" content="The full story of how Sayan Dutta (IIT Patna) built TerSQL — from a datatype mismatch in class to building a unified CLI with NLP over MySQL, PostgreSQL and MongoDB. A developer's journey from frustration to open-source.">
+<meta name="keywords" content="TerSQL, Sayan Dutta TerSQL, multi-database CLI Python, NLP SQL tool, IIT Patna project, MySQL PostgreSQL MongoDB CLI, database unification, Sayan Dutta developer">
+<meta name="author" content="Sayan Dutta">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<link rel="canonical" href="https://sayandutta.in/blog6.html">
+
+<!-- ── OPEN GRAPH ── -->
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sayandutta.in/blog6.html">
+<meta property="og:title" content="TerSQL — How I Built an Intelligent Multi-Database CLI">
+<meta property="og:description" content="From MySQL to Oracle to MongoDB to PostgreSQL — a 2nd-year student's frustration with database fragmentation became TerSQL: a unified NLP-powered CLI. Here's the full story.">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/108791058?v=4">
+<meta property="og:locale" content="en_IN">
+
+<!-- ── TWITTER CARD ── -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TerSQL — How I Built an Intelligent Multi-Database CLI">
+<meta name="twitter:description" content="MySQL in self-study. Oracle in class. MongoDB for curiosity. PostgreSQL for exploration. Four databases, four syntaxes, one frustrated student — and one idea that became TerSQL.">
+<meta name="twitter:image" content="https://avatars.githubusercontent.com/u/108791058?v=4">
+
+<!-- ── STRUCTURED DATA ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "TerSQL — How I Built an Intelligent Multi-Database CLI from Classroom Frustration",
+  "description": "The full development story of TerSQL by Sayan Dutta — from datatype mismatches in an Oracle classroom to building a unified NLP-powered CLI for MySQL, PostgreSQL and MongoDB.",
+  "author": { "@type": "Person", "name": "Sayan Dutta", "url": "https://sayandutta.in" },
+  "datePublished": "2026-04-01",
+  "dateModified": "2026-04-11",
+  "image": "https://avatars.githubusercontent.com/u/108791058?v=4",
+  "url": "https://sayandutta.in/blog6.html",
+  "mainEntityOfPage": "https://sayandutta.in/blog6.html",
+  "keywords": ["TerSQL", "database CLI", "NLP SQL", "Python", "IIT Patna", "Sayan Dutta"]
+}
+</script>
+
+<!-- ── FONTS ── -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --v:#7C3AED;--c:#06B6D4;--p:#EC4899;--a:#F59E0B;--g:#10B981;
+  --bg:#04020C;--surface:rgba(255,255,255,.04);
+  --text:#F0EEFF;--text2:#A89EC9;--text3:#5C5280;
+  --fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'Share Tech Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:17px;line-height:1.8;overflow-x:hidden}
+
+/* MORPHING BG */
+#morph-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.12}
+#morph-bg svg{width:100%;height:100%}
+
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#7C3AED,#06B6D4,#EC4899,#F59E0B,#10B981);z-index:200;transition:width .1s linear;width:0%}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 5vw;background:rgba(4,2,12,.72);backdrop-filter:blur(28px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-logo{font-family:var(--fd);font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,#7C3AED,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;letter-spacing:-.5px}
+.nav-back{font-family:var(--fd);font-size:.8rem;font-weight:600;color:var(--text2);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;padding:.45rem 1rem;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px);transition:color .2s,border-color .2s,background .2s}
+.nav-back:hover{color:#fff;border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.09)}
+
+/* HERO */
+.post-hero{position:relative;min-height:80vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:4rem;padding:8rem 5vw 4rem;overflow:hidden;max-width:1200px;margin:0 auto}
+@media(max-width:768px){.post-hero{grid-template-columns:1fr;min-height:auto;padding:7rem 5vw 3rem;text-align:center}}
+.hero-bg-full{position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse at 20% 20%,rgba(124,58,237,.18),transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(6,182,212,.12),transparent 55%),radial-gradient(ellipse at 60% 10%,rgba(236,72,153,.1),transparent 45%)}
+
+/* TERMINAL HERO SIDE */
+.hero-terminal-side{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+.terminal-frame{width:100%;max-width:420px;border-radius:16px;background:#0D0B1A;border:1px solid rgba(255,255,255,.1);box-shadow:0 0 60px rgba(6,182,212,.15),0 24px 48px rgba(0,0,0,.5);overflow:hidden}
+.terminal-bar{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
+.t-dot{width:10px;height:10px;border-radius:50%}
+.t-dot.r{background:#EC4899}.t-dot.y{background:#F59E0B}.t-dot.g{background:#10B981}
+.t-title{font-family:var(--fm);font-size:.68rem;color:var(--text3);margin-left:.4rem}
+.terminal-body{padding:1.2rem 1.2rem 1.4rem;font-family:var(--fm);font-size:.75rem;line-height:1.9}
+.t-line{display:block}
+.t-prompt{color:#A78BFA}.t-cmd{color:#F0EEFF}.t-out{color:#67E8F9}
+.t-comment{color:#5C5280}.t-err{color:#F9A8D4}.t-ok{color:#6EE7B7}
+.t-cursor{display:inline-block;width:7px;height:13px;background:#A78BFA;animation:blink .9s step-end infinite;vertical-align:middle;margin-left:2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* IDENTITY BADGES */
+.id-badges{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;max-width:320px}
+.id-badge{font-family:var(--fm);font-size:.68rem;padding:.3rem .75rem;border-radius:50px;white-space:nowrap}
+.ib-v{background:rgba(124,58,237,.18);border:1px solid rgba(124,58,237,.35);color:#A78BFA}
+.ib-c{background:rgba(6,182,212,.14);border:1px solid rgba(6,182,212,.3);color:#67E8F9}
+.ib-p{background:rgba(236,72,153,.13);border:1px solid rgba(236,72,153,.28);color:#F9A8D4}
+.ib-a{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.28);color:#FCD34D}
+.ib-g{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.28);color:#6EE7B7}
+
+/* HERO TEXT SIDE */
+.hero-eyebrow{font-family:var(--fm);font-size:.75rem;color:var(--text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem}
+.hero-eyebrow::before{content:'';width:20px;height:1.5px;background:linear-gradient(90deg,#06B6D4,#10B981)}
+.hero-name-big{font-family:var(--fd);font-size:clamp(3rem,7vw,5.5rem);font-weight:800;line-height:.92;letter-spacing:-3px;margin-bottom:.8rem;background:linear-gradient(135deg,#fff 20%,#67E8F9 50%,#A78BFA 75%,#6EE7B7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:nameFlow 9s ease-in-out infinite}
+@keyframes nameFlow{0%,100%{background-position:0%}50%{background-position:100%}}
+.hero-title-line{font-family:var(--fd);font-size:clamp(.9rem,2vw,1.1rem);font-weight:600;color:var(--text2);margin-bottom:1.5rem;line-height:1.5}
+.hero-title-line em{font-style:normal;color:#67E8F9}
+.hero-bio-short{font-size:.95rem;font-weight:300;color:var(--text2);line-height:1.85;margin-bottom:2rem;max-width:480px}
+.hero-cta-row{display:flex;gap:.8rem;flex-wrap:wrap}
+@media(max-width:768px){.hero-bio-short{max-width:100%}.hero-cta-row{justify-content:center}}
+.cta-primary{font-family:var(--fd);font-size:.82rem;font-weight:600;padding:.6rem 1.4rem;border-radius:50px;background:linear-gradient(135deg,#06B6D4,#10B981);color:#fff;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(6,182,212,.3)}
+.cta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(6,182,212,.45)}
+.cta-secondary{font-family:var(--fd);font-size:.82rem;font-weight:600;padding:.6rem 1.4rem;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:var(--text);text-decoration:none;transition:background .2s,border-color .2s}
+.cta-secondary:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28)}
+
+/* QUICK FACTS BAR */
+.facts-bar{position:relative;z-index:2;background:rgba(255,255,255,.03);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:1.2rem 5vw}
+.facts-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:1rem 2.5rem;align-items:center}
+.fact-item{display:flex;align-items:center;gap:.5rem;font-size:.83rem;color:var(--text2);white-space:nowrap}
+.fact-icon{font-size:1rem}
+.fact-item strong{color:var(--text);font-weight:500}
+
+/* LAYOUT */
+.post-layout{max-width:1100px;margin:0 auto;padding:4rem 5vw 6rem;display:grid;grid-template-columns:1fr 280px;gap:4rem;align-items:start}
+@media(max-width:900px){.post-layout{grid-template-columns:1fr;gap:3rem}}
+
+/* ARTICLE */
+article{min-width:0}
+article p{color:var(--text2);font-weight:300;margin-bottom:1.5rem;font-size:1rem;line-height:1.88}
+article p strong{color:var(--text);font-weight:500}
+article a{color:#67E8F9;text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+article a:hover{color:#A5F3FC}
+article hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:2.5rem 0}
+article ul,article ol{padding-left:1.4rem;margin-bottom:1.5rem;color:var(--text2);font-weight:300}
+article li{margin-bottom:.5rem;line-height:1.75}
+article li strong{color:var(--text);font-weight:500}
+
+/* CODE BLOCK */
+.code-block{margin:2rem 0;border-radius:14px;overflow:hidden;background:#0D0B1A;border:1px solid rgba(255,255,255,.08)}
+.cb-header{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
+.cb-lang{font-family:var(--fm);font-size:.65rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
+.cb-dots{display:flex;gap:.35rem}
+.cbd{width:9px;height:9px;border-radius:50%}
+.cbd.r{background:rgba(236,72,153,.5)}.cbd.y{background:rgba(245,158,11,.5)}.cbd.g{background:rgba(16,185,129,.5)}
+.cb-body{padding:1.2rem 1.4rem;overflow-x:auto}
+.cb-body pre{font-family:var(--fm);font-size:.78rem;line-height:1.85;color:#A89EC9;margin:0}
+.cb-body .kw{color:#A78BFA}.cb-body .fn{color:#67E8F9}.cb-body .str{color:#6EE7B7}
+.cb-body .cm{color:#5C5280;font-style:italic}.cb-body .op{color:#F9A8D4}.cb-body .nu{color:#FCD34D}
+.cb-body .prompt{color:#A78BFA;user-select:none}.cb-body .output{color:#67E8F9}
+.cb-body .err-line{color:#F9A8D4}.cb-body .ok-line{color:#6EE7B7}
+
+/* DB COMPARISON TABLE */
+.db-compare{width:100%;border-collapse:collapse;margin:2rem 0;border-radius:14px;overflow:hidden}
+.db-compare thead tr{background:rgba(255,255,255,.06)}
+.db-compare th{font-family:var(--fd);font-size:.78rem;font-weight:700;color:var(--text);padding:.85rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.08)}
+.db-compare td{font-size:.82rem;color:var(--text2);padding:.75rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);font-weight:300}
+.db-compare tr:last-child td{border-bottom:none}
+.db-compare tr:hover td{background:rgba(255,255,255,.025)}
+.db-compare .badge-cell{display:flex;align-items:center;gap:.5rem}
+.dbc-icon{font-size:1rem}
+.tag-mysql{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:#FCD34D;font-family:var(--fm);font-size:.62rem;padding:.15rem .5rem;border-radius:50px}
+.tag-pg{background:rgba(6,182,212,.14);border:1px solid rgba(6,182,212,.28);color:#67E8F9;font-family:var(--fm);font-size:.62rem;padding:.15rem .5rem;border-radius:50px}
+.tag-ora{background:rgba(236,72,153,.13);border:1px solid rgba(236,72,153,.28);color:#F9A8D4;font-family:var(--fm);font-size:.62rem;padding:.15rem .5rem;border-radius:50px}
+.tag-mg{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.28);color:#6EE7B7;font-family:var(--fm);font-size:.62rem;padding:.15rem .5rem;border-radius:50px}
+
+/* CHAPTER HEADINGS */
+.chapter{display:flex;align-items:center;gap:1rem;margin:3.5rem 0 1.2rem}
+.chapter-num{font-family:var(--fm);font-size:.7rem;color:var(--text3);letter-spacing:.12em;white-space:nowrap}
+.chapter-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.1),transparent)}
+.chapter h2{font-family:var(--fd);font-size:1.6rem;font-weight:800;letter-spacing:-.5px;white-space:nowrap}
+.ch-v h2{background:linear-gradient(135deg,#fff,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ch-c h2{background:linear-gradient(135deg,#fff,#67E8F9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ch-p h2{background:linear-gradient(135deg,#fff,#F9A8D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ch-a h2{background:linear-gradient(135deg,#fff,#FCD34D);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ch-g h2{background:linear-gradient(135deg,#fff,#6EE7B7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* CALLOUTS */
+.callout{margin:2rem 0;padding:1.2rem 1.5rem;border-radius:14px;display:flex;gap:.9rem;align-items:flex-start;backdrop-filter:blur(12px)}
+.callout.info{background:rgba(124,58,237,.09);border:1px solid rgba(124,58,237,.22)}
+.callout.tip{background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.22)}
+.callout.warn{background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.22)}
+.callout.cyan{background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.22)}
+.callout-icon{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
+.callout-body{font-size:.9rem;color:var(--text2);font-weight:300;line-height:1.7}
+.callout-body strong{font-weight:600}
+.callout.info .callout-body strong{color:#A78BFA}
+.callout.tip .callout-body strong{color:#6EE7B7}
+.callout.warn .callout-body strong{color:#FCD34D}
+.callout.cyan .callout-body strong{color:#67E8F9}
+
+/* PULL QUOTE */
+.pull-quote{margin:2.5rem 0;padding:2rem;border-radius:18px;text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(14px)}
+.pull-quote p{font-family:var(--fd);font-size:clamp(1.05rem,2.8vw,1.4rem);font-weight:700;line-height:1.45;letter-spacing:-.3px;color:var(--text);margin:0}
+.pull-quote p em{font-style:normal;background:linear-gradient(135deg,#67E8F9,#6EE7B7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pull-quote cite{display:block;margin-top:.8rem;font-size:.75rem;color:var(--text3);font-style:normal;font-family:var(--fm);letter-spacing:.08em}
+
+/* TIMELINE */
+.bio-tl{position:relative;padding-left:2rem;margin:2rem 0}
+.bio-tl::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1.5px;background:linear-gradient(to bottom,#06B6D4,#7C3AED,#F59E0B,#10B981,transparent)}
+.bt-item{position:relative;margin-bottom:2rem;padding-left:.5rem}
+.bt-dot{position:absolute;left:-2.3rem;top:6px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid}
+.bt-dot.v{border-color:#7C3AED;box-shadow:0 0 8px rgba(124,58,237,.5)}
+.bt-dot.c{border-color:#06B6D4;box-shadow:0 0 8px rgba(6,182,212,.5)}
+.bt-dot.p{border-color:#EC4899;box-shadow:0 0 8px rgba(236,72,153,.5)}
+.bt-dot.a{border-color:#F59E0B;box-shadow:0 0 8px rgba(245,158,11,.5)}
+.bt-dot.g{border-color:#10B981;box-shadow:0 0 8px rgba(16,185,129,.5)}
+.bt-year{font-family:var(--fm);font-size:.7rem;letter-spacing:.1em;margin-bottom:.25rem}
+.bt-year.v{color:#A78BFA}.bt-year.c{color:#67E8F9}.bt-year.p{color:#F9A8D4}.bt-year.a{color:#FCD34D}.bt-year.g{color:#6EE7B7}
+.bt-title{font-family:var(--fd);font-size:.98rem;font-weight:700;color:var(--text);margin-bottom:.3rem}
+.bt-desc{font-size:.86rem;color:var(--text2);font-weight:300;line-height:1.65}
+
+/* FEATURE CARDS */
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:2rem 0}
+@media(max-width:600px){.feat-grid{grid-template-columns:1fr}}
+.feat-card{border-radius:16px;padding:1.3rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(14px);transition:border-color .2s,transform .2s}
+.feat-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-3px)}
+.feat-icon{font-size:1.8rem;margin-bottom:.6rem}
+.feat-name{font-family:var(--fd);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.3rem}
+.feat-desc{font-size:.8rem;color:var(--text2);font-weight:300;line-height:1.55}
+
+/* VISION CARDS */
+.vision-list{display:flex;flex-direction:column;gap:.8rem;margin:2rem 0}
+.vision-item{display:flex;align-items:flex-start;gap:.9rem;padding:1rem 1.2rem;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)}
+.vision-num{font-family:var(--fm);font-size:.7rem;color:#06B6D4;flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.28);display:flex;align-items:center;justify-content:center;margin-top:.1rem}
+.vision-body{font-size:.88rem;color:var(--text2);font-weight:300;line-height:1.65}
+.vision-body strong{color:var(--text);font-weight:500}
+
+/* CONNECT SECTION */
+.connect-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
+@media(max-width:600px){.connect-grid{grid-template-columns:1fr 1fr}}
+.connect-card{border-radius:14px;padding:1.1rem;text-align:center;text-decoration:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:border-color .2s,transform .2s,background .2s;display:block}
+.connect-card:hover{transform:translateY(-3px);background:rgba(255,255,255,.07)}
+.connect-icon{font-size:1.5rem;margin-bottom:.4rem}
+.connect-name{font-family:var(--fd);font-size:.82rem;font-weight:700;color:var(--text)}
+.connect-handle{font-family:var(--fm);font-size:.7rem;color:var(--text3);margin-top:.2rem}
+
+/* AUTHOR CARD */
+.author-card{display:flex;align-items:center;gap:1.2rem;padding:1.5rem;border-radius:18px;margin:3rem 0 1.5rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(16px)}
+.author-av{width:56px;height:56px;border-radius:50%;border:2px solid rgba(6,182,212,.4);object-fit:cover;flex-shrink:0}
+.author-name{font-family:var(--fd);font-size:1rem;font-weight:700;color:var(--text)}
+.author-role{font-size:.8rem;color:var(--text3);margin-top:.15rem}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:6rem}
+.sidebar-card{border-radius:16px;padding:1.3rem 1.4rem;margin-bottom:1.2rem;background:rgba(255,255,255,.04);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08)}
+.sidebar-title{font-family:var(--fd);font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:1rem}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.toc-list a{font-size:.82rem;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:.5rem;padding:.35rem .5rem;border-radius:8px;transition:background .2s,color .2s}
+.toc-list a::before{content:'';width:4px;height:4px;border-radius:50%;background:#06B6D4;flex-shrink:0}
+.toc-list a:hover{background:rgba(255,255,255,.06);color:#fff}
+.toc-list a.active{color:#67E8F9;background:rgba(6,182,212,.1)}
+.related-post{display:flex;gap:.8rem;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06);text-decoration:none;transition:opacity .2s}
+.related-post:last-child{border-bottom:none}
+.related-post:hover{opacity:.75}
+.related-thumb{width:44px;height:44px;border-radius:9px;flex-shrink:0;font-size:1.3rem;display:flex;align-items:center;justify-content:center}
+.rth-1{background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(167,139,250,.15))}
+.rth-2{background:linear-gradient(135deg,rgba(6,182,212,.3),rgba(103,232,249,.15))}
+.rth-3{background:linear-gradient(135deg,rgba(236,72,153,.3),rgba(249,168,212,.15))}
+.rth-4{background:linear-gradient(135deg,rgba(245,158,11,.3),rgba(252,211,77,.15))}
+.rth-5{background:linear-gradient(135deg,rgba(16,185,129,.3),rgba(110,231,183,.15))}
+.related-ttl{font-family:var(--fd);font-size:.8rem;font-weight:600;color:var(--text);line-height:1.35}
+.related-dt{font-size:.68rem;color:var(--text3);margin-top:.2rem}
+.share-btns{display:flex;flex-wrap:wrap;gap:.6rem}
+.share-btn{font-family:var(--fd);font-size:.75rem;font-weight:600;padding:.4rem .9rem;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;border:1px solid rgba(255,255,255,.12);color:var(--text2);background:rgba(255,255,255,.05);transition:background .2s,color .2s,border-color .2s}
+.share-btn:hover{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25)}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2rem 0}
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-card{border-radius:14px;padding:1.1rem;text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)}
+.stat-num{font-family:var(--fd);font-size:1.8rem;font-weight:800;letter-spacing:-1px;background:linear-gradient(135deg,#67E8F9,#6EE7B7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-family:var(--fm);font-size:.65rem;color:var(--text3);letter-spacing:.08em;margin-top:.25rem}
+
+/* FLOW COMPARE DIAGRAM */
+.flow-compare{margin:2.5rem 0;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);backdrop-filter:blur(14px)}
+.fc-label{font-family:var(--fd);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);padding:1rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03)}
+.fc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:680px){.fc-grid{grid-template-columns:1fr}}
+.fc-col{padding:1.5rem 1.4rem;border-right:1px solid rgba(255,255,255,.06)}
+.fc-col:last-child{border-right:none}
+.fc-bad{background:rgba(236,72,153,.03)}
+.fc-good{background:rgba(16,185,129,.03)}
+.fc-col-title{font-family:var(--fd);font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
+.fc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.fc-dot-red{background:#EC4899;box-shadow:0 0 6px rgba(236,72,153,.5)}
+.fc-dot-green{background:#10B981;box-shadow:0 0 6px rgba(16,185,129,.5)}
+.fc-steps{display:flex;flex-direction:column;gap:0}
+.fc-step{display:flex;align-items:flex-start;gap:.75rem;padding:.65rem .5rem;border-radius:10px}
+.fc-step-warn{background:rgba(236,72,153,.06);border:1px solid rgba(236,72,153,.1);border-radius:10px;margin:0 -.25rem}
+.fc-step-ok{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.1);border-radius:10px;margin:0 -.25rem}
+.fc-step-icon{font-size:1.1rem;flex-shrink:0;width:28px;text-align:center;margin-top:.05rem}
+.fc-step-name{font-family:var(--fd);font-size:.8rem;font-weight:600;color:var(--text);margin-bottom:.15rem}
+.fc-step-sub{font-size:.72rem;color:var(--text2);font-weight:300;line-height:1.55}
+.fc-arrow{font-family:var(--fm);font-size:.68rem;letter-spacing:.05em;text-align:center;padding:.3rem 0;margin:0 .5rem}
+.fc-arrow-bad{color:#F9A8D4}
+.fc-arrow-good{color:#6EE7B7}
+.fc-verdict{font-family:var(--fd);font-size:.78rem;font-weight:700;margin-top:1.2rem;padding:.7rem 1rem;border-radius:10px;line-height:1.4}
+.fc-verdict-bad{background:rgba(236,72,153,.1);border:1px solid rgba(236,72,153,.2);color:#F9A8D4}
+.fc-verdict-good{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:#6EE7B7}
+
+/* REASON CARDS */
+.reason-cards{display:flex;flex-direction:column;gap:1.5rem;margin:2rem 0}
+.reason-card{border-radius:16px;padding:1.6rem 1.6rem 1.6rem 1.3rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(14px);display:flex;gap:1.2rem;align-items:flex-start;transition:border-color .2s}
+.reason-card:hover{border-color:rgba(255,255,255,.14)}
+.reason-num{font-family:var(--fm);font-size:.72rem;flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:.1rem;font-weight:700}
+.r1{background:rgba(236,72,153,.14);border:1px solid rgba(236,72,153,.3);color:#F9A8D4}
+.r2{background:rgba(245,158,11,.13);border:1px solid rgba(245,158,11,.3);color:#FCD34D}
+.r3{background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.3);color:#A78BFA}
+.reason-body{flex:1;min-width:0}
+.reason-title{font-family:var(--fd);font-size:1rem;font-weight:800;color:var(--text);letter-spacing:-.3px;margin-bottom:.9rem;line-height:1.35}
+.reason-body p{color:var(--text2);font-weight:300;font-size:.9rem;line-height:1.82;margin-bottom:1rem}
+.reason-body p strong{color:var(--text);font-weight:500}
+.reason-body p code{font-family:var(--fm);font-size:.78rem;color:#67E8F9;background:rgba(6,182,212,.1);padding:.1rem .35rem;border-radius:5px}
+.reason-highlight{font-size:.85rem;font-weight:400;line-height:1.65;padding:1rem 1.1rem;border-radius:10px;color:var(--text2);border-left:3px solid}
+.r1-bg{background:rgba(236,72,153,.07);border-left-color:#EC4899}
+.r2-bg{background:rgba(245,158,11,.07);border-left-color:#F59E0B}
+.r3-bg{background:rgba(124,58,237,.08);border-left-color:#7C3AED}
+.reason-highlight strong{color:var(--text);font-weight:600}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,.06);padding:2rem 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;position:relative;z-index:2;background:rgba(255,255,255,.01)}
+.fl-logo{font-family:var(--fd);font-weight:800;font-size:1.1rem;background:linear-gradient(135deg,#67E8F9,#6EE7B7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fl-note{font-size:.78rem;color:var(--text3)}
+.fl-back{font-family:var(--fd);font-size:.76rem;font-weight:600;color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,.12);padding:.4rem 1rem;border-radius:50px;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);transition:background .2s}
+.fl-back:hover{background:rgba(255,255,255,.09)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .post-layout{padding:3rem 5vw 5rem;gap:2rem}
+  .connect-grid{grid-template-columns:1fr 1fr}
+  .author-card{flex-direction:column;text-align:center}
+  footer{flex-direction:column;align-items:flex-start;gap:.7rem}
+  .facts-inner{gap:.8rem 1.5rem}
+  .chapter h2{font-size:1.3rem}
+  .stats-row{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- MORPHING BG -->
+<div id="morph-bg">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="rg1" cx="15%" cy="20%"><stop offset="0%" stop-color="#06B6D4" stop-opacity=".9"/><stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg2" cx="85%" cy="15%"><stop offset="0%" stop-color="#7C3AED" stop-opacity=".8"/><stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg3" cx="50%" cy="90%"><stop offset="0%" stop-color="#10B981" stop-opacity=".7"/><stop offset="100%" stop-color="#10B981" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg4" cx="80%" cy="60%"><stop offset="0%" stop-color="#F59E0B" stop-opacity=".45"/><stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/></radialGradient>
+    </defs>
+    <path id="mp1" fill="url(#rg1)" opacity=".6"/>
+    <path id="mp2" fill="url(#rg2)" opacity=".5"/>
+    <path id="mp3" fill="url(#rg3)" opacity=".38"/>
+    <path id="mp4" fill="url(#rg4)" opacity=".3"/>
+  </svg>
+</div>
+<div class="hero-bg-full"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="./index.html" class="nav-logo">SD</a>
+  <a href="./index.html#blog" class="nav-back">← Portfolio</a>
+</nav>
+
+<!-- HERO — SPLIT LAYOUT -->
+<div class="post-hero">
+
+  <!-- LEFT: Terminal mockup -->
+  <div class="hero-terminal-side reveal">
+    <div class="terminal-frame">
+      <div class="terminal-bar">
+        <div class="t-dot r"></div>
+        <div class="t-dot y"></div>
+        <div class="t-dot g"></div>
+        <span class="t-title">TerSQL v0.0.2 — beta</span>
+      </div>
+      <div class="terminal-body">
+        <span class="t-line"><span class="t-comment"># Connect to MySQL</span></span>
+        <span class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">python main.py -d mysql -H localhost</span></span>
+        <span class="t-line"><span class="t-out">  ╔═══════════════════════════════════╗</span></span>
+        <span class="t-line"><span class="t-out">  ║  TerSQL  v0.0.2 (beta)           ║</span></span>
+        <span class="t-line"><span class="t-out">  ║  Intelligent Multi-DB Interface  ║</span></span>
+        <span class="t-line"><span class="t-out">  ╚═══════════════════════════════════╝</span></span>
+        <span class="t-line">&nbsp;</span>
+        <span class="t-line"><span class="t-comment"># Write natural language — it just works</span></span>
+        <span class="t-line"><span class="t-prompt">TerSQL [mysql:db] ></span> <span class="t-cmd">show me all users</span></span>
+        <span class="t-line"><span class="t-ok">[nlp] → SELECT * FROM users;</span></span>
+        <span class="t-line">&nbsp;</span>
+        <span class="t-line"><span class="t-comment"># Switch to PostgreSQL — same commands</span></span>
+        <span class="t-line"><span class="t-prompt">TerSQL [mysql:db] ></span> <span class="t-cmd">.use postgres_db</span></span>
+        <span class="t-line"><span class="t-ok">[ok] Switched to PostgreSQL.</span></span>
+        <span class="t-line">&nbsp;</span>
+        <span class="t-line"><span class="t-comment"># Safe mode blocks unguarded deletes</span></span>
+        <span class="t-line"><span class="t-prompt">TerSQL [pg:db] ></span> <span class="t-cmd">DELETE FROM logs;</span></span>
+        <span class="t-line"><span class="t-err">[safe-mode] WHERE clause required. Blocked.</span></span>
+        <span class="t-line">&nbsp;</span>
+        <span class="t-line"><span class="t-prompt">TerSQL [pg:db] ></span> <span class="t-cursor"></span></span>
+      </div>
+    </div>
+    <div class="id-badges">
+      <span class="id-badge ib-c">Python CLI</span>
+      <span class="id-badge ib-g">Multi-Database</span>
+      <span class="id-badge ib-v">NLP Layer</span>
+      <span class="id-badge ib-a">Open Source</span>
+      <span class="id-badge ib-p">v0.0.2 beta</span>
+      <span class="id-badge ib-c">IIT Patna Build</span>
+    </div>
+  </div>
+
+  <!-- RIGHT: Text -->
+  <div class="hero-text-side reveal">
+    <div class="hero-eyebrow">build log · April 2026</div>
+    <h1 class="hero-name-big">Ter<br>SQL</h1>
+    <div class="hero-title-line">
+      Intelligent Multi-Database CLI · <em>Python · NLP · Open Source</em><br>
+      MySQL · PostgreSQL · MongoDB — one interface to rule them all
+    </div>
+    <p class="hero-bio-short">
+      It started with a classroom mismatch. MySQL at home, Oracle in class.
+      Then MongoDB, then PostgreSQL — four databases, four different syntaxes,
+      one increasingly frustrated 2nd-year student. This is the story of how
+      that frustration became TerSQL: a unified, NLP-powered CLI for every database.
+    </p>
+    <div class="hero-cta-row">
+      <a href="https://github.com/developersayandutta/TerSQL" target="_blank" class="cta-primary">View on GitHub →</a>
+      <a href="./index.html#projects" class="cta-secondary">All Projects</a>
+      <a href="./blog5.html" class="cta-secondary">About Me</a>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK FACTS BAR -->
+<div class="facts-bar">
+  <div class="facts-inner">
+    <div class="fact-item"><span class="fact-icon">🗄️</span>Supports&nbsp;<strong>MySQL · PostgreSQL · MongoDB</strong></div>
+    <div class="fact-item"><span class="fact-icon">🧠</span>Offline&nbsp;<strong>NLP engine</strong>&nbsp;— zero API calls</div>
+    <div class="fact-item"><span class="fact-icon">⚙️</span>Version&nbsp;<strong>0.0.2 beta</strong></div>
+    <div class="fact-item"><span class="fact-icon">🐍</span>Python&nbsp;<strong>3.10+</strong></div>
+    <div class="fact-item"><span class="fact-icon">🔓</span>License:&nbsp;<strong>MIT Open Source</strong></div>
+    <div class="fact-item"><span class="fact-icon">🎓</span>Built at&nbsp;<strong>IIT Patna</strong></div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="post-layout">
+<article>
+
+  <!-- CHAPTER 1: THE CLASSROOM MISMATCH -->
+  <div class="chapter ch-c reveal">
+    <span class="chapter-num">Chapter 01</span>
+    <div class="chapter-line"></div>
+    <h2 id="ch1">The Classroom Mismatch</h2>
+  </div>
+
+  <p class="reveal">
+    Every developer's best projects begin with a moment of genuine, personal frustration.
+    Not a manufactured problem statement written for a hackathon submission — a real one,
+    something that hits you in the middle of a classroom and makes you think:
+    <em>why is this so broken?</em> For Sayan Dutta, that moment arrived during a database
+    lecture in his first semester at IIT Patna.
+  </p>
+
+  <p class="reveal">
+    The story actually starts earlier. Back during the Diploma years in Kolkata — and even
+    further, in the pandemic self-study phase in Beldanga — Sayan had taught himself
+    <strong>MySQL</strong>. It was the obvious starting point: free, well-documented,
+    universally recommended for beginners, with thousands of tutorials. He had built
+    functional projects using it — the Pathology Admin Panel ran on MySQL. He knew the
+    syntax. He was comfortable. He had a mental model of how databases worked, and that
+    model was shaped entirely by MySQL's conventions.
+  </p>
+
+  <p class="reveal">
+    Then he walked into a classroom at IIT Patna and the professor opened a session
+    on <strong>Oracle Database</strong>.
+  </p>
+
+  <div class="callout warn reveal">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body"><strong>The datatype wall:</strong> In MySQL, <code>VARCHAR(255)</code> and <code>INT</code> are the everyday tools. In Oracle, the same column might need <code>VARCHAR2</code> — a type that doesn't exist in MySQL. <code>AUTO_INCREMENT</code> in MySQL becomes a <code>SEQUENCE</code> + <code>TRIGGER</code> dance in Oracle. Date handling is completely different. String concatenation works differently. Even semicolons behave differently in SQL*Plus. Everything Sayan <em>knew</em> was suddenly wrong in a new context.</div>
+  </div>
+
+  <p class="reveal">
+    This was not a small adjustment. It felt like being told that everything you had learned
+    about driving was valid — except the steering wheel is now on the opposite side, the pedals
+    are swapped, and half the road signs mean different things. The knowledge was real.
+    But the environment had shifted underneath it without warning.
+  </p>
+
+  <div class="pull-quote reveal">
+    <p>I knew SQL. Then I walked into Oracle class and <em>I didn't know anything anymore.</em></p>
+    <cite>— Sayan Dutta, on the moment TerSQL was born</cite>
+  </div>
+
+  <!-- CHAPTER 2: THE EXPLORATION SPIRAL -->
+  <div class="chapter ch-v reveal">
+    <span class="chapter-num">Chapter 02</span>
+    <div class="chapter-line"></div>
+    <h2 id="ch2">The Exploration Spiral</h2>
+  </div>
+
+  <p class="reveal">
+    A less curious student would have simply learned Oracle alongside MySQL, memorised the
+    differences, and moved on. Sayan did something more dangerous: he started asking
+    <em>why</em>. Why did these databases make different choices? What was each one actually
+    optimised for? What else was out there?
+  </p>
+
+  <p class="reveal">
+    The exploration that followed was not structured. It was the kind of rabbit-hole diving
+    that happens when a naturally curious engineer gets unsettled — opening tabs at 11pm,
+    following one concept to another, reading documentation for databases he had never
+    touched before. And that path eventually led him to <strong>MongoDB</strong>.
+  </p>
+
+  <p class="reveal">
+    MongoDB was a different species entirely. No tables. No rows. No <code>JOIN</code>.
+    Instead: <strong>collections, documents, BSON</strong> — a JSON-like structure where
+    each record could have a completely different shape. Sayan spent several evenings
+    poking at it, running queries in the Mongo shell, understanding the document model.
+    It was intellectually exciting. But it also meant learning yet another query language —
+    <code>db.collection.find()</code> instead of <code>SELECT * FROM</code>. Another
+    syntax. Another mental model. Another set of conventions to unlearn and relearn.
+  </p>
+
+  <div class="callout info reveal">
+    <span class="callout-icon">🔍</span>
+    <div class="callout-body"><strong>The MongoDB moment of clarity:</strong> MongoDB wasn't just a different syntax. It was proof that "database" meant fundamentally different things to different systems. Relational thinking — tables, foreign keys, normalisation — simply didn't apply here. This forced a deeper question: were these tools solving the same problem differently, or were they solving entirely different problems? The answer, Sayan realised, was both. And that distinction mattered enormously for what he was about to build.</div>
+  </div>
+
+  <p class="reveal">
+    The discovery loop continued. <strong>PostgreSQL</strong> came next — a relational database
+    like MySQL but with stronger typing, richer extension support, better standards compliance,
+    and a development community that treated it as the "serious" open-source alternative.
+    Sayan tested it, connected to it, ran queries. And immediately ran into the same wall
+    as Oracle: subtly different syntax, different type names, different behaviours for edge
+    cases he had already mentally resolved using MySQL conventions.
+  </p>
+
+  <p class="reveal">
+    <code>LIMIT</code> in MySQL became <code>FETCH FIRST n ROWS ONLY</code> in Oracle.
+    <code>GROUP_CONCAT</code> in MySQL became <code>STRING_AGG</code> in PostgreSQL.
+    Boolean literals that worked in one system didn't in another.
+    The deeper he went, the more fragmented the landscape looked.
+  </p>
+
+  <table class="db-compare reveal">
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th><span class="tag-mysql">MySQL</span></th>
+        <th><span class="tag-ora">Oracle</span></th>
+        <th><span class="tag-pg">PostgreSQL</span></th>
+        <th><span class="tag-mg">MongoDB</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Auto-increment ID</td>
+        <td><code>AUTO_INCREMENT</code></td>
+        <td><code>SEQUENCE + TRIGGER</code></td>
+        <td><code>SERIAL / GENERATED</code></td>
+        <td><code>ObjectId (auto)</code></td>
+      </tr>
+      <tr>
+        <td>String type</td>
+        <td><code>VARCHAR(n)</code></td>
+        <td><code>VARCHAR2(n)</code></td>
+        <td><code>VARCHAR(n)</code></td>
+        <td><code>String (schema-free)</code></td>
+      </tr>
+      <tr>
+        <td>Limit rows</td>
+        <td><code>LIMIT n</code></td>
+        <td><code>FETCH FIRST n ROWS</code></td>
+        <td><code>LIMIT n</code></td>
+        <td><code>.limit(n)</code></td>
+      </tr>
+      <tr>
+        <td>Concat strings</td>
+        <td><code>CONCAT(a, b)</code></td>
+        <td><code>a &#124;&#124; b</code></td>
+        <td><code>a &#124;&#124; b</code> or <code>CONCAT</code></td>
+        <td><code>$concat: [a, b]</code></td>
+      </tr>
+      <tr>
+        <td>Current timestamp</td>
+        <td><code>NOW()</code></td>
+        <td><code>SYSDATE</code></td>
+        <td><code>NOW()</code></td>
+        <td><code>new Date()</code></td>
+      </tr>
+      <tr>
+        <td>Query style</td>
+        <td>SQL</td>
+        <td>SQL (PL/SQL)</td>
+        <td>SQL (PL/pgSQL)</td>
+        <td>Document API / MQL</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout cyan reveal">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body"><strong>The pattern was undeniable:</strong> Every database was solving overlapping problems with incompatible interfaces. A developer switching between systems — even for the same class of task — had to carry multiple mental models simultaneously. No single tool let you speak once and be understood everywhere. That was the gap.</div>
+  </div>
+
+  <!-- CHAPTER 3: THE QUESTION -->
+  <div class="chapter ch-a reveal">
+    <span class="chapter-num">Chapter 03</span>
+    <div class="chapter-line"></div>
+    <h2 id="ch3">The Real Question</h2>
+  </div>
+
+  <p class="reveal">
+    By the time Sayan had put meaningful time into MySQL, Oracle, MongoDB, and PostgreSQL,
+    a specific frustration had crystallised into a specific question. Not just "why are these
+    different?" — that had a known answer: history, design philosophy, vendor decisions.
+    The question that mattered was sharper: <strong>how many different database syntaxes
+    should a second-year CS student be expected to carry in their head at once?</strong>
+  </p>
+
+  <p class="reveal">
+    Think about what that actually means in practice. A student in a typical Indian engineering
+    curriculum encounters MySQL in their web development course, Oracle in their formal DBMS
+    course (often the university standard), and MongoDB in any modern full-stack or cloud
+    elective. That's three different query languages, three different connection patterns,
+    three different error messages, and three different ways to think about the same
+    fundamental operation: <em>store data, retrieve data, update data.</em>
+  </p>
+
+  <div class="stats-row reveal">
+    <div class="stat-card">
+      <div class="stat-num">4+</div>
+      <div class="stat-label">DB syntaxes a CS student meets in 2 years</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3×</div>
+      <div class="stat-label">The mental overhead multiplier per new DB</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Unified CLI tools that existed for this problem</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">1</div>
+      <div class="stat-label">Student frustrated enough to build one</div>
+    </div>
+  </div>
+
+  <p class="reveal">
+    The obvious naive solution — "just build a new database" — was immediately ruled out.
+    The market already had hundreds of databases. Adding another would not just fail to solve
+    the problem, it would become part of it. Nobody would switch to a brand-new, untested
+    database built by a student just to get a unified interface. The existing systems
+    — MySQL, PostgreSQL, MongoDB — had real ecosystems, real production deployments,
+    real community trust built over decades. Competing with them was not the answer.
+  </p>
+
+  <p class="reveal">
+    The answer had to be different. Not a replacement for existing databases —
+    but a <strong>unified layer on top of them</strong>. Something that let you connect to
+    whichever database your project, your professor, or your client required, and interact
+    with it using a consistent, intuitive interface. You bring your database. TerSQL
+    brings the experience.
+  </p>
+
+  <div class="pull-quote reveal">
+    <p>Don't replace the databases. <em>Replace the friction between them.</em></p>
+    <cite>— the design philosophy behind TerSQL</cite>
+  </div>
+
+  <!-- CHAPTER 4: THE NLP DECISION -->
+  <div class="chapter ch-g reveal">
+    <span class="chapter-num">Chapter 04</span>
+    <div class="chapter-line"></div>
+    <h2 id="ch4">The NLP Decision</h2>
+  </div>
+
+  <p class="reveal">
+    Centralising the connection layer was the first half of the architecture. But there was
+    a second problem that needed solving — one that lived even one level above the syntax:
+    <strong>intent.</strong> When a developer types "show me all users", they don't want to
+    think about whether they're connected to MySQL or PostgreSQL. They want to see the data.
+    The translation from human intent to valid SQL should not be the developer's burden.
+  </p>
+
+  <p class="reveal">
+    The market's answer to this problem in 2024–2025 was AI. ChatGPT. Claude. Gemini.
+    Dozens of SQL AI tools had emerged, all promising to translate natural language into
+    database queries. Sayan evaluated them carefully — and found the same fundamental
+    flaw in every one: they required an <strong>external API call</strong>. Your query
+    left your machine. Your schema details got sent to a cloud server. A student in a
+    college lab querying a local MySQL instance had to pipe their database structure
+    through the internet to get an AI response, then wait for the round trip.
+  </p>
+
+  <div class="callout tip reveal">
+    <span class="callout-icon">⚡</span>
+    <div class="callout-body"><strong>The core constraint that shaped TerSQL's NLP:</strong> No external API. No internet dependency. No latency from cloud round-trips. No cost per query. The NLP layer had to run entirely locally, offline, with zero LLM dependencies. This constraint forced a more disciplined solution — a well-structured <strong>regex rule engine</strong> that intercepts common natural language shorthands and converts them deterministically to valid SQL. Predictable. Fast. Private. Reliable even without a network connection.</div>
+  </div>
+
+  <p class="reveal">
+    The offline NLP engine in TerSQL is built on a layered regex-to-SQL rule system inside
+    <code>Core.py</code> and <code>NLP.py</code>. Common developer shorthands — the kinds
+    of things you'd type in frustration without looking up syntax — get mapped to valid
+    SQL automatically. <code>"show table"</code> becomes <code>SHOW TABLES;</code>
+    <code>"select * users"</code> becomes <code>SELECT * FROM users;</code>
+    <code>"desc orders"</code> becomes <code>DESCRIBE orders;</code>
+    These are not guesses. They are deterministic rules, compiled from the actual patterns
+    of how developers abbreviate SQL when they're thinking faster than they're typing.
+  </p>
+
+  <div class="code-block reveal">
+    <div class="cb-header">
+      <span class="cb-lang">Python · Core.py — NLP rule engine (excerpt)</span>
+      <div class="cb-dots"><div class="cbd r"></div><div class="cbd y"></div><div class="cbd g"></div></div>
+    </div>
+    <div class="cb-body">
+<pre><span class="cm"># Deterministic regex-to-SQL translation rules</span>
+<span class="cm"># No external API. No latency. No cost. Runs fully offline.</span>
+
+SQL_FIXES <span class="op">=</span> {
+    <span class="cm"># Common abbreviations developers actually type</span>
+    <span class="str">r"^show\s+database[s]?;?$"</span>:          <span class="str">"SHOW DATABASES;"</span>,
+    <span class="str">r"^show\s+table[s]?;?$"</span>:             <span class="str">"SHOW TABLES;"</span>,
+    <span class="str">r"^desc\s+([^;\s]+);?$"</span>:             <span class="str">r"DESCRIBE \1;"</span>,
+    <span class="str">r"^select\s+\*\s+([^;\s]+);?$"</span>:     <span class="str">r"SELECT * FROM \1;"</span>,
+    <span class="str">r"^select\s+from\s+([^;\s]+);?$"</span>:   <span class="str">r"SELECT * FROM \1;"</span>,
+    <span class="str">r"^truncate\s+([^;\s]+);?$"</span>:         <span class="str">r"TRUNCATE \1;"</span>,
+
+    <span class="cm"># Natural language shorthands</span>
+    <span class="str">r"^show\s+me\s+(.+)$"</span>:              <span class="str">r"SELECT * FROM \1;"</span>,
+    <span class="str">r"^list\s+(.+)$"</span>:                   <span class="str">r"SELECT * FROM \1;"</span>,
+    <span class="str">r"^count\s+(.+)$"</span>:                  <span class="str">r"SELECT COUNT(*) FROM \1;"</span>,
+}
+
+<span class="kw">def</span> <span class="fn">apply_nlp</span>(raw: <span class="fn">str</span>) <span class="op">-></span> <span class="fn">str</span>:
+    cleaned <span class="op">=</span> raw.strip().lower()
+    <span class="kw">for</span> pattern, replacement <span class="kw">in</span> SQL_FIXES.items():
+        <span class="kw">if</span> re.match(pattern, cleaned, re.IGNORECASE):
+            <span class="kw">return</span> re.sub(pattern, replacement, cleaned, flags<span class="op">=</span>re.IGNORECASE)
+    <span class="kw">return</span> raw  <span class="cm"># pass through unchanged if no rule matches</span></pre>
+    </div>
+  </div>
+
+  <p class="reveal">
+    The decision to keep NLP entirely local was not just a technical choice — it was a
+    statement about what TerSQL was for. This was not a product for engineers at funded
+    startups with API budgets. It was for <strong>students in college labs, developers
+    in offline environments, and anyone who needed database access to be fast, private,
+    and free.</strong> The constraint became the feature.
+  </p>
+
+  <!-- UPGRADE: WHY NO LLM API -->
+  <div class="chapter ch-p reveal">
+    <span class="chapter-num">Upgrade · Deep Dive</span>
+    <div class="chapter-line"></div>
+    <h2 id="ch4b">Why TerSQL Uses No LLM API</h2>
+  </div>
+
+  <p class="reveal">
+    This is the question people ask most when they first see TerSQL's NLP layer. The honest
+    answer is: using an LLM API was the first thing Sayan considered — and the first thing
+    he ruled out. Not because it was technically hard. Because it was <strong>fundamentally
+    wrong for what TerSQL is supposed to be.</strong> Here is the full reasoning.
+  </p>
+
+  <!-- FLOW COMPARISON DIAGRAM -->
+  <div class="flow-compare reveal">
+    <div class="fc-label">What happens when you type a query</div>
+    <div class="fc-grid">
+
+      <!-- WITH API -->
+      <div class="fc-col fc-bad">
+        <div class="fc-col-title"><span class="fc-dot fc-dot-red"></span> With LLM API (other tools)</div>
+        <div class="fc-steps">
+          <div class="fc-step">
+            <div class="fc-step-icon">🧑‍💻</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">You type a query</div>
+              <div class="fc-step-sub">e.g. "show me all users from orders table"</div>
+            </div>
+          </div>
+          <div class="fc-arrow fc-arrow-bad">↓ your query leaves your machine</div>
+          <div class="fc-step fc-step-warn">
+            <div class="fc-step-icon">📡</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">Schema context is serialised</div>
+              <div class="fc-step-sub">Table names, column names, data types — all packaged and sent with the request</div>
+            </div>
+          </div>
+          <div class="fc-arrow fc-arrow-bad">↓ travelling over the internet</div>
+          <div class="fc-step fc-step-warn">
+            <div class="fc-step-icon">🌐</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">Hits the LLM provider's server</div>
+              <div class="fc-step-sub">OpenAI / Anthropic / Google — your data is now on their infrastructure</div>
+            </div>
+          </div>
+          <div class="fc-arrow fc-arrow-bad">↓ tokens counted, billed, logged</div>
+          <div class="fc-step fc-step-warn">
+            <div class="fc-step-icon">💸</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">Response generated + returned</div>
+              <div class="fc-step-sub">Latency: 300ms–2s. Cost: per 1K tokens. Data retention: depends on provider ToS</div>
+            </div>
+          </div>
+          <div class="fc-arrow fc-arrow-bad">↓ back to your terminal</div>
+          <div class="fc-step">
+            <div class="fc-step-icon">📺</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">SQL displayed</div>
+              <div class="fc-step-sub">After ~500ms–2s and a cloud round-trip that exposed your schema</div>
+            </div>
+          </div>
+        </div>
+        <div class="fc-verdict fc-verdict-bad">
+          ❌ &nbsp;Data leaks. Costs money. Needs internet. Unpredictable latency.
+        </div>
+      </div>
+
+      <!-- WITH TERSQL -->
+      <div class="fc-col fc-good">
+        <div class="fc-col-title"><span class="fc-dot fc-dot-green"></span> With TerSQL (offline NLP)</div>
+        <div class="fc-steps">
+          <div class="fc-step">
+            <div class="fc-step-icon">🧑‍💻</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">You type a query</div>
+              <div class="fc-step-sub">e.g. "show me all users from orders table"</div>
+            </div>
+          </div>
+          <div class="fc-arrow fc-arrow-good">↓ stays entirely on your machine</div>
+          <div class="fc-step fc-step-ok">
+            <div class="fc-step-icon">⚙️</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">NLP rule engine matches locally</div>
+              <div class="fc-step-sub">Python regex in Core.py — no network call, no serialisation, no token counting</div>
+            </div>
+          </div>
+          <div class="fc-arrow fc-arrow-good">↓ deterministic translation, &lt;1ms</div>
+          <div class="fc-step fc-step-ok">
+            <div class="fc-step-icon">✅</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">Valid SQL produced</div>
+              <div class="fc-step-sub">Rule matched → SQL constructed → passed to the database driver directly</div>
+            </div>
+          </div>
+          <div class="fc-arrow fc-arrow-good">↓ sent to your local DB</div>
+          <div class="fc-step fc-step-ok">
+            <div class="fc-step-icon">🗄️</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">Database executes locally</div>
+              <div class="fc-step-sub">MySQL / PostgreSQL / MongoDB on your machine. Nothing left your network.</div>
+            </div>
+          </div>
+          <div class="fc-arrow fc-arrow-good">↓ result printed</div>
+          <div class="fc-step">
+            <div class="fc-step-icon">📺</div>
+            <div class="fc-step-body">
+              <div class="fc-step-name">SQL displayed</div>
+              <div class="fc-step-sub">Instant. Free. Private. Works offline. Zero exposure.</div>
+            </div>
+          </div>
+        </div>
+        <div class="fc-verdict fc-verdict-good">
+          ✅ &nbsp;Zero leaks. Zero cost. Zero internet. Sub-millisecond translation.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- THREE REASONS -->
+  <p class="reveal" style="margin-top:2.5rem">
+    The diagram makes the case visually — but let's break down the three specific reasons
+    Sayan rejected LLM APIs from TerSQL's architecture, in the order he thought through them.
+  </p>
+
+  <div class="reason-cards reveal">
+
+    <div class="reason-card">
+      <div class="reason-num r1">01</div>
+      <div class="reason-body">
+        <div class="reason-title">Your data travels to a stranger's server — every single query</div>
+        <p>
+          When you connect TerSQL to a real database — your college project, your client's
+          local MySQL, your company's internal PostgreSQL — that database has a schema.
+          Table names. Column names. Relationships. Possibly even sample values if the NLP
+          layer needs context to disambiguate.
+        </p>
+        <p>
+          Every tool that uses an LLM API for SQL generation has to send at least part of
+          that schema to the LLM provider's servers as context. That means your database
+          structure — which may contain <strong>patient names, student records, financial
+          tables, internal project names, or proprietary business logic encoded in column
+          naming conventions</strong> — is now visible to OpenAI, Anthropic, or Google's
+          infrastructure. Even if those providers don't actively store or train on it today,
+          you have no guarantee of that tomorrow. You have no visibility into what happens
+          to that data on their end. You are trusting a third party with information that
+          was never meant to leave your machine.
+        </p>
+        <div class="reason-highlight r1-bg">
+          A student querying their college's hostel room allocation database should not have
+          to accept that room numbers, student IDs, and accommodation data pass through
+          an American cloud provider just to get a SQL query completed.
+        </div>
+      </div>
+    </div>
+
+    <div class="reason-card">
+      <div class="reason-num r2">02</div>
+      <div class="reason-body">
+        <div class="reason-title">Every query costs money — for no reason that benefits the user</div>
+        <p>
+          LLM APIs are billed per token. Every time you type "show me orders from last week"
+          and the tool sends that to a cloud model along with your schema context, you are
+          spending money. At low volumes, it feels trivial. At the scale of a developer
+          running dozens of exploratory queries per session across weeks of development,
+          those tokens accumulate.
+        </p>
+        <p>
+          More importantly: <strong>the cost provides zero additional value for the kinds
+          of queries TerSQL's NLP layer handles.</strong> The patterns that developers
+          abbreviate — <code>show table</code>, <code>desc users</code>,
+          <code>select * orders</code> — are not ambiguous. They are common, predictable,
+          structurally simple. You do not need a 70-billion-parameter language model to
+          understand that <code>"show me users"</code> means
+          <code>SELECT * FROM users;</code>. A well-written regex rule resolves that
+          in under a millisecond with perfect determinism, zero cost, and zero latency.
+          Paying for GPT-4 to do this is like hiring a doctor to open a door.
+        </p>
+        <div class="reason-highlight r2-bg">
+          TerSQL's NLP handles <strong>zero-cost, deterministic</strong> translation for the
+          common case. If a query is genuinely ambiguous or complex, it falls through to
+          raw SQL — which is exactly what a database power user should be writing anyway.
+        </div>
+      </div>
+    </div>
+
+    <div class="reason-card">
+      <div class="reason-num r3">03</div>
+      <div class="reason-body">
+        <div class="reason-title">An internet dependency breaks the tool in every offline context</div>
+        <p>
+          TerSQL was built for students. Students work in college computer labs. College
+          computer labs frequently have unreliable internet, filtered networks, or no
+          external connectivity at all. A database CLI that requires an API call to function
+          is not a real offline tool — it is a cloud-dependent service wearing a
+          terminal's clothing.
+        </p>
+        <p>
+          Consider the actual environments TerSQL is designed to serve: a student in a lab
+          running a local MySQL instance during a DBMS practical. A developer on a train
+          working on a project with no mobile signal. A sysadmin on an air-gapped
+          production server. A backend engineer in a network zone that blocks external
+          API calls by policy. In every one of these situations, an LLM-API-dependent
+          tool simply stops working. The NLP layer fails. The developer is left worse off
+          than if they had just typed raw SQL from the beginning.
+        </p>
+        <div class="reason-highlight r3-bg">
+          A tool that only works when the internet works is not a developer tool.
+          It is a dependency. <strong>TerSQL's NLP works the same in a college lab,
+          on an airplane, on an air-gapped server, and in a datacenter with no
+          external routes</strong> — because the entire engine fits in a Python file
+          on your local disk.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout cyan reveal" style="margin-top:2.5rem">
+    <span class="callout-icon">🔐</span>
+    <div class="callout-body">
+      <strong>The design principle that governs TerSQL's architecture:</strong>
+      A developer tool that handles database access should never require trusting a
+      third party with your data as a condition of basic functionality. Privacy is not
+      a feature that gets added later. It is a constraint that shapes every architectural
+      decision from day one. TerSQL's offline NLP is the direct result of holding that
+      line — even when an API integration would have been faster to ship.
+    </div>
+  </div>
+
+  <div class="pull-quote reveal">
+    <p>The query you type to explore your data <em>should never leave your machine.</em> That's not a feature. That's a minimum standard.</p>
+    <cite>— Sayan Dutta, on TerSQL's no-API design decision</cite>
+  </div>
+
+  <!-- CHAPTER 5: BUILDING THE ARCHITECTURE -->
+  <div class="chapter ch-p reveal">
+    <span class="chapter-num">Chapter 05</span>
+    <div class="chapter-line"></div>
+    <h2 id="ch5">Building the Architecture</h2>
+  </div>
+
+  <p class="reveal">
+    With the core idea clear — a unified, NLP-powered, offline CLI over multiple real
+    databases — the architecture needed to be modular enough to support adding new databases
+    without rewriting the core engine. Sayan designed TerSQL around a plugin system from
+    the beginning, knowing that MySQL, PostgreSQL, and MongoDB were just the first three.
+  </p>
+
+  <p class="reveal">
+    The project is structured across four primary modules: <code>TerSQL.py</code> handles
+    the REPL loop and user input parsing. <code>Core.py</code> manages query processing,
+    safety checks, and the NLP rule engine. <code>NLP.py</code> contains the regex rule
+    tables and intent detection logic. And <code>plugins/base.py</code> defines the
+    abstract <code>BaseDB</code> interface that every database driver must implement.
+    Adding a new database — say, Redis or SQLite — means creating a single file in
+    <code>plugins/</code> that subclasses <code>BaseDB</code> and implementing
+    four methods. The rest of TerSQL continues to work unchanged.
+  </p>
+
+  <div class="code-block reveal">
+    <div class="cb-header">
+      <span class="cb-lang">Python · plugins/base.py — plugin contract</span>
+      <div class="cb-dots"><div class="cbd r"></div><div class="cbd y"></div><div class="cbd g"></div></div>
+    </div>
+    <div class="cb-body">
+<pre><span class="cm"># The complete interface a new database driver must implement.</span>
+<span class="cm"># Four methods. That's all it takes to add a new database to TerSQL.</span>
+
+<span class="kw">from</span> plugins.base <span class="kw">import</span> BaseDB, QueryResult, register_plugin
+
+<span class="op">@</span><span class="fn">register_plugin</span>(<span class="str">"redis"</span>)
+<span class="kw">class</span> <span class="fn">RedisPlugin</span>(BaseDB):
+
+    <span class="kw">def</span> <span class="fn">connect</span>(self, <span class="op">**</span>kwargs) <span class="op">-></span> <span class="kw">None</span>:
+        <span class="str">"""Establish the database connection."""</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">execute</span>(self, query: <span class="fn">str</span>) <span class="op">-></span> QueryResult:
+        <span class="str">"""Execute a query and return a normalised QueryResult."""</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">tables</span>(self) <span class="op">-></span> list[<span class="fn">str</span>]:
+        <span class="str">"""Return a list of collections / tables / keyspaces."""</span>
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">schema</span>(self, table: <span class="fn">str</span>) <span class="op">-></span> QueryResult:
+        <span class="str">"""Return the schema / structure for a given table."""</span>
+        <span class="kw">pass</span></pre>
+    </div>
+  </div>
+
+  <p class="reveal">
+    The timeline from idea to v0.0.1 was compressed. Sayan was simultaneously managing
+    IIT Patna coursework, two other team projects, and a paid freelance engagement. TerSQL
+    was built in focused sessions — late evenings, weekend mornings — the same discipline
+    of parallel work he had practised since the pandemic years in Beldanga. Version 0.0.1
+    shipped with MySQL support, the REPL, smart completion, query history, and safe mode.
+    Version 0.0.2 added PostgreSQL and MongoDB plugins, rewrote the NLP engine,
+    and introduced the full dot-command reference system.
+  </p>
+
+  <div class="bio-tl reveal">
+    <div class="bt-item">
+      <div class="bt-dot c"></div>
+      <div class="bt-year c">Semester 1, IIT Patna</div>
+      <div class="bt-title">The classroom moment — Oracle vs MySQL</div>
+      <div class="bt-desc">First formal DBMS class introduces Oracle. Everything Sayan knew from MySQL self-study hit a wall of incompatible syntax. Datatype mismatch, different conventions, different mental model required. The frustration is real and specific.</div>
+    </div>
+    <div class="bt-item">
+      <div class="bt-dot v"></div>
+      <div class="bt-year v">Exploration phase</div>
+      <div class="bt-title">MongoDB + PostgreSQL — the spiral deepens</div>
+      <div class="bt-desc">Driven by curiosity, not curriculum. MongoDB reveals a completely different paradigm — documents, not rows. PostgreSQL shows yet another SQL dialect. Four databases, four syntaxes, one student increasingly convinced there's a missing layer.</div>
+    </div>
+    <div class="bt-item">
+      <div class="bt-dot a"></div>
+      <div class="bt-year a">Ideation</div>
+      <div class="bt-title">The TerSQL concept — don't replace, unify</div>
+      <div class="bt-desc">The key insight: the market needed a unified interface over existing databases, not a new database. A plugin architecture over MySQL, PostgreSQL, MongoDB — with an offline NLP layer for intent parsing. No cloud dependency. No API cost. Zero friction.</div>
+    </div>
+    <div class="bt-item">
+      <div class="bt-dot p"></div>
+      <div class="bt-year p">v0.0.1 beta</div>
+      <div class="bt-title">First release — MySQL REPL + core features</div>
+      <div class="bt-desc">Interactive REPL with smart autocompletion, persistent history, query bookmarks, safe mode, and read-only mode. MySQL plugin live. The core architecture validated. First real users: classmates hitting the same database-switching problem.</div>
+    </div>
+    <div class="bt-item">
+      <div class="bt-dot g"></div>
+      <div class="bt-year g">v0.0.2 beta — current</div>
+      <div class="bt-title">Multi-database release — PostgreSQL + MongoDB</div>
+      <div class="bt-desc">Plugin architecture fully live. PostgreSQL and MongoDB drivers integrated. NLP engine rewritten with expanded rule table. Full dot-command reference. Export to CSV/JSON. Tee logging. Non-interactive batch mode for shell scripting.</div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 6: FEATURES -->
+  <div class="chapter ch-c reveal">
+    <span class="chapter-num">Chapter 06</span>
+    <div class="chapter-line"></div>
+    <h2 id="ch6">What TerSQL Actually Does</h2>
+  </div>
+
+  <p class="reveal">
+    TerSQL is not a toy project. It is a production-minded CLI with a deliberately
+    comprehensive feature set — because a tool that developers actually reach for in
+    daily work needs to handle the edge cases, not just the happy path.
+  </p>
+
+  <div class="feat-grid reveal">
+    <div class="feat-card">
+      <div class="feat-icon">🗄️</div>
+      <div class="feat-name">Multi-Database Unified Layer</div>
+      <div class="feat-desc">One interface. MySQL, PostgreSQL, and MongoDB — connect, query, and switch between them using the same commands. The plugin architecture means adding a new database never touches the core engine.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🧠</div>
+      <div class="feat-name">Offline NLP Engine</div>
+      <div class="feat-desc">Type natural language — "show me users", "count orders" — and the regex rule engine converts it to valid SQL locally. Zero API calls. Zero internet dependency. Works in a lab with no wifi.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🛡️</div>
+      <div class="feat-name">Safety Guards</div>
+      <div class="feat-desc">Safe mode blocks DELETE/UPDATE without a WHERE clause before it reaches the driver. Read-only mode blocks all writes at the NLP layer. Two levels of protection, configurable per session.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚡</div>
+      <div class="feat-name">Smart Autocompletion</div>
+      <div class="feat-desc">Tab completion pulls live schema data — table names, column names, SQL keywords — directly from the connected database. Context-aware, not static.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔖</div>
+      <div class="feat-name">Query Bookmarks</div>
+      <div class="feat-desc">Save long queries under short aliases. Recall them with .run. Persistent across sessions in ~/.tersql_bookmarks.json. Never retype a complex JOIN again.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📤</div>
+      <div class="feat-name">Multi-Format Output</div>
+      <div class="feat-desc">Grid, markdown, psql, HTML, LaTeX, JSON, CSV, vertical. Switch formats mid-session. Export last result to file with .export. Output pipeable for shell scripting.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📜</div>
+      <div class="feat-name">Persistent History + Fuzzy Search</div>
+      <div class="feat-desc">Every query saved to ~/.tersql_history. Arrow-key navigation. Ctrl+R for fuzzy search through your full history — the same muscle memory as bash, applied to your SQL workflow.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚙️</div>
+      <div class="feat-name">Non-Interactive Batch Mode</div>
+      <div class="feat-desc">-e flag runs a single query and exits. Pipe results to files, chain into shell scripts, integrate into CI pipelines. TerSQL is not just interactive — it's scriptable.</div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 7: WHAT'S NEXT -->
+  <div class="chapter ch-g reveal">
+    <span class="chapter-num">Chapter 07</span>
+    <div class="chapter-line"></div>
+    <h2 id="ch7">What Comes Next</h2>
+  </div>
+
+  <p class="reveal">
+    TerSQL at v0.0.2 is a working tool with real features and a coherent architecture.
+    But it is genuinely early. Sayan's roadmap — built from real usage feedback and from
+    his own continued experience using TerSQL as a daily development tool — points in
+    several clear directions.
+  </p>
+
+  <div class="vision-list reveal">
+    <div class="vision-item">
+      <div class="vision-num">01</div>
+      <div class="vision-body"><strong>Expanded NLP rule coverage</strong> — The current rule engine covers the most common developer shorthands, but there are hundreds of natural language patterns that still fall through to raw SQL. The next milestone is a significantly expanded rule table, built from real usage logs and community contributions through GitHub issues.</div>
+    </div>
+    <div class="vision-item">
+      <div class="vision-num">02</div>
+      <div class="vision-body"><strong>SQLite and Redis plugins</strong> — SQLite is the most widely used database in the world by install count. Adding it extends TerSQL's reach into embedded systems, local development, and mobile. Redis support opens TerSQL to the key-value world. Both are natural next steps given the plugin architecture's extensibility contract.</div>
+    </div>
+    <div class="vision-item">
+      <div class="vision-num">03</div>
+      <div class="vision-body"><strong>Query profiling and EXPLAIN integration</strong> — A developer tool for databases should help you understand <em>why</em> a query is slow, not just run it. Integrating EXPLAIN output into TerSQL's default display mode — with readable formatting instead of raw engine output — is a high-value ergonomic improvement.</div>
+    </div>
+    <div class="vision-item">
+      <div class="vision-num">04</div>
+      <div class="vision-body"><strong>Schema diffing and migration helpers</strong> — One of the most painful cross-database workflows is understanding what changed. A built-in .diff command that compares two schemas, or a .migrate command that helps translate a MySQL schema to PostgreSQL syntax, directly addresses the problem TerSQL was born from.</div>
+    </div>
+    <div class="vision-item">
+      <div class="vision-num">05</div>
+      <div class="vision-body"><strong>pip installable package</strong> — Currently TerSQL runs from a cloned repository. The next distribution milestone is a proper pip package — <code>pip install tersql</code> — that installs the core engine and lets users add database plugins as optional extras. This is how a developer tool becomes a community tool.</div>
+    </div>
+  </div>
+
+  <div class="callout tip reveal">
+    <span class="callout-icon">🌱</span>
+    <div class="callout-body"><strong>TerSQL is open source and actively seeking contributors.</strong> If you've hit the same database-fragmentation wall — different syntax for different systems, no unified development experience — this is the project to contribute to. The plugin architecture means you can add support for your favourite database with a single file. Check the CONTRIBUTING.md for the full guide, or open an issue on GitHub with your use case.</div>
+  </div>
+
+  <div class="pull-quote reveal">
+    <p>The student who had four databases and no unified tool <em>built the tool</em> — so the next student doesn't have to choose.</p>
+    <cite>— on TerSQL's founding philosophy</cite>
+  </div>
+
+  <hr>
+
+  <!-- CONNECT -->
+  <div class="chapter ch-c reveal">
+    <span class="chapter-num">Connect</span>
+    <div class="chapter-line"></div>
+    <h2 id="ch8">Use TerSQL / Contribute</h2>
+  </div>
+
+  <p class="reveal">
+    TerSQL is open source under the MIT license. You can clone it, use it, extend it,
+    and contribute to it. Sayan is also available for collaboration, internship opportunities,
+    and freelance full-stack and AI engineering work.
+  </p>
+
+  <div class="connect-grid reveal">
+    <a href="https://github.com/developersayandutta/TerSQL" target="_blank" class="connect-card">
+      <div class="connect-icon">🐙</div>
+      <div class="connect-name">TerSQL on GitHub</div>
+      <div class="connect-handle">developersayandutta/TerSQL</div>
+    </a>
+    <a href="https://github.com/SAYANDUTTA8442" target="_blank" class="connect-card">
+      <div class="connect-icon">💻</div>
+      <div class="connect-name">GitHub Profile</div>
+      <div class="connect-handle">@SAYANDUTTA8442</div>
+    </a>
+    <a href="https://www.linkedin.com/in/sayandutta8653128442" target="_blank" class="connect-card">
+      <div class="connect-icon">💼</div>
+      <div class="connect-name">LinkedIn</div>
+      <div class="connect-handle">Sayan Dutta</div>
+    </a>
+    <a href="./index.html#contact" class="connect-card">
+      <div class="connect-icon">✉️</div>
+      <div class="connect-name">Email / Contact</div>
+      <div class="connect-handle">Via portfolio</div>
+    </a>
+    <a href="./index.html" class="connect-card">
+      <div class="connect-icon">🌐</div>
+      <div class="connect-name">Portfolio</div>
+      <div class="connect-handle">sayandutta.in</div>
+    </a>
+    <a href="./blog5.html" class="connect-card">
+      <div class="connect-icon">📖</div>
+      <div class="connect-name">Full Story</div>
+      <div class="connect-handle">IIT Patna autobiography</div>
+    </a>
+  </div>
+
+  <!-- AUTHOR -->
+  <div class="author-card reveal">
+    <img class="author-av" src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+    <div>
+      <div class="author-name">Sayan Dutta</div>
+      <div class="author-role">Full Stack Developer · AI Engineer · IIT Patna · Builder of TerSQL</div>
+    </div>
+  </div>
+
+</article>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+  <div class="sidebar-card">
+    <div class="sidebar-title">Quick navigation</div>
+    <ul class="toc-list" id="toc">
+      <li><a href="#" data-i="0">The Classroom Mismatch</a></li>
+      <li><a href="#" data-i="1">The Exploration Spiral</a></li>
+      <li><a href="#" data-i="2">The Real Question</a></li>
+      <li><a href="#" data-i="3">The NLP Decision</a></li>
+      <li><a href="#" data-i="4">Why No LLM API ↑ Upgrade</a></li>
+      <li><a href="#" data-i="5">Building the Architecture</a></li>
+      <li><a href="#" data-i="6">What TerSQL Does</a></li>
+      <li><a href="#" data-i="7">What Comes Next</a></li>
+      <li><a href="#" data-i="8">Use TerSQL / Contribute</a></li>
+    </ul>
+  </div>
+
+  <!-- KEY FACTS -->
+  <div class="sidebar-card">
+    <div class="sidebar-title">Project facts</div>
+    <div style="display:flex;flex-direction:column;gap:.6rem">
+      <div style="font-size:.82rem;color:var(--text2);display:flex;justify-content:space-between"><span style="color:var(--text3)">Project</span><strong>TerSQL</strong></div>
+      <div style="font-size:.82rem;color:var(--text2);display:flex;justify-content:space-between"><span style="color:var(--text3)">Version</span><strong>0.0.2 beta</strong></div>
+      <div style="font-size:.82rem;color:var(--text2);display:flex;justify-content:space-between"><span style="color:var(--text3)">Language</span><strong>Python 3.10+</strong></div>
+      <div style="font-size:.82rem;color:var(--text2);display:flex;justify-content:space-between"><span style="color:var(--text3)">Databases</span><strong>MySQL · PG · Mongo</strong></div>
+      <div style="font-size:.82rem;color:var(--text2);display:flex;justify-content:space-between"><span style="color:var(--text3)">NLP</span><strong>Offline regex engine</strong></div>
+      <div style="font-size:.82rem;color:var(--text2);display:flex;justify-content:space-between"><span style="color:var(--text3)">License</span><strong>MIT Open Source</strong></div>
+      <div style="font-size:.82rem;color:var(--text2);display:flex;justify-content:space-between"><span style="color:var(--text3)">Built at</span><strong>IIT Patna, 2025–26</strong></div>
+      <div style="font-size:.82rem;color:var(--text2);display:flex;justify-content:space-between"><span style="color:var(--text3)">Status</span><strong>Active development</strong></div>
+    </div>
+  </div>
+
+  <!-- QUICK INSTALL -->
+  <div class="sidebar-card">
+    <div class="sidebar-title">Quick install</div>
+    <div class="code-block" style="margin:0">
+      <div class="cb-body" style="padding:.9rem 1rem">
+<pre style="font-size:.72rem"><span class="t-comment"># Clone & run</span>
+<span class="t-prompt">$</span> <span class="t-cmd">git clone https://github.com/</span>
+<span class="t-cmd">  developersayandutta/TerSQL</span>
+<span class="t-prompt">$</span> <span class="t-cmd">cd TerSQL/v0.0.2</span>
+<span class="t-prompt">$</span> <span class="t-cmd">pip install mysql-connector-python</span>
+<span class="t-cmd">  psycopg2-binary pymongo tabulate</span>
+<span class="t-cmd">  prompt_toolkit</span>
+<span class="t-prompt">$</span> <span class="t-cmd">python main.py</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-title">Share</div>
+    <div class="share-btns">
+      <a href="https://twitter.com/intent/tweet?text=TerSQL+%E2%80%94+Intelligent+Multi-Database+CLI+by+Sayan+Dutta%2C+IIT+Patna&url=https://sayandutta.in/blog6.html" class="share-btn" target="_blank">𝕏 Tweet</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://sayandutta.in/blog6.html" class="share-btn" target="_blank">in Share</a>
+      <a href="#" class="share-btn" onclick="navigator.clipboard.writeText(location.href);this.textContent='✓ Copied!';setTimeout(()=>this.textContent='🔗 Copy link',2000);return false">🔗 Copy</a>
+    </div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-title">More from Sayan</div>
+    <a href="blog1.html" class="related-post">
+      <div class="related-thumb rth-1">🤖</div>
+      <div><div class="related-ttl">How I Built a Custom LLM with Blix.ai</div><div class="related-dt">AI / LLMs · 10 min</div></div>
+    </a>
+    <a href="blog2.html" class="related-post">
+      <div class="related-thumb rth-2">⚡</div>
+      <div><div class="related-ttl">Orchestrating Multiple AI Models</div><div class="related-dt">Full Stack · 7 min</div></div>
+    </a>
+    <a href="blog5.html" class="related-post">
+      <div class="related-thumb rth-3">🧑‍💻</div>
+      <div><div class="related-ttl">Sayan Dutta — Full Autobiography</div><div class="related-dt">Journey · 12 min</div></div>
+    </a>
+    <a href="blog4.html" class="related-post">
+      <div class="related-thumb rth-4">🎯</div>
+      <div><div class="related-ttl">I Was Never a Topper — IIT Patna Story</div><div class="related-dt">Journey · 7 min</div></div>
+    </a>
+  </div>
+
+</aside>
+</div>
+
+<footer>
+  <span class="fl-logo">TerSQL</span>
+  <span class="fl-note">© 2026 · Sayan Dutta · IIT Patna · MIT License</span>
+  <a href="./index.html" class="fl-back">← Portfolio</a>
+</footer>
+
+<script>
+/* PROGRESS */
+window.addEventListener('scroll',()=>{
+  const e=document.documentElement;
+  document.getElementById('progress').style.width=
+    Math.min((e.scrollTop||document.body.scrollTop)/(e.scrollHeight-e.clientHeight)*100,100)+'%';
+},{passive:true});
+
+/* MORPHING BG */
+function blob(cx,cy,r,n=8){
+  let d='M';
+  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2,rr=r*(.62+Math.random()*.76);d+=`${i?'L':''}${(cx+Math.cos(a)*rr).toFixed(1)},${(cy+Math.sin(a)*rr).toFixed(1)}`}
+  return d+'Z';
+}
+const ME=[
+  {el:document.getElementById('mp1'),cx:200,cy:190,r:280},
+  {el:document.getElementById('mp2'),cx:1200,cy:160,r:255},
+  {el:document.getElementById('mp3'),cx:720,cy:830,r:240},
+  {el:document.getElementById('mp4'),cx:1100,cy:600,r:210},
+];
+ME.forEach(m=>m.el&&m.el.setAttribute('d',blob(m.cx,m.cy,m.r)));
+setInterval(()=>ME.forEach(m=>m.el&&m.el.setAttribute('d',blob(m.cx,m.cy,m.r))),2500);
+
+/* REVEAL */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+},{threshold:.07,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* TOC */
+const h2s=document.querySelectorAll('article h2');
+const tocLinks=document.querySelectorAll('.toc-list a');
+const to=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const i=Array.from(h2s).indexOf(e.target);
+      tocLinks.forEach((a,j)=>a.classList.toggle('active',j===i));
+    }
+  });
+},{rootMargin:'-25% 0px -60% 0px'});
+h2s.forEach(h=>to.observe(h));
+tocLinks.forEach((a,i)=>a.addEventListener('click',e=>{
+  e.preventDefault();
+  h2s[i]&&h2s[i].scrollIntoView({behavior:'smooth',block:'start'});
+}));
+</script>
+</body>
+</html>
