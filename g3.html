@@ -1,0 +1,904 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Sayan Dutta | Premium Web Development</title>
+    <meta name="title" content="Sayan Dutta | Premium Web Development">
+    <meta name="description" content="I build modern, fast, and conversion-focused websites for startups and ambitious businesses. Clean code, minimal design, and scalable architecture.">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="canonical" href="https://sayandutta.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sayandutta.com/">
+    <meta property="og:title" content="Sayan Dutta | Premium Web Development">
+    <meta property="og:description" content="I build modern, fast, and conversion-focused websites for startups and ambitious businesses. Clean code, minimal design, and scalable architecture.">
+    <meta property="og:image" content="https://sayandutta.com/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sayandutta.com/">
+    <meta property="twitter:title" content="Sayan Dutta | Premium Web Development">
+    <meta property="twitter:description" content="I build modern, fast, and conversion-focused websites for startups and ambitious businesses. Clean code, minimal design, and scalable architecture.">
+    <meta property="twitter:image" content="https://sayandutta.com/og-image.jpg">
+
+    <!-- JSON-LD Schema for Person (SEO Enhancement) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Sayan Dutta",
+      "jobTitle": "Freelance Web Developer",
+      "url": "https://sayandutta.com",
+      "image": "https://avatars.githubusercontent.com/u/108791058?v=4",
+      "sameAs": [
+        "https://github.com/SAYANDUTTA8442",
+        "https://www.linkedin.com/in/sayandutta8653128442"
+      ],
+      "knowsAbout": ["Web Development", "Frontend Development", "SaaS Websites", "React", "Tailwind CSS"]
+    }
+    </script>
+
+    <!-- Clean SVG Favicon matching the geometric logo -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2318181b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 2L2 7L12 12L22 7L12 2Z' fill='%2318181b'/><path d='M2 17L12 22L22 17'/><path d='M2 12L12 17L22 12'/></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2318181b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 2L2 7L12 12L22 7L12 2Z' fill='%2318181b'/><path d='M2 17L12 22L22 17'/><path d='M2 12L12 17L22 12'/></svg>">
+    
+    <!-- Fonts Preload & Import: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#1d4ed8', /* Purely reserved for primary actions */
+                            700: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        zinc: {
+                            50: '#fafafa',
+                            100: '#f4f4f5',
+                            200: '#e4e4e7',
+                            300: '#d4d4d8',
+                            400: '#a1a1aa',
+                            500: '#71717a',
+                            600: '#52525b',
+                            700: '#3f3f46',
+                            800: '#27272a',
+                            900: '#18181b',
+                            950: '#09090b', /* Premium dark backgrounds */
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.03)',
+                        'hover-lift': '0 12px 30px -4px rgba(0, 0, 0, 0.05), 0 4px 10px -2px rgba(0, 0, 0, 0.03)',
+                        'mockup': '0 20px 40px -15px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.05)',
+                    },
+                    transitionTimingFunction: {
+                        'premium': 'cubic-bezier(0.23, 1, 0.32, 1)',
+                    },
+                    animation: {
+                        'float': 'float 7s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Base Resets & Global Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #18181b;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        a, button { 
+            outline: none; 
+        }
+        
+        a:focus-visible, button:focus-visible {
+            box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #18181b; /* Neutral focus ring */
+            border-radius: 6px;
+        }
+        
+        /* Subtle Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e4e4e7; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4d4d8; }
+
+        /* Performance optimized reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Navbar Blur */
+        .glass-nav {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .glass-nav.scrolled {
+            border-bottom: 1px solid #f4f4f5; 
+        }
+
+        /* Form Input Autofill Reset for Dark Mode */
+        input:-webkit-autofill,
+        textarea:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px #09090b inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
+</head>
+<body class="bg-white selection:bg-zinc-200 selection:text-zinc-900">
+
+    <!-- Sticky Navbar -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 glass-nav" aria-label="Main Navigation">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2 group" aria-label="Home">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-zinc-900 group-hover:scale-95 transition-transform duration-300" aria-hidden="true">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="font-semibold text-[15px] tracking-tight text-zinc-900">Sayan Dutta</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#services" class="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200">Services</a>
+                    <a href="#process" class="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200">Process</a>
+                    <a href="#pricing" class="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200">Pricing</a>
+                    <a href="#about" class="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200">About</a>
+                    <a href="#contact" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md text-white bg-brand-600 hover:bg-brand-700 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-[1px]">
+                        Start Project
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-btn" class="md:hidden flex items-center p-2 -mr-2 text-zinc-600 hover:text-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 rounded-md" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="mobile-drawer">
+                    <i data-lucide="menu" class="w-5 h-5 transition-transform duration-300" id="menu-icon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-drawer" class="fixed inset-0 z-40 bg-white/95 backdrop-blur-md transform translate-x-full transition-transform duration-500 ease-premium flex flex-col md:hidden pt-24 px-6 pb-8" aria-hidden="true">
+        <div class="flex flex-col space-y-6 text-lg font-medium">
+            <a href="#services" class="mobile-link text-zinc-900 hover:text-zinc-600 border-b border-zinc-100 pb-4 transition-colors">Services</a>
+            <a href="#process" class="mobile-link text-zinc-900 hover:text-zinc-600 border-b border-zinc-100 pb-4 transition-colors">Process</a>
+            <a href="#pricing" class="mobile-link text-zinc-900 hover:text-zinc-600 border-b border-zinc-100 pb-4 transition-colors">Pricing</a>
+            <a href="#about" class="mobile-link text-zinc-900 hover:text-zinc-600 border-b border-zinc-100 pb-4 transition-colors">About</a>
+            <a href="#contact" class="mobile-link inline-flex items-center justify-center w-full py-3 mt-4 text-base font-medium rounded-lg text-white bg-brand-600 hover:bg-brand-700 transition-colors">
+                Start Project
+            </a>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="pt-28 pb-16 md:pt-40 md:pb-24 bg-white" aria-labelledby="hero-heading">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-8 items-center">
+                    
+                    <!-- Left Content -->
+                    <div class="text-center lg:text-left reveal">
+                        <div class="inline-flex items-center px-3 py-1 rounded-full bg-zinc-50 text-zinc-600 text-[13px] font-medium mb-5 border border-zinc-200">
+                            Modern websites. Real results.
+                        </div>
+                        <h1 id="hero-heading" class="text-4xl sm:text-5xl lg:text-[56px] font-bold text-zinc-900 tracking-tight leading-[1.15] md:leading-[1.1] mb-5">
+                            We build websites <br class="hidden sm:block"/>
+                            that grow your business.
+                        </h1>
+                        <p class="text-[15px] sm:text-[17px] text-zinc-500 mb-6 md:mb-8 max-w-[320px] sm:max-w-[480px] mx-auto lg:mx-0 leading-[1.6] font-normal">
+                            I help startups and businesses get modern, fast, and conversion-focused websites that deliver measurable growth.
+                        </p>
+                        <!-- Mobile-optimized button stacking -->
+                        <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start w-full max-w-[320px] sm:max-w-none mx-auto lg:mx-0">
+                            <a href="#contact" class="inline-flex justify-center items-center px-6 py-2.5 text-[14px] font-medium rounded-md text-white bg-brand-600 hover:bg-brand-700 transition-all duration-300 shadow-sm hover:shadow-hover-lift hover:-translate-y-[1px] w-full sm:w-auto">
+                                Start Project
+                            </a>
+                            <a href="#services" class="inline-flex justify-center items-center px-6 py-2.5 text-[14px] font-medium rounded-md text-zinc-700 bg-white border border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900 transition-all duration-300 w-full sm:w-auto">
+                                Explore Services
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Content: Floating Mockup (Stable on Mobile, Floating on Desktop) -->
+                    <div class="reveal delay-200 lg:pl-8 mt-2 lg:mt-0">
+                        <div class="relative w-[85%] sm:w-[400px] lg:w-full max-w-lg mx-auto md:animate-float">
+                            <!-- Subtle ground shadow -->
+                            <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-zinc-900/10 blur-[12px] rounded-full"></div>
+                            
+                            <!-- UI Window -->
+                            <div class="relative bg-white rounded-xl shadow-mockup overflow-hidden group transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" aria-hidden="true">
+                                <!-- Inner glow for premium glass feel -->
+                                <div class="absolute inset-0 bg-gradient-to-b from-white/60 to-transparent pointer-events-none z-10"></div>
+                                
+                                <!-- Window Chrome -->
+                                <div class="relative z-20 h-6 md:h-10 border-b border-zinc-100 bg-zinc-50/80 backdrop-blur-sm flex items-center px-3 md:px-4 gap-1.5">
+                                    <div class="w-1.5 h-1.5 md:w-2.5 md:h-2.5 rounded-full bg-zinc-300"></div>
+                                    <div class="w-1.5 h-1.5 md:w-2.5 md:h-2.5 rounded-full bg-zinc-300"></div>
+                                    <div class="w-1.5 h-1.5 md:w-2.5 md:h-2.5 rounded-full bg-zinc-300"></div>
+                                </div>
+                                
+                                <!-- Internal Content -->
+                                <div class="relative z-20 p-4 md:p-6 bg-zinc-50/30">
+                                    <div class="flex justify-between items-center mb-5 md:mb-6">
+                                        <div class="space-y-2">
+                                            <div class="h-2 md:h-2.5 w-12 md:w-20 bg-zinc-200 rounded-full"></div>
+                                            <div class="h-4 md:h-5 w-24 md:w-32 bg-zinc-800 rounded-md"></div>
+                                        </div>
+                                        <div class="h-6 w-6 md:h-8 md:w-8 rounded-full border border-zinc-200 bg-white flex items-center justify-center shadow-sm">
+                                            <i data-lucide="arrow-up-right" class="w-3 h-3 md:w-4 md:h-4 text-zinc-400"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Abstract Chart/Grid -->
+                                    <div class="grid grid-cols-4 gap-2 md:gap-3 mb-5 md:mb-6">
+                                        <div class="h-8 md:h-14 bg-white rounded-lg border border-zinc-100 shadow-sm"></div>
+                                        <div class="h-8 md:h-14 bg-white rounded-lg border border-zinc-100 shadow-sm"></div>
+                                        <div class="h-8 md:h-14 bg-zinc-900 rounded-lg shadow-md relative overflow-hidden">
+                                            <div class="absolute bottom-0 w-full h-1/2 bg-white/10"></div>
+                                        </div>
+                                        <div class="h-8 md:h-14 bg-white rounded-lg border border-zinc-100 shadow-sm"></div>
+                                    </div>
+
+                                    <!-- List -->
+                                    <div class="space-y-2 md:space-y-3">
+                                        <div class="h-7 md:h-10 w-full bg-white rounded-lg flex items-center px-2.5 md:px-3.5 gap-2 md:gap-3 border border-zinc-100 shadow-sm transition-colors group-hover:bg-zinc-50">
+                                            <div class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-zinc-200"></div>
+                                            <div class="h-1 md:h-1.5 w-16 md:w-24 bg-zinc-200 rounded-full"></div>
+                                            <div class="h-1 md:h-1.5 w-6 md:w-8 bg-zinc-200 rounded-full ml-auto"></div>
+                                        </div>
+                                        <div class="h-7 md:h-10 w-full bg-white rounded-lg flex items-center px-2.5 md:px-3.5 gap-2 md:gap-3 border border-zinc-100 shadow-sm transition-colors group-hover:bg-zinc-50">
+                                            <div class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-zinc-200"></div>
+                                            <div class="h-1 md:h-1.5 w-20 md:w-32 bg-zinc-200 rounded-full"></div>
+                                            <div class="h-1 md:h-1.5 w-8 md:w-10 bg-zinc-200 rounded-full ml-auto"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Strip -->
+        <section class="border-y border-zinc-100 bg-white py-8" aria-label="Trust indicators">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 text-[12px] font-medium tracking-widest uppercase text-zinc-400 reveal">
+                    <span class="flex items-center gap-2"><i data-lucide="graduation-cap" class="w-4 h-4 text-zinc-300" aria-hidden="true"></i> IIT Patna Engineers</span>
+                    <span class="hidden sm:inline-block w-1 h-1 rounded-full bg-zinc-200" aria-hidden="true"></span>
+                    <span class="flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-zinc-300" aria-hidden="true"></i> Performance First</span>
+                    <span class="hidden md:inline-block w-1 h-1 rounded-full bg-zinc-200" aria-hidden="true"></span>
+                    <span class="flex items-center gap-2"><i data-lucide="code-2" class="w-4 h-4 text-zinc-300" aria-hidden="true"></i> Modern Tech Stack</span>
+                    <span class="hidden lg:inline-block w-1 h-1 rounded-full bg-zinc-200" aria-hidden="true"></span>
+                    <span class="flex items-center gap-2"><i data-lucide="headphones" class="w-4 h-4 text-zinc-300" aria-hidden="true"></i> Direct Support</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 md:py-28 bg-zinc-50/50" aria-labelledby="services-heading">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-2xl mb-12 reveal">
+                    <p class="text-[12px] font-semibold text-zinc-500 tracking-widest uppercase mb-3">Capabilities</p>
+                    <h2 id="services-heading" class="text-3xl font-semibold text-zinc-900 tracking-tight">Everything you need to scale.</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <div class="bg-white border border-zinc-200 rounded-xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft group reveal">
+                        <div class="mb-5 text-zinc-300 font-mono text-xs" aria-hidden="true">01</div>
+                        <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">Web Applications</h3>
+                        <p class="text-zinc-500 text-[14px] leading-[1.6]">
+                            Custom, data-driven web apps with complex logic and seamless API integrations.
+                        </p>
+                    </div>
+
+                    <div class="bg-white border border-zinc-200 rounded-xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft group reveal delay-100">
+                        <div class="mb-5 text-zinc-300 font-mono text-xs" aria-hidden="true">02</div>
+                        <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">Landing Pages</h3>
+                        <p class="text-zinc-500 text-[14px] leading-[1.6]">
+                            High-converting, optimized single-page designs built for marketing campaigns.
+                        </p>
+                    </div>
+
+                    <div class="bg-white border border-zinc-200 rounded-xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft group reveal delay-200">
+                        <div class="mb-5 text-zinc-300 font-mono text-xs" aria-hidden="true">03</div>
+                        <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">Corporate Sites</h3>
+                        <p class="text-zinc-500 text-[14px] leading-[1.6]">
+                            Professional, multi-page architectures designed to establish brand trust.
+                        </p>
+                    </div>
+
+                    <div class="bg-white border border-zinc-200 rounded-xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft group reveal">
+                        <div class="mb-5 text-zinc-300 font-mono text-xs" aria-hidden="true">04</div>
+                        <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">E-Commerce</h3>
+                        <p class="text-zinc-500 text-[14px] leading-[1.6]">
+                            Scalable online storefronts with secure checkout flows and inventory management.
+                        </p>
+                    </div>
+
+                    <div class="bg-white border border-zinc-200 rounded-xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft group reveal delay-100">
+                        <div class="mb-5 text-zinc-300 font-mono text-xs" aria-hidden="true">05</div>
+                        <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">Performance Audit</h3>
+                        <p class="text-zinc-500 text-[14px] leading-[1.6]">
+                            Deep-dive technical SEO and performance optimization to improve Core Web Vitals.
+                        </p>
+                    </div>
+
+                    <div class="bg-transparent border border-dashed border-zinc-300 rounded-xl p-8 flex flex-col justify-center transition-all duration-300 hover:bg-white hover:border-solid hover:border-zinc-200 hover:shadow-soft reveal delay-200 group">
+                        <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">Custom Requirement?</h3>
+                        <p class="text-zinc-500 text-[14px] mb-4">We build tailored solutions for complex engineering constraints.</p>
+                        <a href="#contact" class="text-[13px] font-medium text-zinc-900 flex items-center hover:text-zinc-600 transition-colors">
+                            Let's discuss <i data-lucide="arrow-right" class="ml-1 w-3 h-3 transition-transform group-hover:translate-x-1" aria-hidden="true"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Subtle Section Divider -->
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-zinc-200 to-transparent max-w-5xl mx-auto"></div>
+
+        <!-- Process Section -->
+        <section id="process" class="py-20 md:py-28 bg-white" aria-labelledby="process-heading">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-2xl mb-14 reveal">
+                    <p class="text-[12px] font-semibold text-zinc-500 tracking-widest uppercase mb-3">Methodology</p>
+                    <h2 id="process-heading" class="text-3xl font-semibold text-zinc-900 tracking-tight">How we deliver.</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 relative pl-2 md:pl-0">
+                    <!-- Desktop connecting line -->
+                    <div class="hidden md:block absolute top-6 left-0 w-full h-[2px] bg-zinc-100" aria-hidden="true"></div>
+                    <!-- Mobile connecting line perfectly aligned to 40px circle (w-10 = 40px, center = 20px, left-19px for 2px line) -->
+                    <div class="block md:hidden absolute top-6 bottom-6 left-[19px] w-[2px] bg-zinc-100" aria-hidden="true"></div>
+
+                    <div class="relative reveal">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-zinc-200 rounded-full flex items-center justify-center text-sm font-semibold text-zinc-900 mb-4 md:mb-5 relative z-10 ring-4 ring-white">
+                            1
+                        </div>
+                        <div class="ml-14 md:ml-0">
+                            <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">Discovery</h3>
+                            <p class="text-[14px] text-zinc-500 leading-relaxed pr-4">We understand your goals and requirements.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative reveal delay-100">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-zinc-200 rounded-full flex items-center justify-center text-sm font-semibold text-zinc-900 mb-4 md:mb-5 relative z-10 ring-4 ring-white">
+                            2
+                        </div>
+                        <div class="ml-14 md:ml-0">
+                            <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">Design</h3>
+                            <p class="text-[14px] text-zinc-500 leading-relaxed pr-4">Creating a clean and modern experience.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative reveal delay-200">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-zinc-200 rounded-full flex items-center justify-center text-sm font-semibold text-zinc-900 mb-4 md:mb-5 relative z-10 ring-4 ring-white">
+                            3
+                        </div>
+                        <div class="ml-14 md:ml-0">
+                            <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">Development</h3>
+                            <p class="text-[14px] text-zinc-500 leading-relaxed pr-4">Building fast and responsive websites.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative reveal delay-300">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-zinc-900 text-white rounded-full flex items-center justify-center text-sm font-semibold mb-4 md:mb-5 relative z-10 shadow-sm ring-4 ring-white">
+                            <i data-lucide="check" class="w-4 h-4" aria-hidden="true"></i>
+                        </div>
+                        <div class="ml-14 md:ml-0">
+                            <h3 class="text-[15px] font-semibold text-zinc-900 mb-2">Launch</h3>
+                            <p class="text-[14px] text-zinc-500 leading-relaxed pr-4">Testing, deploying, and supporting your project.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20 md:py-28 bg-zinc-50/50 border-t border-zinc-100" aria-labelledby="pricing-heading">
+            <div class="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                    <p class="text-[12px] font-semibold text-zinc-500 tracking-[0.15em] uppercase mb-3">Pricing</p>
+                    <h2 id="pricing-heading" class="text-3xl font-semibold text-zinc-900 tracking-tight mb-4">Simple. Transparent. Affordable.</h2>
+                </div>
+
+                <!-- Pricing Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto">
+                    
+                    <!-- Card 1: Starter -->
+                    <div class="bg-white border border-zinc-200 rounded-2xl p-8 flex flex-col reveal transition-all duration-300 hover:shadow-soft hover:-translate-y-1">
+                        <div class="mb-5 h-8 border-b border-zinc-100 pb-10">
+                            <h3 class="text-[13px] font-bold text-zinc-900 tracking-widest uppercase mb-1">Starter</h3>
+                            <p class="text-[13px] text-zinc-500">Perfect for individuals and simple launches.</p>
+                        </div>
+                        
+                        <div class="mb-6 pb-6 flex-grow pt-2">
+                            <ul class="space-y-3 text-[13px] text-zinc-600" aria-label="Starter Plan Features">
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> 1–3 Page Landing Website</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Responsive Design</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Fast Loading</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Basic SEO Setup</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Contact Form</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <p class="text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-1">Starting At</p>
+                            <span class="text-2xl font-bold text-zinc-900 tracking-tight">₹4,999</span>
+                        </div>
+                        
+                        <a href="#contact" class="w-full inline-flex justify-center py-2.5 px-4 border border-zinc-200 rounded-lg text-[13px] font-medium text-zinc-900 bg-white hover:bg-zinc-50 hover:border-zinc-300 transition-colors" aria-label="Get Started with Starter Plan">
+                            Get Started
+                        </a>
+                    </div>
+
+                    <!-- Card 2: Business -->
+                    <div class="bg-white border border-zinc-300 rounded-2xl p-8 flex flex-col relative reveal delay-100 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1.5 hover:shadow-xl">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 whitespace-nowrap z-10">
+                            <span class="bg-zinc-900 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-sm">Most Popular</span>
+                        </div>
+                        <div class="mb-5 h-8 border-b border-zinc-100 pb-10">
+                            <h3 class="text-[13px] font-bold text-zinc-900 tracking-widest uppercase mb-1">Business</h3>
+                            <p class="text-[13px] text-zinc-500">Ideal for small businesses and providers.</p>
+                        </div>
+                        
+                        <div class="mb-6 pb-6 flex-grow pt-2">
+                            <ul class="space-y-3 text-[13px] text-zinc-600" aria-label="Business Plan Features">
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-900 mr-2 shrink-0" aria-hidden="true"></i> Up to 7 Pages Website</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-900 mr-2 shrink-0" aria-hidden="true"></i> Modern Premium Design</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-900 mr-2 shrink-0" aria-hidden="true"></i> Fully Responsive</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-900 mr-2 shrink-0" aria-hidden="true"></i> SEO Optimization</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-900 mr-2 shrink-0" aria-hidden="true"></i> WhatsApp Integration</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-900 mr-2 shrink-0" aria-hidden="true"></i> 2 Revisions</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <p class="text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-1">Starting At</p>
+                            <span class="text-2xl font-bold text-zinc-900 tracking-tight">₹8,999</span>
+                        </div>
+                        
+                        <a href="#contact" class="w-full inline-flex justify-center py-2.5 px-4 rounded-lg text-[13px] font-medium text-white bg-zinc-900 hover:bg-zinc-800 transition-colors shadow-sm" aria-label="Get Started with Business Plan">
+                            Get Started
+                        </a>
+                    </div>
+
+                    <!-- Card 3: E-Commerce -->
+                    <div class="bg-white border border-zinc-200 rounded-2xl p-8 flex flex-col reveal delay-200 transition-all duration-300 hover:shadow-soft hover:-translate-y-1">
+                        <div class="mb-5 h-8 border-b border-zinc-100 pb-10">
+                            <h3 class="text-[13px] font-bold text-zinc-900 tracking-widest uppercase mb-1">E-Commerce</h3>
+                            <p class="text-[13px] text-zinc-500">Sell products online with a powerful store.</p>
+                        </div>
+                        
+                        <div class="mb-6 pb-6 flex-grow pt-2">
+                            <ul class="space-y-3 text-[13px] text-zinc-600" aria-label="E-Commerce Plan Features">
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Up to 10 Products</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Product Pages</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Secure Checkout</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Payment Gateway</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Order Management</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <p class="text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-1">Starting At</p>
+                            <span class="text-2xl font-bold text-zinc-900 tracking-tight">₹14,999</span>
+                        </div>
+                        
+                        <a href="#contact" class="w-full inline-flex justify-center py-2.5 px-4 border border-zinc-200 rounded-lg text-[13px] font-medium text-zinc-900 bg-white hover:bg-zinc-50 hover:border-zinc-300 transition-colors" aria-label="Get Started with E-Commerce Plan">
+                            Get Started
+                        </a>
+                    </div>
+
+                    <!-- Card 4: Custom Solutions -->
+                    <div class="bg-white border border-zinc-200 rounded-2xl p-8 flex flex-col reveal delay-300 transition-all duration-300 hover:shadow-soft hover:-translate-y-1">
+                        <div class="mb-5 h-8 border-b border-zinc-100 pb-10">
+                            <h3 class="text-[13px] font-bold text-zinc-900 tracking-widest uppercase mb-1">Custom</h3>
+                            <p class="text-[13px] text-zinc-500">For complex requirements and web apps.</p>
+                        </div>
+                        
+                        <div class="mb-6 pb-6 flex-grow pt-2">
+                            <ul class="space-y-3 text-[13px] text-zinc-600" aria-label="Custom Plan Features">
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Custom Features</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Database Integration</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Admin Panel</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Scalable Architecture</li>
+                                <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-zinc-400 mr-2 shrink-0" aria-hidden="true"></i> Priority Support</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <p class="text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-1">Pricing</p>
+                            <span class="text-2xl font-bold text-zinc-900 tracking-tight">Let's Talk</span>
+                        </div>
+                        
+                        <a href="#contact" class="w-full inline-flex justify-center py-2.5 px-4 border border-zinc-200 rounded-lg text-[13px] font-medium text-zinc-900 bg-white hover:bg-zinc-50 hover:border-zinc-300 transition-colors" aria-label="Contact us for Custom Plan">
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Additional Information Section -->
+                <div class="mx-auto mt-8 bg-white border border-zinc-200 rounded-xl p-8 reveal shadow-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-zinc-100">
+                        
+                        <div class="md:pr-6">
+                            <h4 class="text-[12px] font-semibold text-zinc-900 uppercase tracking-widest mb-4">What You Get Always</h4>
+                            <ul class="space-y-2 text-[13px] text-zinc-600">
+                                <li class="flex items-center"><div class="w-1.5 h-1.5 rounded-full bg-zinc-300 mr-3" aria-hidden="true"></div> Clean Design</li>
+                                <li class="flex items-center"><div class="w-1.5 h-1.5 rounded-full bg-zinc-300 mr-3" aria-hidden="true"></div> 100% Responsive</li>
+                                <li class="flex items-center"><div class="w-1.5 h-1.5 rounded-full bg-zinc-300 mr-3" aria-hidden="true"></div> On-Time Delivery</li>
+                            </ul>
+                        </div>
+
+                        <div class="pt-6 md:pt-0 md:px-6">
+                            <h4 class="text-[12px] font-semibold text-zinc-900 uppercase tracking-widest mb-4">Optional Add-ons</h4>
+                            <ul class="space-y-2 text-[13px] text-zinc-600">
+                                <li class="flex items-center justify-between">
+                                    <span class="flex items-center"><div class="w-1.5 h-1.5 rounded-full bg-zinc-300 mr-3" aria-hidden="true"></div> Content Writing</span>
+                                    <span class="font-medium text-zinc-900">₹999</span>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span class="flex items-center"><div class="w-1.5 h-1.5 rounded-full bg-zinc-300 mr-3" aria-hidden="true"></div> Advanced SEO</span>
+                                    <span class="font-medium text-zinc-900">₹1,499</span>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span class="flex items-center"><div class="w-1.5 h-1.5 rounded-full bg-zinc-300 mr-3" aria-hidden="true"></div> Maintenance</span>
+                                    <span class="font-medium text-zinc-900">₹999/mo</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="pt-6 md:pt-0 md:pl-6">
+                            <h4 class="text-[12px] font-semibold text-zinc-900 uppercase tracking-widest mb-4">Need Something Unique?</h4>
+                            <p class="text-[13px] text-zinc-500 leading-relaxed mb-4">Every business is unique. Let's discuss your idea and build something exceptional together.</p>
+                            <a href="#contact" class="inline-flex items-center text-[13px] font-medium text-zinc-900 hover:text-zinc-600 transition-colors group">
+                                Discuss Project <i data-lucide="arrow-right" class="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- About / Founder Section -->
+        <section id="about" class="py-20 md:py-28 bg-white" aria-labelledby="about-heading">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-8 md:gap-10 reveal">
+                        
+                        <!-- Clean Founder Image -->
+                        <div class="shrink-0 relative">
+                            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border border-zinc-200 shadow-sm bg-zinc-50">
+                                <img src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Portrait of Sayan Dutta" loading="lazy" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
+                            </div>
+                        </div>
+
+                        <!-- Minimal Text Content -->
+                        <div class="flex-grow">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-50 border border-zinc-200 text-[11px] font-medium text-zinc-600 mb-4 tracking-wide uppercase">
+                                <span class="relative flex h-1.5 w-1.5" aria-hidden="true">
+                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-zinc-400 opacity-75"></span>
+                                  <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-zinc-500"></span>
+                                </span>
+                                Accepting limited projects
+                            </div>
+                            
+                            <h2 id="about-heading" class="text-2xl font-semibold text-zinc-900 tracking-tight mb-1">Sayan Dutta</h2>
+                            <p class="text-[14px] text-zinc-500 mb-5">Founder & Lead Engineer</p>
+
+                            <div class="text-[14px] text-zinc-600 leading-[1.65] mb-6 space-y-3 max-w-xl">
+                                <p>
+                                    I’m Sayan, an IIT Patna student developer focused on building clean, fast, and modern websites for startups and businesses.
+                                </p>
+                                <p>
+                                    I care about performance and simplicity—not bloated templates. Every project is built with direct communication, clean code, and extreme attention to detail.
+                                </p>
+                            </div>
+
+                            <!-- Founder Links -->
+                            <div class="flex flex-wrap items-center gap-5">
+                                <a href="https://github.com/SAYANDUTTA8442" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-900 transition-colors flex items-center gap-1.5 text-[13px] font-medium">
+                                    <i data-lucide="github" class="w-4 h-4" aria-hidden="true"></i> GitHub
+                                </a>
+                                <a href="https://www.linkedin.com/in/sayandutta8653128442" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-900 transition-colors flex items-center gap-1.5 text-[13px] font-medium">
+                                    <i data-lucide="linkedin" class="w-4 h-4" aria-hidden="true"></i> LinkedIn
+                                </a>
+                                <a href="mailto:sayandutta.developer@gmail.com" class="text-zinc-400 hover:text-zinc-900 transition-colors flex items-center gap-1.5 text-[13px] font-medium">
+                                    <i data-lucide="mail" class="w-4 h-4" aria-hidden="true"></i> Email
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subtle Top Gradient Divider bridging to Dark Section -->
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-zinc-800 to-transparent bg-zinc-950"></div>
+
+        <!-- Dark Premium Contact Form Section -->
+        <section id="contact" class="py-20 md:py-28 bg-zinc-950 border-t border-zinc-900" aria-labelledby="contact-heading">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-12 reveal">
+                    
+                    <!-- Contact Info -->
+                    <div>
+                        <h2 id="contact-heading" class="text-3xl md:text-4xl font-semibold text-white tracking-tight mb-4">Ready to start your project?</h2>
+                        <p class="text-[15px] text-zinc-400 mb-10 max-w-md leading-[1.6]">Get in touch to discuss your ideas and business goals. Fill out the form, or reach out directly. We typically reply within a few hours.</p>
+                        
+                        <div class="space-y-4">
+                            <a href="mailto:sayandutta.developer@gmail.com" class="flex items-center gap-3 text-[14px] text-zinc-400 hover:text-white transition-colors group">
+                                <div class="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-zinc-700 transition-colors">
+                                    <i data-lucide="mail" class="w-4 h-4" aria-hidden="true"></i>
+                                </div>
+                                sayandutta.developer@gmail.com
+                            </a>
+                            <a href="https://wa.me/918653128442" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-[14px] text-zinc-400 hover:text-white transition-colors group">
+                                <div class="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-zinc-700 transition-colors">
+                                    <svg class="w-4 h-4 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                                </div>
+                                +91 86531 28442
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Functional Contact Form with AJAX Handling -->
+                    <div class="relative w-full h-full">
+                        <!-- Success Message State (Hidden Initially) -->
+                        <div id="form-success" class="hidden absolute inset-0 bg-zinc-900 border border-zinc-800 p-8 rounded-xl flex-col items-center justify-center text-center z-10 opacity-0 transition-opacity duration-500">
+                            <div class="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center text-white mb-4">
+                                <i data-lucide="check" class="w-8 h-8" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Message Sent</h3>
+                            <p class="text-sm text-zinc-400 max-w-xs mx-auto">Thank you for reaching out. I'll review your details and get back to you shortly.</p>
+                        </div>
+                        
+                        <!-- Form State -->
+                        <div id="form-wrapper" class="bg-zinc-900 border border-zinc-800 p-6 sm:p-8 rounded-xl transition-opacity duration-300">
+                            <!-- NOTE: Replace 'your_formspree_id' with actual ID when deploying -->
+                            <form id="contact-form" action="https://formspree.io/f/your_formspree_id" method="POST" class="space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="name" class="block text-[13px] font-medium text-zinc-400 mb-1.5">Name</label>
+                                        <input type="text" id="name" name="name" required placeholder="John Doe" 
+                                            class="w-full px-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-[14px] placeholder-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-colors">
+                                    </div>
+                                    <div>
+                                        <label for="email" class="block text-[13px] font-medium text-zinc-400 mb-1.5">Email</label>
+                                        <input type="email" id="email" name="email" required placeholder="john@company.com" 
+                                            class="w-full px-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-[14px] placeholder-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-colors">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="message" class="block text-[13px] font-medium text-zinc-400 mb-1.5">Project Details</label>
+                                    <textarea id="message" name="message" rows="4" required placeholder="Tell me a bit about your goals..." 
+                                        class="w-full px-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-[14px] placeholder-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-colors resize-y"></textarea>
+                                </div>
+                                <!-- Anti-spam honeypot -->
+                                <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+                                
+                                <button type="submit" id="submit-button" class="w-full inline-flex justify-center items-center px-6 py-2.5 text-[14px] font-medium rounded-lg text-white bg-brand-600 hover:bg-brand-700 transition-all duration-300 shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Ultra-Minimal Footer -->
+    <footer class="bg-zinc-950 pt-8 pb-12 border-t border-zinc-900" aria-label="Site Footer">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <!-- Brand -->
+                <div class="flex items-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-zinc-500" aria-hidden="true">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="font-medium text-[13px] tracking-tight text-zinc-400">Sayan Dutta</span>
+                </div>
+                
+                <p class="text-[12px] text-zinc-500 text-center md:text-left">
+                    Modern websites built with performance and simplicity in mind.
+                </p>
+
+                <p class="text-[12px] text-zinc-600">
+                    &copy; <span id="year"></span> All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Set Current Year dynamically
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // High-performance Reveal Animation Observer
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -20px 0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
+
+        // Navbar Blur on Scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Logic with Accessibility Focus
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const menuIcon = document.getElementById('menu-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileDrawer.classList.remove('translate-x-full');
+                mobileDrawer.setAttribute('aria-hidden', 'false');
+                menuBtn.setAttribute('aria-expanded', 'true');
+                menuIcon.setAttribute('data-lucide', 'x');
+                document.body.style.overflow = 'hidden'; // Lock background scroll
+            } else {
+                mobileDrawer.classList.add('translate-x-full');
+                mobileDrawer.setAttribute('aria-hidden', 'true');
+                menuBtn.setAttribute('aria-expanded', 'false');
+                menuIcon.setAttribute('data-lucide', 'menu');
+                document.body.style.overflow = '';
+            }
+            lucide.createIcons();
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) toggleMenu();
+            });
+        });
+
+        // Formspree AJAX Submission Handling (No refresh required)
+        const contactForm = document.getElementById('contact-form');
+        const formWrapper = document.getElementById('form-wrapper');
+        const formSuccess = document.getElementById('form-success');
+        const submitButton = document.getElementById('submit-button');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Set loading state visually
+                const originalText = submitButton.innerText;
+                submitButton.innerHTML = 'Sending... <i data-lucide="loader-2" class="w-4 h-4 ml-2 animate-spin"></i>';
+                lucide.createIcons();
+                submitButton.disabled = true;
+
+                try {
+                    const response = await fetch(contactForm.action, {
+                        method: contactForm.method,
+                        body: new FormData(contactForm),
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        // Smoothly transition from form to success message
+                        contactForm.reset();
+                        formWrapper.style.opacity = '0';
+                        setTimeout(() => {
+                            formWrapper.classList.add('hidden');
+                            formSuccess.classList.remove('hidden');
+                            formSuccess.classList.add('flex');
+                            // Trigger fade-in
+                            setTimeout(() => formSuccess.style.opacity = '1', 50);
+                        }, 300);
+                    } else {
+                        // Handle Formspree specific API errors
+                        const data = await response.json();
+                        if (Object.hasOwn(data, 'errors')) {
+                            alert(data["errors"].map(error => error["message"]).join(", "));
+                        } else {
+                            alert("Oops! There was a problem submitting your form.");
+                        }
+                        // Reset button state
+                        submitButton.innerText = originalText;
+                        submitButton.disabled = false;
+                    }
+                } catch (error) {
+                    alert("Oops! There was a network error submitting your form.");
+                    submitButton.innerText = originalText;
+                    submitButton.disabled = false;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+```
