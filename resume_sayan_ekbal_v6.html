@@ -1,0 +1,257 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sayan Dutta — NLP Research CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0a0a0a;
+  --body:#1e1e1e;
+  --muted:#5a5a5a;
+  --accent:#143d87;
+  --accent-light:#e8edf7;
+  --accent-mid:#c2d0ef;
+  --bg:#ffffff;
+  --serif:'Crimson Pro',Georgia,serif;
+  --sans:'Source Sans 3',sans-serif;
+}
+body{background:#dde0e5;font-family:var(--sans);color:var(--body);font-size:12px;line-height:1.3}
+.page{max-width:820px;margin:32px auto;background:var(--bg);padding:34px 40px;box-shadow:0 4px 24px rgba(0,0,0,.12)}
+
+/* HEADER */
+.hd-name{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--ink);line-height:1;margin-bottom:4px;letter-spacing:-.015em}
+.hd-subtitle{font-size:11.5px;color:var(--muted);margin-bottom:5px;font-style:italic}
+.hd-title{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
+.hd-contact{font-size:11.2px;color:var(--muted);line-height:1.9}
+.hd-contact a{color:var(--muted);text-decoration:none;font-weight:600}
+.hd-contact a:hover{color:var(--accent)}
+.sep{margin:0 6px;color:#c8c8c8}
+.rule{border:none;border-top:2px solid var(--ink);margin:9px 0 0}
+
+/* HIGHLIGHTS */
+.highlights{background:var(--accent-light);border-left:4px solid var(--accent);padding:10px 15px;margin:13px 0}
+.highlights-label{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+.hl-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 28px}
+.hl-item{font-size:11.2px;color:var(--ink);display:flex;align-items:baseline;gap:6px}
+.hl-item::before{content:'▸';color:var(--accent);font-size:9px;flex-shrink:0}
+
+/* SECTION */
+.sec{margin-top:18px;margin-bottom:7px}
+.sec-label{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border-bottom:1.5px solid var(--ink);padding-bottom:3px;color:var(--ink)}
+
+/* ENTRIES */
+.entry{margin-bottom:12px}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.e-title{font-family:var(--serif);font-size:14.5px;font-weight:700;color:var(--ink)}
+.e-date{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
+.e-sub{font-size:11.5px;font-style:italic;color:#444;margin-top:2px;margin-bottom:4px}
+.e-meta{font-size:11.2px;color:var(--muted);margin-top:3px;line-height:1.5}
+.e-proj-tag{font-size:11.2px;font-weight:700;color:var(--accent);margin:4px 0 5px}
+
+/* BULLETS */
+ul.bul{list-style:none;margin-top:4px}
+ul.bul li{position:relative;padding-left:13px;margin-bottom:4px;font-size:11.5px;line-height:1.4}
+ul.bul li::before{content:'•';position:absolute;left:2px;color:var(--accent);font-size:13px;line-height:1.2}
+
+/* PUBLICATION */
+.pub-box{background:#f5f7fc;border-left:3px solid var(--accent);padding:9px 14px;margin-top:4px}
+.pub-title{font-weight:700;color:var(--ink);font-size:12.5px;line-height:1.4;font-family:var(--serif)}
+.pub-meta{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.6}
+.pub-venue{color:var(--accent);font-weight:700}
+.pub-role{margin-top:7px}
+.pub-role-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin-bottom:3px}
+.pub-role-items{display:flex;flex-wrap:wrap;gap:4px}
+.pub-role-item{font-size:10.5px;background:#fff;border:1px solid var(--accent-mid);color:var(--accent);padding:1px 8px;border-radius:2px;font-weight:600}
+.pub-links{margin-top:7px;font-size:10.5px}
+.pub-links a{color:var(--accent);font-weight:700;text-decoration:none;border:1px solid var(--accent-mid);padding:2px 7px;border-radius:2px;margin-right:8px}
+.pub-links a:hover{background:var(--accent-light)}
+
+/* SKILLS */
+.skills{width:100%;border-collapse:collapse}
+.skills tr{vertical-align:top}
+.skills td{padding:3px 0;font-size:11.5px;line-height:1.4}
+.skills td:first-child{width:120px;font-weight:700;color:var(--ink);padding-right:8px}
+
+/* RESEARCH INTERESTS */
+.interests{font-size:11.5px;color:var(--body);line-height:1.8;margin-top:4px}
+.interests .confirmed{color:var(--ink)}
+.interests .interest-note{font-size:10.5px;color:var(--muted);font-style:italic}
+
+/* PROJECT LINK */
+.proj-link{font-size:10.5px;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--accent-mid);padding:1px 6px;border-radius:2px;margin-left:4px}
+.proj-link:hover{background:var(--accent-light)}
+
+/* LEADERSHIP */
+.compact-entry{font-size:11.5px;margin-top:4px;line-height:1.6}
+
+@page{size:A4;margin:14mm 12mm}
+@media print{
+  body{background:white}
+  .page{margin:0;max-width:100%;width:100%;padding:0;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="hd-name">Sayan Dutta</div>
+<div class="hd-title">BS-MS Student, IIT Patna &nbsp;·&nbsp; NLP &nbsp;·&nbsp; LLM Reasoning &nbsp;·&nbsp; Empathetic Dialogue Systems</div>
+<div class="hd-contact">
+  Patna, Bihar, India
+  <span class="sep">|</span> sayan_ua2504cdh152@iitp.ac.in
+  <span class="sep">|</span> +91 8653128442
+  <br>
+  <a href="https://www.linkedin.com/in/sayandutta8653128442/">linkedin.com/in/sayandutta8653128442</a>
+  <span class="sep">|</span>
+  <a href="https://github.com/SAYANDUTTA8442">github.com/SAYANDUTTA8442</a>
+</div>
+<hr class="rule">
+
+<!-- RESEARCH HIGHLIGHTS -->
+<div class="highlights">
+  <div class="highlights-label">Research Highlights</div>
+  <div class="hl-grid">
+    <div class="hl-item"><strong>ACL ARR May 2026 Submission</strong> — Co-Author</div>
+    <div class="hl-item">Chain-of-Thought Supervision for Empathetic Dialogue</div>
+    <div class="hl-item">ECOT-ERG: Emotion-Cause CoT Framework (T5 + DPO)</div>
+    <div class="hl-item">16-Config Ablation · BERTScore · EASE · Cause-F1</div>
+    <div class="hl-item">Research Intern, BITS Pilani — Dr. Srishti Gupta</div>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<div class="sec"><div class="sec-label">Education</div></div>
+<div class="entry">
+  <div class="row">
+    <span class="e-title">Indian Institute of Technology Patna</span>
+    <span class="e-date">2025 – 2030</span>
+  </div>
+  <div class="e-sub">BS-MS, Computer Science and Data Analytics &nbsp;(Integrated 5-Year) &nbsp;·&nbsp; <strong>Expected Graduation: 2030</strong></div>
+  <div class="e-meta">
+    <strong>CGPA:</strong> 9.0 / 10.0
+    &nbsp;|&nbsp;
+    <strong>Relevant Coursework:</strong> Machine Learning, Artificial Intelligence, Natural Language Processing, Operating Systems, Database Systems, Data Structures &amp; Algorithms
+  </div>
+</div>
+
+<!-- PUBLICATIONS -->
+<div class="sec"><div class="sec-label">Research Output</div></div>
+<div class="pub-box">
+  <div class="pub-title">ECOT-ERG: Emotion-Cause Chain-of-Thought Framework for Empathetic Response Generation</div>
+  <div class="pub-meta">
+    Sayan Dutta, Srishti Gupta, and collaborators &nbsp;·&nbsp;
+    <span class="pub-venue">ACL ARR May 2026 Submission</span> &nbsp;(Under Review)
+    &nbsp;·&nbsp; Supervisor: Dr. Srishti Gupta, PostDoctoral Fellow, CS, BITS Pilani
+  </div>
+  <div class="pub-role">
+    <div class="pub-role-label">Role</div>
+    <div class="pub-role-items">
+      <span class="pub-role-item">Reasoning Pipeline Design</span>
+      <span class="pub-role-item">Emotion Prediction Module</span>
+      <span class="pub-role-item">Cause Identification Module</span>
+      <span class="pub-role-item">T5 Fine-Tuning</span>
+      <span class="pub-role-item">DPO Alignment</span>
+      <span class="pub-role-item">Ablation Studies</span>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a href="https://github.com/SAYANDUTTA8442">[Code — GitHub]</a>
+    <a href="#">[Project Page — TBA]</a>
+    <a href="#">[Paper — ARR]</a>
+  </div>
+</div>
+
+<!-- RESEARCH EXPERIENCE -->
+<div class="sec"><div class="sec-label">Research Experience</div></div>
+<div class="entry">
+  <div class="row">
+    <span class="e-title">Research Intern — BITS Pilani (Pilani Campus)</span>
+    <span class="e-date">Apr 2026 – May 2026</span>
+  </div>
+  <div class="e-sub">Supervisor: Dr. Srishti Gupta, PostDoctoral Fellow, Dept. of Computer Science &nbsp;·&nbsp; Remote</div>
+  <div class="e-proj-tag">ECOT-ERG: Emotion-Cause Chain-of-Thought Framework for Empathetic Response Generation</div>
+  <ul class="bul">
+    <li>Architected and implemented the ECOT-ERG reasoning framework, integrating emotion prediction, cause identification, chain-of-thought supervision, and T5-based response generation into a unified end-to-end pipeline.</li>
+    <li>Built modular emotion prediction and cause identification components, enabling independent evaluation and ablation of each reasoning stage without retraining the full system.</li>
+    <li>Fine-tuned T5 models with FP16 mixed-precision training; constructed DPO preference pairs from ranked model outputs for empathy alignment.</li>
+    <li>Executed 16 experimental configurations (4-way ablation: CoT supervision × Emotion Prediction × Cause Identification × DPO); evaluated on BERTScore, EASE, Cause-F1, and Relevance-Accuracy.</li>
+    <li>Co-authored ACL ARR May 2026 submission; generated and analyzed qualitative outputs for error analysis and paper discussion.</li>
+  </ul>
+</div>
+
+<!-- SELECTED PROJECTS -->
+<div class="sec"><div class="sec-label">Selected Projects</div></div>
+
+<div class="entry">
+  <div class="row">
+    <span class="e-title">Blix.ai — Offline Persistent-Memory LLM Assistant <a class="proj-link" href="https://github.com/SAYANDUTTA8442">[GitHub]</a></span>
+  </div>
+  <ul class="bul">
+    <li>Built a fully air-gapped personalized LLM assistant running locally hosted Mistral-7B via Ollama — zero external API dependency.</li>
+    <li>Designed a persistent memory layer with session-aware context injection; explored retrieval-aware memory ranking mechanisms for personalized offline inference.</li>
+    <li>Prototyped embedding-based semantic retrieval using SentenceTransformers + FAISS for scalable long-term memory recall.</li>
+    <li><strong>Stack:</strong> Python · Mistral-7B · Ollama · FAISS · SentenceTransformers · Express.js</li>
+  </ul>
+</div>
+
+<div class="entry">
+  <div class="row">
+    <span class="e-title">ASES — AI-Driven Precision Agriculture Advisory Platform</span>
+  </div>
+  <ul class="bul">
+    <li>Built crop and fertilizer recommendation engines using feature-normalized KNN over multi-dimensional soil and environment vectors.</li>
+    <li>Integrated Google Gemini API with structured prompt engineering for contextual advisory generation; deployed via Streamlit + SQLite for lightweight local inference.</li>
+    <li><strong>Stack:</strong> Python · scikit-learn · Google Gemini API · Streamlit · SQLite</li>
+  </ul>
+</div>
+
+<!-- TECHNICAL SKILLS -->
+<div class="sec"><div class="sec-label">Technical Skills</div></div>
+<div class="entry">
+  <table class="skills">
+    <tr>
+      <td>Frameworks</td>
+      <td>PyTorch, HuggingFace Transformers, Seq2SeqTrainer, scikit-learn</td>
+    </tr>
+    <tr>
+      <td>LLM &amp; Reasoning</td>
+      <td>Chain-of-Thought Supervision, DPO, LoRA, RAG, Controllable Generation, Prompt Engineering</td>
+    </tr>
+    <tr>
+      <td>NLP</td>
+      <td>ERC, Empathetic Dialogue, Seq2Seq Learning, BERTScore, EASE, Cause-F1, FAISS, SentenceTransformers</td>
+    </tr>
+    <tr>
+      <td>Infrastructure</td>
+      <td>Linux, Git, CUDA, FP16/BF16, W&amp;B, Experiment Tracking, Reproducible Research Pipelines, Jupyter, Google Colab, Ollama</td>
+    </tr>
+    <tr>
+      <td>Languages</td>
+      <td>Python, C++</td>
+    </tr>
+  </table>
+</div>
+
+<!-- RESEARCH INTERESTS -->
+<div class="sec"><div class="sec-label">Research Interests</div></div>
+<div class="interests">
+  <span class="confirmed">Natural Language Processing &nbsp;·&nbsp; LLM Reasoning &amp; Controllable Generation &nbsp;·&nbsp; Emotion Recognition in Conversation (ERC) &nbsp;·&nbsp; Empathetic Dialogue Systems &nbsp;·&nbsp; Retrieval-Augmented Generation &nbsp;·&nbsp; Efficient Fine-Tuning (LoRA / DPO)</span>
+  <br>
+  <span class="interest-note">Developing interest in: Multilingual NLP &nbsp;·&nbsp; Information Extraction &nbsp;·&nbsp; Question Answering &nbsp;·&nbsp; Low-Resource NLP</span>
+</div>
+
+
+<!-- LEADERSHIP -->
+<div class="sec"><div class="sec-label">Leadership</div></div>
+<div class="compact-entry">
+  <strong>Lead Google Student Ambassador, IIT Patna</strong> (GID: 986) &nbsp;·&nbsp; 2025–Present
+  &nbsp;·&nbsp; Organized AI/ML workshops and developer events for 400+ students.
+</div>
+
+</div>
+</body>
+</html>
