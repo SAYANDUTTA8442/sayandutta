@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Page Not Found | Sayan Dutta</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#04020C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --v:#7C3AED;--c:#06B6D4;--p:#EC4899;--a:#F59E0B;--g:#10B981;
+  --bg:#04020C;--text:#F0EEFF;--text2:#A89EC9;--text3:#5C5280;
+  --fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'Share Tech Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;cursor:none;position:relative}
+
+/* ── CURSOR ── */
+#cur-o{width:38px;height:38px;border:1.5px solid rgba(124,58,237,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s,background .2s;background:rgba(124,58,237,.04);backdrop-filter:blur(4px)}
+#cur-i{width:7px;height:7px;background:#A78BFA;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 12px #A78BFA}
+body:has(a:hover) #cur-o{width:54px;height:54px;border-color:#A78BFA;background:rgba(124,58,237,.08)}
+
+/* ── CANVAS ── */
+canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── MORPH BG ── */
+#morph-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.15}
+#morph-bg svg{width:100%;height:100%}
+
+/* ── MAIN CONTENT ── */
+.wrap{position:relative;z-index:2;text-align:center;padding:2rem 5vw;max-width:640px}
+
+.glitch-num{
+  font-family:var(--fd);
+  font-size:clamp(7rem,22vw,14rem);
+  font-weight:800;
+  line-height:1;
+  letter-spacing:-6px;
+  position:relative;
+  background:linear-gradient(135deg,#fff 10%,#A78BFA 45%,#06B6D4 75%,#F9A8D4 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:300%;
+  animation:nameFlow 6s ease-in-out infinite;
+  user-select:none;
+}
+.glitch-num::before,.glitch-num::after{
+  content:'404';
+  position:absolute;inset:0;
+  background:inherit;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:glitch 3.5s infinite;
+}
+.glitch-num::before{color:#EC4899;left:3px;animation-delay:0s;clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%)}
+.glitch-num::after {color:#06B6D4;left:-3px;animation-delay:.18s;clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%)}
+
+@keyframes glitch{
+  0%,90%,100%{transform:translateX(0);opacity:0}
+  91%{transform:translateX(-4px);opacity:.7}
+  93%{transform:translateX(4px);opacity:.7}
+  95%{transform:translateX(-2px);opacity:.7}
+  97%{transform:translateX(2px);opacity:.5}
+  99%{transform:translateX(0);opacity:0}
+}
+@keyframes nameFlow{0%,100%{background-position:0%}50%{background-position:100%}}
+
+.mono-tag{
+  font-family:var(--fm);
+  font-size:.8rem;
+  color:var(--text3);
+  letter-spacing:.15em;
+  margin-bottom:1.2rem;
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+}
+.mono-tag::before,.mono-tag::after{content:'';display:block;height:1px;width:32px;background:linear-gradient(90deg,transparent,var(--text3))}
+.mono-tag::after{background:linear-gradient(90deg,var(--text3),transparent)}
+
+h1{
+  font-family:var(--fd);
+  font-size:clamp(1.4rem,4vw,2rem);
+  font-weight:800;
+  letter-spacing:-.5px;
+  margin-bottom:.8rem;
+  line-height:1.2;
+}
+h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg,#7C3AED,#06B6D4,#EC4899);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.sub{
+  font-size:.95rem;
+  font-weight:300;
+  color:var(--text2);
+  line-height:1.8;
+  margin-bottom:2.5rem;
+}
+
+/* ── ACTIONS ── */
+.actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem}
+
+.btn-p{
+  font-family:var(--fd);font-size:.9rem;font-weight:600;
+  padding:.85rem 2rem;border-radius:50px;
+  background:linear-gradient(135deg,#7C3AED,#06B6D4);
+  color:#fff;text-decoration:none;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 4px 24px rgba(124,58,237,.35);
+  display:inline-flex;align-items:center;gap:.4rem;
+}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(124,58,237,.5)}
+
+.btn-g{
+  font-family:var(--fd);font-size:.9rem;font-weight:600;
+  padding:.85rem 2rem;border-radius:50px;
+  background:rgba(255,255,255,.05);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.14);
+  color:var(--text);text-decoration:none;
+  transition:background .2s,border-color .2s,transform .2s;
+  display:inline-flex;align-items:center;gap:.4rem;
+}
+.btn-g:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28);transform:translateY(-2px)}
+
+/* ── QUICK LINKS ── */
+.quick{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.ql{
+  font-size:.78rem;font-weight:500;
+  padding:.3rem .85rem;border-radius:50px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);
+  color:var(--text2);text-decoration:none;
+  transition:border-color .2s,color .2s;
+}
+.ql:hover{border-color:rgba(167,139,250,.5);color:#A78BFA}
+
+/* ── COUNTDOWN ── */
+.countdown{
+  font-family:var(--fm);
+  font-size:.72rem;
+  color:var(--text3);
+  margin-top:2.5rem;
+  letter-spacing:.1em;
+}
+#cd-num{color:#A78BFA;font-weight:700}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  body{cursor:auto}
+  #cur-o,#cur-i{display:none}
+  .glitch-num{letter-spacing:-2px}
+  .actions{flex-direction:column;align-items:center}
+  .btn-p,.btn-g{width:100%;max-width:260px;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<div id="cur-o"></div>
+<div id="cur-i"></div>
+
+<!-- MORPH BG -->
+<div id="morph-bg">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="rg1" cx="30%" cy="30%"><stop offset="0%" stop-color="#7C3AED" stop-opacity=".9"/><stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg2" cx="70%" cy="70%"><stop offset="0%" stop-color="#06B6D4" stop-opacity=".9"/><stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg3" cx="20%" cy="75%"><stop offset="0%" stop-color="#EC4899" stop-opacity=".8"/><stop offset="100%" stop-color="#EC4899" stop-opacity="0"/></radialGradient>
+    </defs>
+    <path id="mp1" fill="url(#rg1)" opacity=".6"/>
+    <path id="mp2" fill="url(#rg2)" opacity=".5"/>
+    <path id="mp3" fill="url(#rg3)" opacity=".4"/>
+  </svg>
+</div>
+
+<!-- BURST CANVAS -->
+<canvas id="burst-canvas"></canvas>
+
+<!-- CONTENT -->
+<div class="wrap">
+  <div class="glitch-num">404</div>
+
+  <div class="mono-tag">PAGE_NOT_FOUND</div>
+
+  <h1>Lost in <em>Latent Space</em></h1>
+  <p class="sub">This page doesn't exist — or maybe it got lost somewhere between the attention layers. Let's get you back on track.</p>
+
+  <div class="actions">
+    <a href="/" class="btn-p">← Back to Home</a>
+    <a href="/#contact" class="btn-g">Get in Touch</a>
+  </div>
+
+  <div class="quick">
+    <a href="/#about"    class="ql">About</a>
+    <a href="/#projects" class="ql">Projects</a>
+    <a href="/#research" class="ql">Research</a>
+    <a href="/#blog"     class="ql">Writing</a>
+    <a href="/#github"   class="ql">GitHub</a>
+    <a href="/#contact"  class="ql">Contact</a>
+  </div>
+
+  <div class="countdown">Auto-redirecting in <span id="cd-num">10</span>s</div>
+</div>
+
+<script>
+/* ── CURSOR ── */
+const co=document.getElementById('cur-o'),ci=document.getElementById('cur-i');
+let mx=-200,my=-200,ox=-200,oy=-200;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;ci.style.left=mx+'px';ci.style.top=my+'px'});
+(function cl(){ox+=(mx-ox)*.13;oy+=(my-oy)*.13;co.style.left=ox+'px';co.style.top=oy+'px';requestAnimationFrame(cl)})();
+
+/* ── MORPH BG ── */
+function randBlob(cx,cy,r,pts=7){let d='M';for(let i=0;i<pts;i++){const a=(i/pts)*Math.PI*2;const rr=r*(0.7+Math.random()*.6);const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;d+=`${i===0?'':' L'}${x.toFixed(1)},${y.toFixed(1)}`}return d+'Z'}
+const morphEls=[
+  {el:document.getElementById('mp1'),cx:320,cy:260,r:340},
+  {el:document.getElementById('mp2'),cx:1100,cy:640,r:300},
+  {el:document.getElementById('mp3'),cx:180,cy:700,r:270},
+];
+function morphStep(){morphEls.forEach(m=>{m.el.setAttribute('d',randBlob(m.cx,m.cy,m.r))})}
+morphStep();setInterval(morphStep,2200);
+
+/* ── BURST PARTICLES ── */
+const bCv=document.getElementById('burst-canvas'),bCtx=bCv.getContext('2d');
+function resizeBurst(){bCv.width=window.innerWidth;bCv.height=window.innerHeight}
+resizeBurst();window.addEventListener('resize',resizeBurst);
+const BCOLS=['#7C3AED','#06B6D4','#EC4899','#F59E0B','#10B981','#A78BFA','#67E8F9','#F9A8D4'];
+let bursts=[];
+class BParticle{constructor(x,y){this.x=x;this.y=y;const a=Math.random()*Math.PI*2,s=2+Math.random()*8;this.vx=Math.cos(a)*s;this.vy=Math.sin(a)*s;this.r=2+Math.random()*4;this.alpha=1;this.dec=0.018+Math.random()*.015;this.color=BCOLS[Math.floor(Math.random()*BCOLS.length)];this.gravity=.12}update(){this.x+=this.vx;this.y+=this.vy;this.vy+=this.gravity;this.vx*=.97;this.alpha-=this.dec}draw(){bCtx.beginPath();bCtx.arc(this.x,this.y,this.r,0,Math.PI*2);bCtx.fillStyle=this.color;bCtx.globalAlpha=Math.max(0,this.alpha);bCtx.fill()}}
+function spawnBurst(x,y,n=55){for(let i=0;i<n;i++)bursts.push(new BParticle(x,y))}
+function animBurst(){bCtx.clearRect(0,0,bCv.width,bCv.height);bCtx.globalAlpha=1;bursts=bursts.filter(p=>{p.update();p.draw();return p.alpha>0});requestAnimationFrame(animBurst)}
+animBurst();
+document.addEventListener('click',e=>{spawnBurst(e.clientX,e.clientY)});
+
+/* ── AUTO REDIRECT COUNTDOWN ── */
+let secs=10;
+const cdEl=document.getElementById('cd-num');
+const timer=setInterval(()=>{
+  secs--;
+  cdEl.textContent=secs;
+  if(secs<=0){clearInterval(timer);window.location.href='/'}
+},1000);
+// Cancel redirect if user interacts
+document.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>clearInterval(timer)));
+</script>
+</body>
+</html>
