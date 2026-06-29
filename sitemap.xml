@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <url>
+        <loc>https://sayandutta.netlify.app/</loc>
+        <lastmod>2026-06-29</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <url>
+        <loc>https://sayandutta.netlify.app/how-i-built-a-custom-llm-for-cs-education-with-blix-ai</loc>
+        <lastmod>2026-06-29</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://sayandutta.netlify.app/orchestrating-multiple-ai-models-architecture-decisions</loc>
+        <lastmod>2026-06-29</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://sayandutta.netlify.app/from-iit-patna-to-building-ai-products-my-dev-journey</loc>
+        <lastmod>2026-06-29</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://sayandutta.netlify.app/the-future-of-ai-in-education-opportunities-challenges</loc>
+        <lastmod>2026-06-29</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://sayandutta.netlify.app/my-autobiography-a-journey-from-beldanga-to-tech-life</loc>
+        <lastmod>2026-06-29</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management</loc>
+        <lastmod>2026-06-29</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+</urlset>

@@ -1,0 +1,7 @@
+User-agent: *
+
+Allow: /
+
+Sitemap: https://sayandutta.netlify.app/sitemap.xml
+
+Host: https://sayandutta.netlify.app
