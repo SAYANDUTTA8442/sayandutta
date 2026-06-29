@@ -1,4 +1,4 @@
-<!-- blog6.html -->
+<!-- ./tersql-a-new-approach-to-database-management -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,40 +8,126 @@
 
 <!-- ── PRIMARY SEO ── -->
 <title>TerSQL — How I Built an Intelligent Multi-Database CLI | Sayan Dutta, IIT Patna</title>
-<meta name="description" content="The full story of how Sayan Dutta (IIT Patna) built TerSQL — from a datatype mismatch in class to building a unified CLI with NLP over MySQL, PostgreSQL and MongoDB. A developer's journey from frustration to open-source.">
-<meta name="keywords" content="TerSQL, Sayan Dutta TerSQL, multi-database CLI Python, NLP SQL tool, IIT Patna project, MySQL PostgreSQL MongoDB CLI, database unification, Sayan Dutta developer">
+<meta name="description" content="The full story of how Sayan Dutta (IIT Patna) built TerSQL — a unified, offline NLP-powered CLI over MySQL, PostgreSQL, and MongoDB. From a classroom datatype mismatch to a working open-source plugin architecture.">
+<meta name="keywords" content="TerSQL, Sayan Dutta TerSQL, multi-database CLI Python, offline NLP SQL tool, IIT Patna project, MySQL PostgreSQL MongoDB CLI, database unification, open source database CLI, Python REPL database, Sayan Dutta developer">
 <meta name="author" content="Sayan Dutta">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-<link rel="canonical" href="https://sayandutta.in/blog6.html">
+<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+<!-- FIXED: canonical previously contained "/./" — normalized to a clean URL -->
+<link rel="canonical" href="https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management">
+<link rel="alternate" hreflang="en-in" href="https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management">
+<link rel="alternate" hreflang="x-default" href="https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management">
 
 <!-- ── OPEN GRAPH ── -->
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://sayandutta.in/blog6.html">
+<meta property="og:site_name" content="Sayan Dutta">
+<!-- FIXED: og:url previously contained "/./" -->
+<meta property="og:url" content="https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management">
 <meta property="og:title" content="TerSQL — How I Built an Intelligent Multi-Database CLI">
-<meta property="og:description" content="From MySQL to Oracle to MongoDB to PostgreSQL — a 2nd-year student's frustration with database fragmentation became TerSQL: a unified NLP-powered CLI. Here's the full story.">
+<meta property="og:description" content="From MySQL to Oracle to MongoDB to PostgreSQL — a 2nd-year student's frustration with database fragmentation became TerSQL: a unified, offline NLP-powered CLI. Here's the full story.">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/108791058?v=4">
+<meta property="og:image:alt" content="Sayan Dutta — author of TerSQL">
+<meta property="og:image:width" content="460">
+<meta property="og:image:height" content="460">
 <meta property="og:locale" content="en_IN">
+<meta property="article:published_time" content="2026-04-01T00:00:00+05:30">
+<meta property="article:modified_time" content="2026-04-11T00:00:00+05:30">
+<meta property="article:author" content="https://sayandutta.netlify.app">
+<meta property="article:section" content="Engineering">
+<meta property="article:tag" content="TerSQL">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Database CLI">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Open Source">
 
 <!-- ── TWITTER CARD ── -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="TerSQL — How I Built an Intelligent Multi-Database CLI">
 <meta name="twitter:description" content="MySQL in self-study. Oracle in class. MongoDB for curiosity. PostgreSQL for exploration. Four databases, four syntaxes, one frustrated student — and one idea that became TerSQL.">
 <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/108791058?v=4">
+<meta name="twitter:image:alt" content="Sayan Dutta — author of TerSQL">
+<meta name="twitter:creator" content="@sayandutta8653">
+<meta name="twitter:site" content="@sayandutta8653">
+<meta name="twitter:label1" content="Written by">
+<meta name="twitter:data1" content="Sayan Dutta">
+<meta name="twitter:label2" content="Reading time">
+<meta name="twitter:data2" content="10 minutes">
 
-<!-- ── STRUCTURED DATA ── -->
+<!-- ── STRUCTURED DATA — TechArticle (more specific than generic Article
+     for build-log / technical content; better rich-result eligibility) ── -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": "TechArticle",
   "headline": "TerSQL — How I Built an Intelligent Multi-Database CLI from Classroom Frustration",
-  "description": "The full development story of TerSQL by Sayan Dutta — from datatype mismatches in an Oracle classroom to building a unified NLP-powered CLI for MySQL, PostgreSQL and MongoDB.",
-  "author": { "@type": "Person", "name": "Sayan Dutta", "url": "https://sayandutta.in" },
+  "description": "The full development story of TerSQL by Sayan Dutta — from datatype mismatches in an Oracle classroom to building a unified, offline NLP-powered CLI for MySQL, PostgreSQL and MongoDB.",
+  "url": "https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management",
+  "mainEntityOfPage": "https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management",
   "datePublished": "2026-04-01",
   "dateModified": "2026-04-11",
+  "inLanguage": "en-IN",
   "image": "https://avatars.githubusercontent.com/u/108791058?v=4",
-  "url": "https://sayandutta.in/blog6.html",
-  "mainEntityOfPage": "https://sayandutta.in/blog6.html",
-  "keywords": ["TerSQL", "database CLI", "NLP SQL", "Python", "IIT Patna", "Sayan Dutta"]
+  "proficiencyLevel": "Intermediate",
+  "dependencies": "Python 3.10+, mysql-connector-python, psycopg2-binary, pymongo, tabulate, prompt_toolkit",
+  "author": {
+    "@type": "Person",
+    "@id": "https://sayandutta.netlify.app/#person",
+    "name": "Sayan Dutta",
+    "url": "https://sayandutta.netlify.app"
+  },
+  "publisher": {
+    "@type": "Person",
+    "@id": "https://sayandutta.netlify.app/#person",
+    "name": "Sayan Dutta",
+    "url": "https://sayandutta.netlify.app"
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "@id": "https://sayandutta.netlify.app/#blog",
+    "name": "Sayan Dutta — Blog"
+  },
+  "about": { "@id": "https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management#software" },
+  "keywords": ["TerSQL", "database CLI", "offline NLP", "Python", "MySQL", "PostgreSQL", "MongoDB", "IIT Patna", "Sayan Dutta"],
+  "articleSection": "Engineering"
+}
+</script>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- ── STRUCTURED DATA — SoftwareSourceCode
+     (describes the actual open-source project this post is about) ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "@id": "https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management#software",
+  "name": "TerSQL",
+  "description": "An intelligent, offline-first multi-database CLI with a regex-based NLP layer, supporting MySQL, PostgreSQL, and MongoDB through a unified plugin architecture.",
+  "codeRepository": "https://github.com/developersayandutta/TerSQL",
+  "programmingLanguage": "Python",
+  "runtimePlatform": "Python 3.10+",
+  "softwareVersion": "0.0.2-beta",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": { "@id": "https://sayandutta.netlify.app/#person" },
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, Windows, macOS"
+}
+</script>
+
+<!-- ── STRUCTURED DATA — BreadcrumbList ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Sayan Dutta", "item": "https://sayandutta.netlify.app" },
+    { "@type": "ListItem", "position": 2, "name": "Projects", "item": "https://sayandutta.netlify.app/#projects" },
+    { "@type": "ListItem", "position": 3, "name": "TerSQL — Intelligent Multi-Database CLI", "item": "https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management" }
+  ]
 }
 </script>
 
@@ -433,7 +519,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:2rem 5vw;display:flex;
     <div class="hero-cta-row">
       <a href="https://github.com/developersayandutta/TerSQL" target="_blank" class="cta-primary">View on GitHub →</a>
       <a href="./index.html#projects" class="cta-secondary">All Projects</a>
-      <a href="./blog5.html" class="cta-secondary">About Me</a>
+      <a href="././my-autobiography-a-journey-from-beldanga-to-tech-life" class="cta-secondary">About Me</a>
     </div>
   </div>
 </div>
@@ -1239,9 +1325,9 @@ SQL_FIXES <span class="op">=</span> {
     <a href="./index.html" class="connect-card">
       <div class="connect-icon">🌐</div>
       <div class="connect-name">Portfolio</div>
-      <div class="connect-handle">sayandutta.in</div>
+      <div class="connect-handle">sayandutta.netlify.app</div>
     </a>
-    <a href="./blog5.html" class="connect-card">
+    <a href="././my-autobiography-a-journey-from-beldanga-to-tech-life" class="connect-card">
       <div class="connect-icon">📖</div>
       <div class="connect-name">Full Story</div>
       <div class="connect-handle">IIT Patna autobiography</div>
@@ -1312,27 +1398,27 @@ SQL_FIXES <span class="op">=</span> {
   <div class="sidebar-card">
     <div class="sidebar-title">Share</div>
     <div class="share-btns">
-      <a href="https://twitter.com/intent/tweet?text=TerSQL+%E2%80%94+Intelligent+Multi-Database+CLI+by+Sayan+Dutta%2C+IIT+Patna&url=https://sayandutta.in/blog6.html" class="share-btn" target="_blank">𝕏 Tweet</a>
-      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://sayandutta.in/blog6.html" class="share-btn" target="_blank">in Share</a>
+      <a href="https://twitter.com/intent/tweet?text=TerSQL+%E2%80%94+Intelligent+Multi-Database+CLI+by+Sayan+Dutta%2C+IIT+Patna&url=https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management" class="share-btn" target="_blank">𝕏 Tweet</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://sayandutta.netlify.app/tersql-a-new-approach-to-database-management" class="share-btn" target="_blank">in Share</a>
       <a href="#" class="share-btn" onclick="navigator.clipboard.writeText(location.href);this.textContent='✓ Copied!';setTimeout(()=>this.textContent='🔗 Copy link',2000);return false">🔗 Copy</a>
     </div>
   </div>
 
   <div class="sidebar-card">
     <div class="sidebar-title">More from Sayan</div>
-    <a href="blog1.html" class="related-post">
+    <a href="./how-i-built-a-custom-llm-for-cs-education-with-blix-ai" class="related-post">
       <div class="related-thumb rth-1">🤖</div>
       <div><div class="related-ttl">How I Built a Custom LLM with Blix.ai</div><div class="related-dt">AI / LLMs · 10 min</div></div>
     </a>
-    <a href="blog2.html" class="related-post">
+    <a href="./orchestrating-multiple-ai-models-architecture-decisions" class="related-post">
       <div class="related-thumb rth-2">⚡</div>
       <div><div class="related-ttl">Orchestrating Multiple AI Models</div><div class="related-dt">Full Stack · 7 min</div></div>
     </a>
-    <a href="blog5.html" class="related-post">
+    <a href="./my-autobiography-a-journey-from-beldanga-to-tech-life" class="related-post">
       <div class="related-thumb rth-3">🧑‍💻</div>
       <div><div class="related-ttl">Sayan Dutta — Full Autobiography</div><div class="related-dt">Journey · 12 min</div></div>
     </a>
-    <a href="blog4.html" class="related-post">
+    <a href="./the-future-of-ai-in-education-opportunities-challenges" class="related-post">
       <div class="related-thumb rth-4">🎯</div>
       <div><div class="related-ttl">I Was Never a Topper — IIT Patna Story</div><div class="related-dt">Journey · 7 min</div></div>
     </a>
