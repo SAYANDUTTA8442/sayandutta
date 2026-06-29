@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 User-agent: *
 
 Allow: /
 
 Sitemap: https://sayandutta.netlify.app/sitemap.xml
 
+=======
+User-agent: *
+
+Allow: /
+
+Sitemap: https://sayandutta.netlify.app/sitemap.xml
+
+>>>>>>> 901d01af1990c6cf8f3c987e8ae2b54dc5398c12
 Host: https://sayandutta.netlify.app
