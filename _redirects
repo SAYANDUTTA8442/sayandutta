@@ -9,6 +9,7 @@
 /tersql-a-new-approach-to-database-management                 /tersql-a-new-approach-to-database-management.html                200
 
 /metamorph               /metamorph.html
+/sayandutta-cv           /Sayan_Dutta_Research_CV.pdf
 /resume                                                       /resume.html               200
 
 # Redirect old .html URLs to clean versions (SEO + canonical hygiene)
@@ -21,4 +22,6 @@
 /resume.html                                                       /resume                                                     301!
 # Fallback — 404 page
 /*    /index.html   404
-/metamorph.html   /metamorph 404
+/metamorph.html   /metamorph 301!
+
+/Sayan_Dutta_Research_CV.pdf       /sayandutta-cv          301!
