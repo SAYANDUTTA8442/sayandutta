@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Evolution of Blix: From a Stateless Chatbot to a Cognitive Architecture | Sayan Dutta</title>
+<meta name="description" content="How a mentor's question at a 2025 hackathon — 'why are the conversations personalized?' — turned a JSON hack into two years of building Blix, a modular cognitive AI architecture.">
+<meta name="author" content="Sayan Dutta">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#04020C">
+<link rel="canonical" href="https://sayandutta.netlify.app/evolution-of-blix-from-a-stateless-chatbot">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Sayan Dutta">
+<meta property="og:title" content="The Evolution of Blix: From a Stateless Chatbot to a Cognitive Architecture">
+<meta property="og:description" content="A mentor's question at a hackathon — 'why are the conversations personalized?' — quietly redirected two years of building. This is that story.">
+<meta property="og:url" content="https://sayandutta.netlify.app/evolution-of-blix-from-a-stateless-chatbot">
+<meta property="og:image" content="https://sayandutta.netlify.app/og-image.png">
+<meta property="article:author" content="Sayan Dutta">
+<meta property="article:section" content="AI / LLMs">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Evolution of Blix: From a Stateless Chatbot to a Cognitive Architecture">
+<meta name="twitter:description" content="How a mentor's one question turned a hackathon JSON hack into two years of building a cognitive AI architecture.">
+<meta name="twitter:image" content="https://sayandutta.netlify.app/og-image.png">
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The Evolution of Blix: From a Stateless Chatbot to a Cognitive Architecture",
+  "author": {"@type": "Person", "name": "Sayan Dutta", "url": "https://sayandutta.netlify.app"},
+  "datePublished": "2026-08-15",
+  "publisher": {"@type": "Person", "name": "Sayan Dutta"},
+  "mainEntityOfPage": "https://sayandutta.netlify.app/evolution-of-blix-from-a-stateless-chatbot",
+  "about": {"@type": "SoftwareApplication", "name": "Blix"}
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --v:#7C3AED;--c:#06B6D4;--p:#EC4899;--a:#F59E0B;--g:#10B981;--b:#3B82F6;
+  --bg:#04020C;--text:#F0EEFF;--text2:#A89EC9;--text3:#5C5280;
+  --fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'Share Tech Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.7;overflow-x:hidden;cursor:none}
+::selection{background:rgba(124,58,237,.35);color:#fff}
+
+/* ── CURSOR ── */
+#cur-o{width:38px;height:38px;border:1.5px solid rgba(124,58,237,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s,background .2s;background:rgba(124,58,237,.04);backdrop-filter:blur(4px)}
+#cur-i{width:7px;height:7px;background:#A78BFA;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 12px #A78BFA;transition:transform .1s}
+body:has(a:hover) #cur-o,body:has(button:hover) #cur-o{width:54px;height:54px;border-color:#A78BFA;background:rgba(124,58,237,.08)}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8rem;transition:opacity .7s,visibility .7s}
+#loader.out{opacity:0;visibility:hidden}
+.ld-bar-wrap{width:180px;height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;opacity:0;animation:ldIn .4s .2s forwards}
+.ld-bar{height:100%;width:0;background:linear-gradient(90deg,#7C3AED,#06B6D4,#EC4899,#F59E0B);border-radius:2px;animation:ldProg 1.3s .3s cubic-bezier(.4,0,.2,1) forwards}
+.ld-sub{font-family:var(--fm);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);opacity:0;animation:ldIn .4s .3s forwards}
+@keyframes ldIn{to{opacity:1}}
+@keyframes ldProg{to{width:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── READING PROGRESS ── */
+#prog-wrap{position:fixed;top:0;left:0;right:0;height:2px;z-index:150;background:rgba(255,255,255,.04)}
+#prog-bar{height:100%;width:0%;background:linear-gradient(90deg,#7C3AED,#06B6D4,#EC4899);box-shadow:0 0 10px rgba(124,58,237,.6)}
+
+#morph-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.13}
+#morph-bg svg{width:100%;height:100%}
+
+/* ── NAV ── */
+nav{position:fixed;top:2px;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 5vw;background:rgba(4,2,12,.55);backdrop-filter:blur(28px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+.nav-logo-img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(124,58,237,.45)}
+.nav-logo-name{font-family:var(--fd);font-size:1rem;font-weight:700;background:linear-gradient(135deg,#7C3AED,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.3px}
+.nav-back{font-family:var(--fd);font-size:.82rem;font-weight:600;letter-spacing:.03em;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .2s,gap .2s}
+.nav-back:hover{color:#fff;gap:.75rem}
+.nav-back svg{transition:transform .2s}
+.nav-back:hover svg{transform:translateX(-3px)}
+
+section{position:relative;z-index:2}
+
+/* ── ARTICLE HEADER ── */
+#art-hero{max-width:760px;margin:0 auto;padding:9.5rem 5vw 3rem}
+.art-tag{display:inline-flex;align-items:center;gap:.5rem;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.3rem .9rem;border-radius:50px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.28);color:#A78BFA;margin-bottom:1.6rem;opacity:0;animation:fadeUp .6s .1s forwards}
+.art-title{font-family:var(--fd);font-size:clamp(2.1rem,5.4vw,3.4rem);font-weight:800;line-height:1.08;letter-spacing:-1.2px;margin-bottom:1.4rem;opacity:0;animation:fadeUp .6s .22s forwards}
+.art-title em{font-style:normal;background:linear-gradient(135deg,#7C3AED,#06B6D4,#EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:gf 5s linear infinite}
+@keyframes gf{0%{background-position:0%}100%{background-position:200%}}
+.art-dek{font-size:1.05rem;font-weight:300;color:var(--text2);line-height:1.75;max-width:600px;margin-bottom:2rem;opacity:0;animation:fadeUp .6s .34s forwards}
+.art-meta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding-top:1.6rem;border-top:1px solid rgba(255,255,255,.08);opacity:0;animation:fadeUp .6s .46s forwards}
+.art-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(124,58,237,.4)}
+.art-by-name{font-family:var(--fd);font-size:.86rem;font-weight:700}
+.art-by-sub{font-family:var(--fm);font-size:.72rem;color:var(--text3);letter-spacing:.03em}
+
+/* ── ARTICLE BODY ── */
+#art-body{max-width:680px;margin:0 auto;padding:1rem 5vw 5rem}
+.chap{margin-top:3.6rem}
+.chap-eyebrow{font-family:var(--fm);font-size:.72rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem;color:var(--text3)}
+.chap-eyebrow .num{color:#A78BFA;font-weight:700}
+.chap-eyebrow::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(124,58,237,.4),transparent)}
+.chap h2{font-family:var(--fd);font-size:clamp(1.4rem,3vw,1.85rem);font-weight:700;line-height:1.25;letter-spacing:-.4px;margin-bottom:1.2rem}
+.chap p{font-size:1rem;font-weight:300;color:var(--text2);margin-bottom:1.15rem}
+.chap p strong{color:var(--text);font-weight:600}
+.chap p em{color:#A78BFA;font-style:normal;font-weight:500}
+.dropcap::first-letter{font-family:var(--fd);font-size:3.4rem;font-weight:800;float:left;line-height:.8;padding:.1rem .5rem 0 0;background:linear-gradient(135deg,#A78BFA,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+blockquote{position:relative;margin:2.2rem 0;padding:1.4rem 1.6rem 1.4rem 2.2rem;background:rgba(124,58,237,.06);border-left:2.5px solid;border-image:linear-gradient(180deg,#7C3AED,#06B6D4) 1;border-radius:0 12px 12px 0}
+blockquote p{font-family:var(--fd);font-size:1.15rem;font-weight:600;color:var(--text);font-style:normal;margin-bottom:0;line-height:1.5}
+blockquote cite{display:block;margin-top:.6rem;font-family:var(--fm);font-size:.7rem;color:var(--text3);letter-spacing:.05em;font-style:normal}
+
+.bugcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-left:2.5px solid #EC4899;border-radius:0 12px 12px 0;padding:1.1rem 1.4rem;margin:1.6rem 0}
+.bugcard .bc-lbl{font-family:var(--fm);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#F9A8D4;margin-bottom:.5rem;display:block}
+.bugcard p{font-size:.9rem;color:var(--text2);margin-bottom:0;font-weight:300}
+
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:2rem 0}
+.stat-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1rem .9rem;text-align:center}
+.stat-box .n{font-family:var(--fd);font-size:1.5rem;font-weight:800;display:block;background:linear-gradient(135deg,#A78BFA,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-box .l{font-size:.66rem;color:var(--text3);margin-top:.2rem;letter-spacing:.03em}
+
+.divider{width:100%;display:flex;align-items:center;gap:1rem;margin:3rem 0;color:var(--text3)}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.09)}
+.divider span{font-family:var(--fm);font-size:.85rem;letter-spacing:.3em}
+
+.epi{margin-top:4rem;padding:2rem 1.8rem;border-radius:20px;background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(6,182,212,.05));border:1px solid rgba(124,58,237,.22)}
+.epi .chap-eyebrow{color:#A78BFA}
+.epi p{color:var(--text2)}
+.epi p:last-child{margin-bottom:0;color:var(--text);font-weight:500}
+
+/* ── AUTHOR CARD ── */
+.author-card{max-width:680px;margin:3.5rem auto 0;padding:1.8rem;border-radius:20px;background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.09);display:flex;gap:1.2rem;align-items:center}
+.author-card img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid rgba(124,58,237,.4);flex-shrink:0}
+.author-card h4{font-family:var(--fd);font-size:1rem;font-weight:700;margin-bottom:.3rem}
+.author-card p{font-size:.85rem;color:var(--text2);font-weight:300;line-height:1.6;margin-bottom:.6rem}
+.author-links{display:flex;gap:.8rem}
+.author-links a{font-size:.75rem;font-family:var(--fd);font-weight:600;color:#A78BFA;text-decoration:none}
+.author-links a:hover{color:#C4B5FD}
+
+/* ── SHARE / NEXT ── */
+.art-foot-nav{max-width:680px;margin:3rem auto 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.tag-pills{display:flex;flex-wrap:wrap;gap:.5rem}
+.tp{font-size:.72rem;padding:.28rem .8rem;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--text2)}
+.back-btn{font-family:var(--fd);font-size:.85rem;font-weight:600;padding:.7rem 1.6rem;border-radius:50px;background:linear-gradient(135deg,#7C3AED,#06B6D4);color:#fff;text-decoration:none;box-shadow:0 4px 20px rgba(124,58,237,.3);transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:.5rem}
+.back-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(124,58,237,.45)}
+
+footer{background:rgba(255,255,255,.01);border-top:1px solid rgba(255,255,255,.06);padding:2rem 5vw;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;flex-wrap:wrap;gap:1rem;margin-top:4rem}
+.fl-logo{font-family:var(--fd);font-weight:800;font-size:1.1rem;background:linear-gradient(135deg,#A78BFA,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fl-note{font-size:.78rem;color:var(--text3)}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:768px){
+  body{cursor:auto}
+  #cur-o,#cur-i{display:none}
+  #art-hero{padding:7.5rem 6vw 2.5rem}
+  #art-body{padding:.5rem 6vw 4rem}
+  .stat-row{grid-template-columns:1fr}
+  .author-card{flex-direction:column;text-align:center}
+  footer{flex-direction:column;align-items:flex-start;gap:.6rem}
+  nav{padding:.85rem 5vw}
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="ld-bar-wrap"><div class="ld-bar"></div></div>
+  <div class="ld-sub">Loading article...</div>
+</div>
+
+<div id="cur-o"></div>
+<div id="cur-i"></div>
+
+<div id="prog-wrap"><div id="prog-bar"></div></div>
+
+<div id="morph-bg">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="rg1" cx="20%" cy="15%"><stop offset="0%" stop-color="#7C3AED" stop-opacity=".9"/><stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg2" cx="85%" cy="35%"><stop offset="0%" stop-color="#06B6D4" stop-opacity=".9"/><stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/></radialGradient>
+      <radialGradient id="rg3" cx="15%" cy="85%"><stop offset="0%" stop-color="#EC4899" stop-opacity=".9"/><stop offset="100%" stop-color="#EC4899" stop-opacity="0"/></radialGradient>
+    </defs>
+    <path id="mp1" fill="url(#rg1)" opacity=".5"/>
+    <path id="mp2" fill="url(#rg2)" opacity=".4"/>
+    <path id="mp3" fill="url(#rg3)" opacity=".35"/>
+  </svg>
+</div>
+
+<nav>
+  <a href="./index.html" class="nav-logo">
+    <img class="nav-logo-img" src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+    <span class="nav-logo-name">Sayan Dutta</span>
+  </a>
+  <a href="./index.html#blog" class="nav-back">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    All Writing
+  </a>
+</nav>
+
+<article>
+  <header id="art-hero">
+    <span class="art-tag">🧠 AI / LLMs</span>
+    <h1 class="art-title">The Evolution of Blix: From a Stateless Chatbot to a <em>Cognitive Architecture</em></h1>
+    <p class="art-dek">A mentor's one question at a 2025 hackathon — "why are the conversations personalized?" — quietly redirected two years of building. This is that story, bugs and all.</p>
+    <div class="art-meta">
+      <img class="art-avatar" src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+      <div>
+        <div class="art-by-name">Sayan Dutta</div>
+        <div class="art-by-sub">Aug 2026 · 13 min read</div>
+      </div>
+    </div>
+  </header>
+
+  <div id="art-body">
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">Prologue</span></div>
+      <p>I want to write this down properly, not as a highlight reel, but as it actually happened — including the parts where I was wrong, the parts where I didn't know what I was doing, and the part where a single question from a stranger at a hackathon quietly redirected two years of my life. If you're building something similar, or stuck the way I was stuck, I hope the messy middle is the useful part, not the ending.</p>
+    </div>
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">01</span> 2024</div>
+      <h2>A chatbot with no past</h2>
+      <p class="dropcap">The first thing I ever shipped that talked back to people was, in hindsight, embarrassingly simple. An API call in, a response out. No database, no session, no state. Every message started the conversation over from nothing, and every reply was generated as if the model had never met the person typing.</p>
+      <p>At the time I didn't think of this as a limitation — I thought of it as <em>the product</em>. It worked exactly the way I expected an LLM app to work, because it was the only way I'd seen one work. You type, it replies, impressively well, and the illusion holds for exactly as long as you don't ask it to remember anything you said two messages ago.</p>
+      <p>I shipped it, people used it, and it did what it was built to do. I had no idea yet that "stateless" was going to become the exact word I'd spend the next two years fighting.</p>
+    </div>
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">02</span> April 2025</div>
+      <h2>Aignite, and a team called Bengal Blazers</h2>
+      <p>A few months later I found myself on a hackathon team — <strong>Team Bengal Blazers</strong> — building something with a very different weight to it. Not a toy chatbot. <strong>Memora</strong>: an AI memory and wellness companion designed for elderly users. The pitch practically wrote itself once you said it out loud: elderly people forget things — medication schedules, appointments, sometimes conversations they had that morning — and a companion that remembers <em>with</em> them, gently, could genuinely help.</p>
+      <p>We built fast, the way every hackathon team builds fast. React and Expo for the frontend so it could run on a phone. Flask on the backend. Firebase and a mix of SQLite/MySQL for storage. Ollama running the model locally, because we didn't want to depend on an internet connection for something meant to sit on an elderly relative's phone. Figma mockups the night before. GitHub Actions stitched together at 3 AM because someone insisted we needed CI even for a 36-hour build.</p>
+      <p>The feature list looked good on paper: mood and memory tracking by voice or text, smart medication and appointment reminders, GenAI conversations for emotional support, a memory diary to revisit cherished moments, an emergency SOS button, and a caregiver dashboard so family members could check in without hovering. We demoed it, and it worked — in the way hackathon projects work, which is to say it worked exactly for the three-minute window the judges were watching.</p>
+      <p>Then one of the mentors, after the demo, asked a question that wasn't hostile, wasn't even particularly probing on the surface. Just direct:</p>
+      <blockquote><p>"Why are the conversations personalized?"</p><cite>— a mentor, Aignite 2025</cite></blockquote>
+      <p>I opened my mouth to answer and realized I didn't have one. Not a real one. The conversations <em>sounded</em> personalized because the underlying model is extremely good at sounding like it's paying attention to you — it mirrors your tone, references things you just said, generates warmth on demand. But there was no actual mechanism underneath making that true across sessions. Ask it about something the user had mentioned yesterday, and it had no idea yesterday had happened.</p>
+      <p>For an app whose entire premise was <em>remembering with someone</em>, that was not a small gap. That was the whole product, hollowed out.</p>
+    </div>
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">03</span> Judging Round, T-minus 2 hours</div>
+      <h2>The JSON hack that got us through</h2>
+      <p>Not enough time to design anything. So I did the thing you do under deadline pressure: I built the smallest possible thing that could make the mentor's question stop being true.</p>
+      <p>A JSON file. Every message from the user, appended to it. Every time we built a prompt for the model, we read the whole file back in and stuffed it at the top of the context window. It wasn't memory in any real sense — it was a transcript wearing memory's clothes. But it worked well enough, in the demo, that the model started referencing things the user had said earlier in the session, and the illusion of personalization became slightly less of an illusion.</p>
+      <p>We finished the hackathon. I don't remember exactly where we placed — what I remember is going home afterward and actually looking at what I'd built, properly, for the first time since I wrote it in a panic.</p>
+    </div>
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">04</span></div>
+      <h2>The collapse</h2>
+      <p>It didn't take long to see the cracks. The JSON approach had one fatal property: it scaled the <em>wrong</em> thing. As the transcript grew, the model wasn't getting a better sense of the user — it was getting a longer document to skim, and skimming a long document is exactly the condition under which a language model starts filling gaps with plausible-sounding invention instead of retrieved fact.</p>
+      <p>Ask it something the user had said in passing three weeks and four hundred messages earlier, and one of two things happened: it missed it entirely, buried under everything more recent, or — worse — it hallucinated a confident, fluent, <strong>wrong</strong> answer. For a chatbot, that's a minor annoyance you can shrug off. For something whose target user is an elderly person trying to remember whether they took their 9 AM blood pressure medication, a confidently wrong answer isn't a bug, it's a liability with a face on it.</p>
+      <p>I sat with that for a while. Longer than I want to admit. The uncomfortable realization wasn't "I need to add memory" — I already had something calling itself memory. The realization was that <strong>memory without a mechanism for tracking what's actually true is just a slower, more expensive way to hallucinate.</strong> A JSON file doesn't know the difference between something the user said once as a joke and something they said as a standing fact about their life. Neither did my system.</p>
+    </div>
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">05</span></div>
+      <h2>Deciding to fix it one issue at a time</h2>
+      <p>I didn't sit down and design a cognitive architecture. Nobody does that on day one, and if someone tells you they did, they're reconstructing the story backward. What I actually did was smaller and less impressive: I made a list of the specific ways the JSON approach failed, and decided to eliminate them one at a time.</p>
+      <p>That decision — treat "the AI doesn't really remember me" as an engineering backlog of nameable, individually fixable failure modes, rather than a single feature you either have or don't — is the single choice that shaped everything that came after it.</p>
+      <p>Fixing hallucination meant the system needed to distinguish between what it had <em>said</em> and what it actually <em>believed</em>. That needed belief tracking. Belief tracking meant contradictions needed to be caught and resolved instead of silently piling up next to each other. That pulled in something like a Truth Maintenance Engine — a component whose entire job is noticing when two things the system believes can't both be true, and deciding which one wins. Once beliefs could contradict each other, I needed to know <em>why</em> something was believed in the first place, which is what dragged causal reasoning into the picture — cause graphs, counterfactuals, a way to ask "if X hadn't happened, would I still believe Y?"</p>
+      <p>And a flat pile of facts, even well-verified ones, doesn't scale. So it became a hierarchy: raw observations compressing upward into episodes, then conversations, then sessions, then daily and weekly summaries, then projects, concepts, principles, and eventually something I started calling a world model. Every fix exposed the next layer of problem sitting underneath it, like peeling paint.</p>
+      <p>I named the project <strong>Blix</strong>. Not for any clever reason — I needed a name for "the thing that fixes the JSON hack" before it turned into something bigger than that name deserved.</p>
+    </div>
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">06</span></div>
+      <h2>Early Blix: a Node.js backend and a portfolio to match</h2>
+      <p>The first real version wasn't the sprawling Python system it is now. I built a multiuser Blix.ai backend in Node.js — JWT authentication, per-user isolated file storage so one person's memory couldn't bleed into another's, streaming responses over SSE so replies felt alive instead of arriving as a wall of text, and a multi-mode prompt engine with distinct configurations for Default, Deep Research, Code, Canvas, and Flash modes, each tuned differently for the local model I was running through Ollama.</p>
+      <p>I paired it with a portfolio-facing frontend — a light-theme landing page and a three-panel chat interface, Space Mono and DM Sans as the visual identity, a live memory panel so you could actually <em>see</em> what the system currently believed about you while you talked to it, and later an Anthropic API integration alongside the local models. I wrote a README with branching ASCII architecture diagrams for all six subsystems I had at the time, because if I was going to build something this ambitious alone, I wanted it to at least look like it knew where it was going.</p>
+      <p>Underneath the polish, the early months were mostly bug-fixing in the least glamorous sense: atomic writes so a crash mid-save wouldn't corrupt a user's memory file, context corruption where the wrong user's data would occasionally leak into another session, session management that fell over under anything but the happiest path. Not architecture. Plumbing. But plumbing that had to work before anything built on top of it could be trusted.</p>
+      <p>Around this time I also wrote it up properly — a 323-page design document laying out the full architecture I was aiming for, and a 41-page academic report for my Minor Project I coursework, generated directly from the actual working codebase with 329 passing tests at the time. Having to explain the system to an academic reader, in prose, forced a kind of honesty that just writing code never does. You can hand-wave a function name. You cannot hand-wave a paragraph explaining why a Truth Maintenance Engine needs to exist.</p>
+    </div>
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">07</span></div>
+      <h2>Learning to audit instead of just patch</h2>
+      <p>Somewhere in the second year, I changed how I worked, and it's the change I'd point to if someone asked what actually took Blix from "a personal project with good intentions" to something with almost 2,700 tests behind it.</p>
+      <p>I stopped fixing bugs the moment I tripped over them and started auditing the whole codebase deliberately, on a schedule, the way I imagined a real engineering team would. Full static analysis across every module. Dynamic behavior review. Algorithm correctness checked against what the math was actually supposed to guarantee, not just what the code appeared to do. Every issue got written down before I touched a single line to fix it — severity, the exact subsystem, a plain description of the mechanism, a concrete scenario showing step-by-step how it breaks, a recommended fix, an honest effort estimate.</p>
+      <p>Some of those issues were the kind of thing that keeps you up at night once you understand them.</p>
+
+      <div class="bugcard">
+        <span class="bc-lbl">Bug ⋅ Double-decay on cache eviction</span>
+        <p>A policy-learning cache decayed a value once in memory, then — if that value got evicted under memory pressure and re-fetched from disk — decayed it <em>again</em> on the way back in, silently doubling a mathematical guarantee the whole learning algorithm depended on. Nothing crashed. Nothing logged an error. It just quietly converged wrong, forever, unless you went looking for exactly that interaction between eviction and re-fetch.</p>
+      </div>
+
+      <div class="bugcard">
+        <span class="bc-lbl">Bug ⋅ Silent double-close</span>
+        <p>A resource that could be closed twice — once explicitly by the code managing it, once implicitly by a context manager cleaning up after itself — and the second close would throw, but only if both code paths happened to run against the same object. Exactly the kind of thing that doesn't show up until it's in front of a real user.</p>
+      </div>
+
+      <div class="bugcard">
+        <span class="bc-lbl">Bug ⋅ Quiet O(n) scan</span>
+        <p>A consolidation process — the part responsible for compressing old memories upward through the hierarchy — was still doing a full table scan every time it ran. Technically correct, increasingly slow. Not a bug yet. Absolutely a bug the day the memory store stops being small.</p>
+      </div>
+
+      <p>I started numbering these. <span style="font-family:var(--fm);color:#A78BFA">A01</span>, <span style="font-family:var(--fm);color:#A78BFA">A02</span>, <span style="font-family:var(--fm);color:#A78BFA">A03</span>, and onward — eventually past thirty in a single audit pass. Instead of trying to fix all thirty in one heroic push, I worked through them in small batches, each batch getting its own version bump and its own dedicated test file, so a regression later would have somewhere obvious to be caught. Version after version, the backlog shrinking a little each time instead of all at once.</p>
+      <p>It's slower than just fixing things as you find them. It is also, as far as I can tell, the only way to keep a system this size from quietly rotting underneath you while you're busy being proud of the newest feature.</p>
+    </div>
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">08</span></div>
+      <h2>What Blix actually became</h2>
+      <p>Two years in, what started as "fix the JSON hack" is a roughly 75,000-line Python codebase spread across about thirty subsystems: hierarchical and hybrid graph-vector memory, causal reasoning, planning with genuine replanning when a plan fails partway through, metacognition that tracks the system's own confidence over time, a curiosity engine that decides what to go find out next, a policy-learning layer that uses bandit algorithms to pick a prompting strategy, and a world model that ranks imagined future scenarios by value before committing to one.</p>
+      <p>I introduced my own benchmark along the way — <strong>StateBench</strong> — because at some point "does it remember correctly" stopped being a question I could answer by vibes. It needed a number. That number is the State Hallucination Rate: how often the system's stated belief about something diverges from what actually happened, measured directly instead of assumed.</p>
+
+      <div class="stat-row">
+        <div class="stat-box"><span class="n">~75K</span><span class="l">Lines of Python</span></div>
+        <div class="stat-box"><span class="n">2,625</span><span class="l">Passing tests</span></div>
+        <div class="stat-box"><span class="n">~30</span><span class="l">Subsystems</span></div>
+      </div>
+
+      <p>Right now there's a live, numbered backlog of the issues I haven't gotten to yet — because there is always a next batch. That's not a failure state. Somewhere around chapter 7 I stopped expecting the backlog to ever hit zero and started treating a well-documented, honestly-prioritized backlog as a <em>sign of health</em>, not a sign I hadn't finished. Finished was never the goal. Correct, and honest about what isn't yet correct, was.</p>
+    </div>
+
+    <div class="chap reveal">
+      <div class="chap-eyebrow"><span class="num">09</span></div>
+      <h2>What it actually took, night after night</h2>
+      <p>None of this came from a course or a mentor walking me through it. It came from Claude, ChatGPT, and Gemini open in one browser tab and YouTube open in another, most nights, for two years. I'd hit something — a cache decaying twice, a connection closing itself into corruption, a config file failing silently while the whole system fell back to defaults without telling anyone — and I'd go learn whatever I actually needed to understand <em>why</em> it broke, not just copy a patch that made the symptom go away.</p>
+      <p>There were long stretches where nothing worked. Versions where I fixed one thing and broke two others. Nights where the fix I was sure would work didn't, and I had no one in the room to ask "am I even thinking about this correctly." I want to be honest about that part, because the polished version of this story skips it, and the skipped part is usually the part that would have actually helped someone else who's stuck right now.</p>
+    </div>
+
+    <div class="divider"><span>· · ·</span></div>
+
+    <div class="chap epi reveal">
+      <div class="chap-eyebrow"><span class="num">Epilogue</span></div>
+      <h2>The one thing I actually learned</h2>
+      <p>If two years compress down to a single lesson, it isn't about knowledge graphs, or Truth Maintenance Engines, or Thompson sampling for policy selection. It's this: <strong>AI tools plus YouTube are genuinely enough</strong> — not enough to skip learning, but enough that there is no longer a real excuse for not learning something, whatever it is, if you're willing to sit with the failure long enough to understand it instead of just making it go away.</p>
+      <p>I didn't have someone senior walking me through causal graphs or hierarchical memory compression. I had a search bar, a chat window, and a lot of nights where the thing I built that day simply didn't work, and I stayed with it instead of closing the laptop.</p>
+      <p>The mentor's question at Aignite was never really about personalization. It was about whether I understood what I'd built well enough to know it was fake. That day, I didn't. I do now — mostly because I spent two years refusing to let the honest answer stay "it just sounds personalized."</p>
+      <p>Blix isn't finished. There's a numbered list of open issues sitting in a file right now, waiting for the next version, the way there has been at every point in this story. That's not a bug in the process. That's the process.</p>
+    </div>
+
+  </div>
+
+  <div class="author-card reveal">
+    <img src="https://avatars.githubusercontent.com/u/108791058?v=4" alt="Sayan Dutta">
+    <div>
+      <h4>Sayan Dutta</h4>
+      <p>BS-MS student at IIT Patna, building Blix since June 2024. Co-author of an EMNLP 2026 submission on causal empathy reasoning.</p>
+      <div class="author-links">
+        <a href="https://github.com/SAYANDUTTA8442" target="_blank" rel="noopener noreferrer">GitHub →</a>
+        <a href="https://linkedin.com/in/sayandutta8653128442" target="_blank" rel="noopener noreferrer">LinkedIn →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="art-foot-nav reveal">
+    <div class="tag-pills">
+      <span class="tp">Cognitive Architecture</span>
+      <span class="tp">Memory-Augmented AI</span>
+      <span class="tp">Blix</span>
+      <span class="tp">Hackathon</span>
+    </div>
+    <a href="./index.html#blog" class="back-btn">← Back to Writing</a>
+  </div>
+</article>
+
+<footer>
+  <span class="fl-logo">Sayan Dutta</span>
+  <span class="fl-note">© 2026 · IIT Patna, Bihar · From Kolkata, West Bengal · sayandutta.developer@gmail.com</span>
+</footer>
+
+<script>
+/* LOADER */
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('out')},1400)});
+
+/* CURSOR */
+const co=document.getElementById('cur-o'),ci=document.getElementById('cur-i');
+let mx=-200,my=-200,ox=-200,oy=-200;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;ci.style.left=mx+'px';ci.style.top=my+'px'});
+(function cl(){ox+=(mx-ox)*.13;oy+=(my-oy)*.13;co.style.left=ox+'px';co.style.top=oy+'px';requestAnimationFrame(cl)})();
+
+/* READING PROGRESS */
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('prog-bar').style.width=Math.min(100,Math.max(0,pct))+'%';
+},{passive:true});
+
+/* MORPH BG */
+function randBlob(cx,cy,r,pts=7){let d='M';for(let i=0;i<pts;i++){const a=(i/pts)*Math.PI*2;const rr=r*(0.7+Math.random()*.6);const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;d+=`${i===0?'':' L'}${x.toFixed(1)},${y.toFixed(1)}`}return d+'Z'}
+const morphEls=[{el:document.getElementById('mp1'),cx:260,cy:200,r:300},{el:document.getElementById('mp2'),cx:1180,cy:260,r:270},{el:document.getElementById('mp3'),cx:220,cy:720,r:250}];
+function morphStep(){morphEls.forEach(m=>{m.el.setAttribute('d',randBlob(m.cx,m.cy,m.r))})}
+morphStep();setInterval(morphStep,2400);
+window.addEventListener('scroll',()=>{document.getElementById('morph-bg').style.transform=`translateY(${window.scrollY*.06}px)`},{passive:true});
+
+/* REVEAL ON SCROLL */
+const revEls=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('visible');obs.unobserve(e.target)})},{threshold:.08,rootMargin:'0px 0px -60px 0px'});
+revEls.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
