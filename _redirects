@@ -7,7 +7,7 @@
 /the-future-of-ai-in-education-opportunities-challenges       /the-future-of-ai-in-education-opportunities-challenges.html      200
 /my-autobiography-a-journey-from-beldanga-to-tech-life        /my-autobiography-a-journey-from-beldanga-to-tech-life.html       200
 /tersql-a-new-approach-to-database-management                 /tersql-a-new-approach-to-database-management.html                200
-
+/evolution-of-blix-from-a- stateless-chatbot                  /evolution-of-blix-from-a- stateless-chatbot.html             200
 /metamorph               /metamorph.html
 /sayandutta-cv           /Sayan_Dutta_Research_CV.pdf
 /resume                                                       /resume.html               200
@@ -20,6 +20,7 @@
 /my-autobiography-a-journey-from-beldanga-to-tech-life.html        /my-autobiography-a-journey-from-beldanga-to-tech-life       301!
 /tersql-a-new-approach-to-database-management.html                 /tersql-a-new-approach-to-database-management               301!
 /resume.html                                                       /resume                                                     301!
+/evolution-of-blix-from-a- stateless-chatbot.html                   /evolution-of-blix-from-a- stateless-chatbot               301!
 # Fallback — 404 page
 /*    /index.html   404
 /metamorph.html   /metamorph 301!
