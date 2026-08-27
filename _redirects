@@ -11,6 +11,7 @@
 /metamorph               /metamorph.html
 /sayandutta-cv           /Sayan_Dutta_Research_CV.pdf
 /resume                                                       /resume.html               200
+/scoping-review                                            /A Scoping Review on AI Powered Conversational Assistants for Environmental Management Policy in INDIA.pdf          200
 
 # Redirect old .html URLs to clean versions (SEO + canonical hygiene)
 /how-i-built-a-custom-llm-for-cs-education-with-blix-ai.html     /how-i-built-a-custom-llm-for-cs-education-with-blix-ai     301!
