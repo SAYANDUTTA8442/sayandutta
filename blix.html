@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blix — Cognitive AI Agent System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0C0E;
+    --bg-elevated:#131417;
+    --bg-card:#0F1012;
+    --text:#F2F1ED;
+    --text-muted:#9497A0;
+    --text-dim:#5A5C63;
+    --accent:#6E56CF;
+    --accent-bright:#8B72E8;
+    --accent-soft:rgba(110,86,207,0.14);
+    --teal:#3ED6B5;
+    --border:rgba(242,241,237,0.09);
+    --border-strong:rgba(242,241,237,0.16);
+    --radius:10px;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .display{ font-family:'Instrument Sans', sans-serif; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* background grid texture */
+  .grid-bg{
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(to right, rgba(242,241,237,0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(242,241,237,0.035) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+    pointer-events:none;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(11,12,14,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:64px;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-family:'Instrument Sans', sans-serif;
+    font-weight:700;
+    font-size:19px;
+    letter-spacing:-0.02em;
+  }
+  .logo-mark{
+    width:20px; height:20px;
+    position:relative;
+    flex-shrink:0;
+  }
+  .logo-mark svg{ width:100%; height:100%; display:block; }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:36px;
+  }
+  .nav-links a{
+    font-size:14px;
+    color:var(--text-muted);
+    transition:color .15s ease;
+  }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-cta{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:13.5px;
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--text);
+    border:1px solid var(--border-strong);
+    padding:7px 14px;
+    border-radius:7px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .nav-cta:hover{ border-color:rgba(242,241,237,0.35); background:rgba(242,241,237,0.03); }
+  .nav-mobile-hide{ display:flex; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:96px 0 64px;
+    overflow:hidden;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    color:var(--accent-bright);
+    background:var(--accent-soft);
+    border:1px solid rgba(110,86,207,0.3);
+    padding:6px 12px;
+    border-radius:100px;
+    margin-bottom:28px;
+  }
+  .eyebrow .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--teal);
+    box-shadow:0 0 8px var(--teal);
+  }
+  .hero-grid{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:32px;
+    align-items:center;
+  }
+  h1{
+    font-size:56px;
+    font-weight:700;
+    line-height:1.04;
+    letter-spacing:-0.03em;
+    max-width:620px;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--accent-bright);
+  }
+  .hero-sub{
+    margin-top:24px;
+    font-size:17.5px;
+    color:var(--text-muted);
+    max-width:480px;
+    line-height:1.65;
+  }
+  .hero-actions{
+    margin-top:36px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+  .btn-primary{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--text);
+    color:var(--bg);
+    font-weight:600;
+    font-size:14.5px;
+    padding:12px 20px;
+    border-radius:7px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn-primary:hover{ background:#fff; transform:translateY(-1px); }
+  .btn-ghost{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--text);
+    font-weight:500;
+    font-size:14.5px;
+    padding:12px 18px;
+    border-radius:7px;
+    border:1px solid var(--border-strong);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn-ghost:hover{ border-color:rgba(242,241,237,0.35); background:rgba(242,241,237,0.03); }
+
+  /* ---------- CONSOLIDATION VISUAL (signature) ---------- */
+  .consolidation{
+    position:relative;
+    height:520px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .consolidation svg{ width:100%; height:100%; overflow:visible; }
+  .tier-label{
+    font-family:'IBM Plex Mono', monospace;
+    fill:var(--text-dim);
+    font-size:9.5px;
+    letter-spacing:0.02em;
+  }
+  .tier-label.top{ fill:var(--accent-bright); }
+  .node{ fill:var(--bg-elevated); stroke:var(--border-strong); stroke-width:1; }
+  .node.lit{ fill:var(--accent); stroke:var(--accent-bright); }
+  .node.teal-lit{ fill:var(--teal); stroke:var(--teal); }
+  .edge{ stroke:var(--border-strong); stroke-width:1; fill:none; }
+  .pulse{
+    fill:var(--teal);
+    filter:drop-shadow(0 0 6px var(--teal));
+  }
+
+  @keyframes travel{
+    0%{ offset-distance:0%; opacity:0; }
+    8%{ opacity:1; }
+    92%{ opacity:1; }
+    100%{ offset-distance:100%; opacity:0; }
+  }
+
+  /* ---------- STATS STRIP ---------- */
+  .stats{
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    background:var(--bg-elevated);
+  }
+  .stats .wrap{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    padding:0;
+  }
+  .stat{
+    padding:32px 24px;
+    border-right:1px solid var(--border);
+  }
+  .stat:last-child{ border-right:none; }
+  .stat-num{
+    font-family:'Instrument Sans', sans-serif;
+    font-weight:700;
+    font-size:32px;
+    letter-spacing:-0.02em;
+    display:flex;
+    align-items:baseline;
+    gap:4px;
+  }
+  .stat-num .unit{ font-size:16px; color:var(--text-dim); font-weight:500; }
+  .stat-label{
+    margin-top:6px;
+    font-size:13px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- SECTION SCAFFOLDING ---------- */
+  section{ padding:104px 0; }
+  .section-head{
+    max-width:620px;
+    margin-bottom:56px;
+  }
+  .section-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--teal);
+    letter-spacing:0.06em;
+    margin-bottom:14px;
+    display:block;
+  }
+  h2{
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:-0.025em;
+    line-height:1.15;
+  }
+  .section-desc{
+    margin-top:16px;
+    font-size:16px;
+    color:var(--text-muted);
+    line-height:1.7;
+  }
+
+  /* ---------- STACK CARDS ---------- */
+  .stack-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .stack-card{
+    background:var(--bg-card);
+    padding:28px 24px;
+    transition:background .2s ease;
+  }
+  .stack-card:hover{ background:var(--bg-elevated); }
+  .stack-icon{
+    width:34px; height:34px;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:20px;
+  }
+  .stack-icon svg{ width:100%; height:100%; }
+  .stack-card h3{
+    font-family:'Instrument Sans', sans-serif;
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .stack-card p{
+    font-size:14px;
+    color:var(--text-muted);
+    line-height:1.6;
+  }
+
+  /* ---------- PIPELINE ---------- */
+  .pipeline-flow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:48px;
+  }
+  .tier-chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    padding:9px 15px;
+    border:1px solid var(--border-strong);
+    border-radius:100px;
+    color:var(--text-muted);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    position:relative;
+  }
+  .tier-chip:not(:last-child)::after{
+    content:'';
+    position:absolute;
+    left:calc(100% + 5px);
+    top:50%;
+    width:0; height:0;
+    border-top:3px solid transparent;
+    border-bottom:3px solid transparent;
+    border-left:4px solid var(--text-dim);
+    transform:translateY(-50%);
+  }
+  .tier-chip.end{
+    color:var(--accent-bright);
+    border-color:rgba(110,86,207,0.4);
+    background:var(--accent-soft);
+  }
+
+  .pipeline-detail{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:48px;
+    align-items:start;
+  }
+  .pipeline-detail .col p{
+    color:var(--text-muted);
+    font-size:15px;
+    line-height:1.75;
+    margin-bottom:16px;
+  }
+  .pipeline-detail .col p strong{ color:var(--text); font-weight:600; }
+
+  .code-block{
+    background:var(--bg-elevated);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .code-block-head{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--border);
+  }
+  .code-dot{ width:9px; height:9px; border-radius:50%; background:var(--border-strong); }
+  .code-block pre{
+    padding:20px 22px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    line-height:1.8;
+    overflow-x:auto;
+  }
+  .tok-kw{ color:var(--accent-bright); }
+  .tok-fn{ color:var(--teal); }
+  .tok-str{ color:#E3B873; }
+  .tok-com{ color:var(--text-dim); }
+
+  /* ---------- EDGE CHIPS ---------- */
+  .edge-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .edge-chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    padding:8px 14px;
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:7px;
+    color:var(--text-muted);
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .edge-chip:hover{ border-color:var(--teal); color:var(--teal); }
+
+  /* ---------- ADMA CALLOUT ---------- */
+  .adma{
+    background:linear-gradient(160deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .adma::before{
+    content:'';
+    position:absolute;
+    top:-40%; right:-10%;
+    width:480px; height:480px;
+    background:radial-gradient(circle, rgba(110,86,207,0.16) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .adma-quote{
+    font-family:'Instrument Sans', sans-serif;
+    font-size:28px;
+    font-weight:600;
+    line-height:1.35;
+    letter-spacing:-0.02em;
+    max-width:680px;
+    position:relative;
+    z-index:1;
+  }
+  .adma-quote .hl{ color:var(--accent-bright); }
+  .adma-sub{
+    margin-top:20px;
+    color:var(--text-muted);
+    font-size:15px;
+    max-width:600px;
+    position:relative;
+    z-index:1;
+  }
+  .adma-facts{
+    margin-top:40px;
+    display:flex;
+    gap:36px;
+    flex-wrap:wrap;
+    position:relative;
+    z-index:1;
+  }
+  .adma-fact{ display:flex; flex-direction:column; gap:4px; }
+  .adma-fact .n{ font-family:'IBM Plex Mono', monospace; font-size:22px; color:var(--teal); font-weight:600; }
+  .adma-fact .l{ font-size:13px; color:var(--text-muted); }
+
+  /* ---------- BENCHMARK TABLE ---------- */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+  }
+  th{
+    text-align:left;
+    padding:14px 20px;
+    color:var(--text-dim);
+    font-weight:500;
+    font-size:12px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    border-bottom:1px solid var(--border-strong);
+  }
+  td{
+    padding:16px 20px;
+    border-bottom:1px solid var(--border);
+    color:var(--text-muted);
+  }
+  tr:last-child td{ border-bottom:none; }
+  td:first-child{ color:var(--text); }
+  td.latency{ color:var(--teal); }
+
+  /* ---------- ROADMAP ---------- */
+  .roadmap{
+    display:flex;
+    align-items:flex-start;
+    gap:0;
+    overflow-x:auto;
+    padding-bottom:8px;
+  }
+  .rm-step{
+    flex:1;
+    min-width:180px;
+    position:relative;
+    padding-right:24px;
+  }
+  .rm-step::before{
+    content:'';
+    position:absolute;
+    top:9px;
+    left:20px;
+    right:0;
+    height:1px;
+    background:var(--border-strong);
+  }
+  .rm-step:last-child::before{ display:none; }
+  .rm-dot{
+    width:19px; height:19px;
+    border-radius:50%;
+    border:1px solid var(--border-strong);
+    background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:18px;
+    position:relative;
+    z-index:1;
+  }
+  .rm-dot.current{ border-color:var(--accent-bright); background:var(--accent); }
+  .rm-dot .inner{ width:7px; height:7px; border-radius:50%; background:var(--text-dim); }
+  .rm-dot.current .inner{ background:var(--text); }
+  .rm-ver{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--text); margin-bottom:4px; }
+  .rm-label{ font-size:13px; color:var(--text-muted); line-height:1.5; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--border);
+    padding:56px 0 40px;
+  }
+  .footer-grid{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .footer-links{
+    display:flex;
+    gap:28px;
+  }
+  .footer-links a{
+    font-size:13.5px;
+    color:var(--text-muted);
+    transition:color .15s ease;
+  }
+  .footer-links a:hover{ color:var(--text); }
+  .footer-meta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--text-dim);
+  }
+
+  /* ---------- REVEAL ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:920px){
+    .nav-mobile-hide{ display:none; }
+    .hero-grid{ grid-template-columns:1fr; }
+    .consolidation{ height:360px; order:-1; }
+    h1{ font-size:40px; }
+    .stats .wrap{ grid-template-columns:repeat(2,1fr); }
+    .stat:nth-child(2){ border-right:none; }
+    .stat{ border-bottom:1px solid var(--border); }
+    .stack-grid{ grid-template-columns:repeat(2,1fr); }
+    .pipeline-detail{ grid-template-columns:1fr; gap:32px; }
+    .adma{ padding:36px; }
+    .adma-quote{ font-size:22px; }
+    section{ padding:72px 0; }
+    h2{ font-size:27px; }
+    table{ font-size:12.5px; }
+    th, td{ padding:12px 10px; }
+  }
+  @media (max-width:520px){
+    .wrap{ padding:0 20px; }
+    .stack-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="9" stroke="#6E56CF" stroke-width="1.4"/>
+          <circle cx="10" cy="10" r="3.4" fill="#6E56CF"/>
+          <circle cx="10" cy="2.6" r="1.3" fill="#3ED6B5"/>
+        </svg>
+      </span>
+      Blix
+    </div>
+    <div class="nav-links nav-mobile-hide">
+      <a href="#architecture">Architecture</a>
+      <a href="#memory">Memory</a>
+      <a href="#adma">ADMA</a>
+      <a href="#benchmarks">Benchmarks</a>
+    </div>
+    <a href="#" class="nav-cta">↗ GitHub</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="grid-bg"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>COGNITIVE AI AGENT SYSTEM · v0.3.19</span>
+        <h1 class="display">Memory that<br>compresses <em>like thought.</em></h1>
+        <p class="hero-sub">Blix is a modular cognitive architecture unifying graph memory, causal reasoning, curiosity-driven experimentation, and policy-based adaptation — into one symbolic stack. No RLHF. No black box. Just structured cognition.</p>
+        <div class="hero-actions">
+          <a href="#architecture" class="btn-primary">Explore the architecture →</a>
+          <a href="#" class="btn-ghost mono">pip install blix</a>
+        </div>
+      </div>
+
+      <div class="consolidation">
+        <svg viewBox="0 0 380 480">
+          <!-- edges: raw fanning up to a single world model node -->
+          <g class="edge">
+            <path d="M40,440 C70,380 120,360 190,300" />
+            <path d="M90,440 C110,390 150,370 190,300" />
+            <path d="M150,440 C160,400 175,375 190,300" />
+            <path d="M230,440 C220,400 205,375 190,300" />
+            <path d="M290,440 C260,390 220,370 190,300" />
+            <path d="M340,440 C310,380 260,360 190,300" />
+          </g>
+          <g class="edge">
+            <path d="M150,300 C165,270 175,255 190,235" />
+            <path d="M190,300 C190,280 190,260 190,235" />
+            <path d="M230,300 C215,270 205,255 190,235" />
+          </g>
+          <g class="edge">
+            <path d="M150,235 C165,205 175,190 190,170" />
+            <path d="M230,235 C215,205 205,190 190,170" />
+          </g>
+          <g class="edge">
+            <path d="M160,170 C170,145 178,130 190,110" />
+            <path d="M220,170 C210,145 202,130 190,110" />
+          </g>
+          <path class="edge" d="M190,110 C190,90 190,75 190,55" />
+
+          <!-- raw tier (6 nodes) -->
+          <circle class="node" cx="40" cy="440" r="7"/>
+          <circle class="node" cx="90" cy="440" r="7"/>
+          <circle class="node" cx="150" cy="440" r="7"/>
+          <circle class="node" cx="230" cy="440" r="7"/>
+          <circle class="node" cx="290" cy="440" r="7"/>
+          <circle class="node" cx="340" cy="440" r="7"/>
+          <text class="tier-label" x="190" y="468" text-anchor="middle">RAW EVENTS</text>
+
+          <!-- episode/session tier -->
+          <circle class="node lit" cx="150" cy="300" r="6"/>
+          <circle class="node" cx="190" cy="300" r="6"/>
+          <circle class="node lit" cx="230" cy="300" r="6"/>
+          <text class="tier-label" x="190" y="322" text-anchor="middle">EPISODE · SESSION · DAILY</text>
+
+          <!-- weekly/monthly/project tier -->
+          <circle class="node" cx="150" cy="235" r="5.5"/>
+          <circle class="node lit" cx="230" cy="235" r="5.5"/>
+          <text class="tier-label" x="190" y="256" text-anchor="middle">WEEKLY · MONTHLY · PROJECT</text>
+
+          <!-- concept/principle tier -->
+          <circle class="node lit" cx="160" cy="170" r="5"/>
+          <circle class="node" cx="220" cy="170" r="5"/>
+          <text class="tier-label" x="190" y="190" text-anchor="middle">CONCEPT · PRINCIPLE</text>
+
+          <!-- knowledge tier -->
+          <circle class="node teal-lit" cx="190" cy="110" r="5.5"/>
+          <text class="tier-label" x="190" y="130" text-anchor="middle">KNOWLEDGE</text>
+
+          <!-- world model apex -->
+          <circle class="node teal-lit" cx="190" cy="52" r="8"/>
+          <text class="tier-label top" x="190" y="30" text-anchor="middle">WORLD MODEL</text>
+
+          <!-- traveling pulses -->
+          <circle class="pulse" r="2.6" style="offset-path: path('M40,440 C70,380 120,360 190,300 C190,280 190,260 190,235 C170,205 178,190 190,170 C170,145 178,130 190,110 C190,90 190,75 190,55'); animation: travel 5.5s linear infinite;"/>
+          <circle class="pulse" r="2.2" style="offset-path: path('M290,440 C260,390 220,370 190,300 C215,270 205,255 190,235 C215,205 205,190 190,170 C210,145 202,130 190,110 C190,90 190,75 190,55'); animation: travel 6.5s linear infinite 1.8s;"/>
+          <circle class="pulse" r="2.2" style="offset-path: path('M150,440 C160,400 175,375 190,300 C165,270 175,255 190,235 C165,205 175,190 190,170 C170,145 178,130 190,110 C190,90 190,75 190,55'); animation: travel 7.2s linear infinite 3.4s;"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat">
+      <div class="stat-num">83.5<span class="unit">K lines</span></div>
+      <div class="stat-label">Python across 25+ subsystems</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">358<span class="unit">files</span></div>
+      <div class="stat-label">Modular, independently testable</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3,053<span class="unit">passing</span></div>
+      <div class="stat-label">Tests in the v0.3.19 suite</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">18<span class="unit">types</span></div>
+      <div class="stat-label">Typed relations in the memory graph</div>
+    </div>
+  </div>
+</div>
+
+<section id="architecture">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">01 — COGNITIVE STACK</span>
+      <h2 class="display">Four systems, one runtime.</h2>
+      <p class="section-desc">Blix treats cognition as a coordinated stack rather than a single model call — each layer reads and writes the same memory graph.</p>
+    </div>
+
+    <div class="stack-grid reveal">
+      <div class="stack-card">
+        <div class="stack-icon">
+          <svg viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="4" stroke="#6E56CF" stroke-width="1.4"/><circle cx="17" cy="6" r="2" stroke="#6E56CF" stroke-width="1.4"/><circle cx="28" cy="22" r="2" stroke="#6E56CF" stroke-width="1.4"/><circle cx="6" cy="22" r="2" stroke="#6E56CF" stroke-width="1.4"/><path d="M17 10v3M20.5 19.5L26 21M13.5 19.5L8 21" stroke="#6E56CF" stroke-width="1.2"/></svg>
+        </div>
+        <h3>Curiosity</h3>
+        <p>Scans belief state for low confidence, contradictions, sparse evidence, and unknown domains — surfaces exploration targets ranked by expected information gain. No RL, no self-play.</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">
+          <svg viewBox="0 0 34 34" fill="none"><rect x="6" y="6" width="9" height="9" rx="1.5" stroke="#6E56CF" stroke-width="1.4"/><rect x="19" y="19" width="9" height="9" rx="1.5" stroke="#6E56CF" stroke-width="1.4"/><path d="M15 10.5h6M19 15v4" stroke="#6E56CF" stroke-width="1.2"/></svg>
+        </div>
+        <h3>Metacognition</h3>
+        <p>Tracks its own capability, selects strategy from a self-model, and evolves those strategies over time via the capability tracker and strategy selector.</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">
+          <svg viewBox="0 0 34 34" fill="none"><path d="M6 26L14 12L20 20L28 8" stroke="#6E56CF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="28" cy="8" r="2" fill="#6E56CF"/></svg>
+        </div>
+        <h3>Planning</h3>
+        <p>Beam search with a learned critic and a replanner — plans are evaluated, scored, and revised mid-execution rather than committed to blindly.</p>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon">
+          <svg viewBox="0 0 34 34" fill="none"><circle cx="9" cy="9" r="3" stroke="#6E56CF" stroke-width="1.4"/><circle cx="25" cy="25" r="3" stroke="#6E56CF" stroke-width="1.4"/><path d="M12 11L22 23" stroke="#6E56CF" stroke-width="1.4" marker-end="url(#arrow)"/><defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6E56CF"/></marker></defs></svg>
+        </div>
+        <h3>Causal</h3>
+        <p>Explicit cause → effect edges in the graph, separate from correlation — queried directly when reasoning about "why," not inferred at generation time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="memory" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">02 — HGSHM</span>
+      <h2 class="display">One pipeline, twelve tiers of compression.</h2>
+      <p class="section-desc">Hybrid Graph-based Semantic Hierarchical Memory. Raw events compress upward automatically — nothing is deleted, every tier keeps a <span class="mono" style="font-size:14px;">SUMMARISES</span> edge back to its sources.</p>
+    </div>
+
+    <div class="pipeline-flow reveal">
+      <span class="tier-chip">Raw</span>
+      <span class="tier-chip">Episode</span>
+      <span class="tier-chip">Conversation</span>
+      <span class="tier-chip">Session</span>
+      <span class="tier-chip">Daily</span>
+      <span class="tier-chip">Weekly</span>
+      <span class="tier-chip">Monthly</span>
+      <span class="tier-chip">Project</span>
+      <span class="tier-chip">Concept</span>
+      <span class="tier-chip">Principle</span>
+      <span class="tier-chip">Knowledge</span>
+      <span class="tier-chip end">World Model</span>
+    </div>
+
+    <div class="pipeline-detail reveal">
+      <div class="col">
+        <p><strong>Retrieval is an 11-factor fusion,</strong> not a single similarity score — semantic match, vector distance, graph expansion, temporal recency, and importance are ranked together, then passed through hierarchy resolution and contradiction detection before reaching the reasoning layer.</p>
+        <p><strong>Query → Semantic · Vector · Graph Expansion · Temporal → Importance Ranking · Hierarchy · Contradictions · Causal → MemoryContext → Reasoning.</strong> Every stage is inspectable — nothing is a hidden embedding lookup.</p>
+      </div>
+      <div class="code-block">
+        <div class="code-block-head">
+          <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
+          <span class="mono" style="font-size:12px; color:var(--text-dim); margin-left:6px;">quickstart.py</span>
+        </div>
+        <pre><span class="tok-kw">from</span> pathlib <span class="tok-kw">import</span> Path
+<span class="tok-kw">from</span> memory.hybrid.hgshm <span class="tok-kw">import</span> HGSHM
+
+h = <span class="tok-fn">HGSHM</span>(Path(<span class="tok-str">"memory/"</span>))
+h.<span class="tok-fn">believe</span>(<span class="tok-str">"Deployment failed due to timeouts"</span>, confidence=<span class="tok-str">0.85</span>)
+h.<span class="tok-fn">observe_cause</span>(<span class="tok-str">"peak_traffic"</span>, <span class="tok-str">"timeout_errors"</span>)
+h.<span class="tok-fn">add_principle</span>(<span class="tok-str">"Monitor timeouts before deploy windows"</span>)
+
+<span class="tok-com"># retrieval fuses 11 ranking factors</span>
+ctx = h.<span class="tok-fn">recall</span>(<span class="tok-str">"deployment failure root cause"</span>, top_k=<span class="tok-str">10</span>)
+<span class="tok-kw">print</span>(ctx.<span class="tok-fn">get_text_summary</span>())</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">03 — GRAPH RELATIONS</span>
+      <h2 class="display">Typed edges, not vague similarity.</h2>
+      <p class="section-desc">Every connection in the graph carries meaning the reasoning layer can act on.</p>
+    </div>
+    <div class="edge-chips reveal">
+      <span class="edge-chip">supports</span>
+      <span class="edge-chip">contradicts</span>
+      <span class="edge-chip">causes</span>
+      <span class="edge-chip">depends_on</span>
+      <span class="edge-chip">part_of</span>
+      <span class="edge-chip">derived_from</span>
+      <span class="edge-chip">similar_to</span>
+      <span class="edge-chip">explains</span>
+      <span class="edge-chip">references</span>
+      <span class="edge-chip">precedes</span>
+      <span class="edge-chip">follows</span>
+      <span class="edge-chip">belongs_to</span>
+      <span class="edge-chip">requires</span>
+      <span class="edge-chip">related_to</span>
+      <span class="edge-chip">enables</span>
+      <span class="edge-chip">blocks</span>
+      <span class="edge-chip">summarises</span>
+      <span class="edge-chip">instance_of</span>
+    </div>
+  </div>
+</section>
+
+<section id="adma">
+  <div class="wrap">
+    <div class="adma reveal">
+      <span class="section-eyebrow" style="position:relative; z-index:1;">04 — RESEARCH CONTRIBUTION</span>
+      <p class="adma-quote">Memory no longer stores <span class="hl">only knowledge</span> — it now stores <span class="hl">policy.</span></p>
+      <p class="adma-sub">ADMA — Adaptive Dual Memory Architecture. Retrieval weights and planner configuration aren't fixed constants; they're bandit arms, selected by Thompson sampling and updated from observed outcomes. The prompt compiler assembles itself from whichever policy is currently winning.</p>
+      <div class="adma-facts">
+        <div class="adma-fact"><span class="n">15</span><span class="l">Observable reward signals</span></div>
+        <div class="adma-fact"><span class="n">2</span><span class="l">Memory domains — System + User</span></div>
+        <div class="adma-fact"><span class="n">15</span><span class="l">Default policy types as bandit arms</span></div>
+        <div class="adma-fact"><span class="n">0</span><span class="l">RLHF pipelines required</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="benchmarks" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">05 — BENCHMARKS</span>
+      <h2 class="display">Measured, not assumed.</h2>
+      <p class="section-desc">Replicated via the eval harness — 200 samples × 5 seeds × 4 datasets × 5 ablation profiles, with bootstrap significance.</p>
+    </div>
+    <div class="code-block reveal">
+      <table>
+        <thead>
+          <tr><th>Operation</th><th>Scale</th><th>Latency</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Batch embedding</td><td>100 texts</td><td class="latency">&lt; 100ms</td></tr>
+          <tr><td>Vector ANN search</td><td>200 nodes</td><td class="latency">&lt; 10ms</td></tr>
+          <tr><td>Context assembly</td><td>50 nodes</td><td class="latency">&lt; 500ms</td></tr>
+          <tr><td>Consolidation pass</td><td>100 nodes</td><td class="latency">&lt; 200ms</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">06 — ROADMAP</span>
+      <h2 class="display">From memory to autonomy.</h2>
+    </div>
+    <div class="roadmap reveal">
+      <div class="rm-step">
+        <div class="rm-dot current"><span class="inner"></span></div>
+        <div class="rm-ver">v0.3.19</div>
+        <div class="rm-label">Curiosity + Active Experimentation</div>
+      </div>
+      <div class="rm-step">
+        <div class="rm-dot"><span class="inner"></span></div>
+        <div class="rm-ver">v0.4</div>
+        <div class="rm-label">Cognitive Kernel</div>
+      </div>
+      <div class="rm-step">
+        <div class="rm-dot"><span class="inner"></span></div>
+        <div class="rm-ver">v0.5</div>
+        <div class="rm-label">Adaptive Intelligence</div>
+      </div>
+      <div class="rm-step">
+        <div class="rm-dot"><span class="inner"></span></div>
+        <div class="rm-ver">v0.6</div>
+        <div class="rm-label">Autonomous Researcher</div>
+      </div>
+      <div class="rm-step">
+        <div class="rm-dot"><span class="inner"></span></div>
+        <div class="rm-ver">v1.0</div>
+        <div class="rm-label">Cognitive Operating System</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div class="footer-meta">MIT LICENSE · BUILT BY SAYAN DUTTA</div>
+    <div class="footer-links">
+      <a href="#architecture">Architecture</a>
+      <a href="#memory">Memory</a>
+      <a href="#adma">ADMA</a>
+      <a href="#benchmarks">Benchmarks</a>
+      <a href="#">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
