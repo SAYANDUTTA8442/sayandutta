@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Login</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts matching portfolio -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #04020C;
+            --text: #F0EEFF;
+            --text2: #A89EC9;
+            --text3: #5C5280;
+            --fd: 'Syne', sans-serif;
+            --fb: 'DM Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--fb);
+        }
+
+        /* Glassmorphism panel */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            font-family: var(--fd);
+            background: linear-gradient(135deg, #7C3AED, #06B6D4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Custom Inputs */
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            color: var(--text);
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        
+        .input-field:focus {
+            border-color: rgba(167, 139, 250, 0.5);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+            outline: none;
+        }
+        
+        .input-field::placeholder {
+            color: var(--text3);
+        }
+        
+        /* Disable styling for inputs */
+        .input-field:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            font-family: var(--fd);
+            background: linear-gradient(135deg, #7C3AED, #06B6D4);
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
+            border: none;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 36px rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-google {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            transition: background 0.2s, border-color 0.2s, transform 0.2s, opacity 0.2s;
+        }
+
+        .btn-google:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Ambient background glow */
+        .glow-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, rgba(6,182,212,0.05) 40%, rgba(4,2,12,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Custom spinner animation */
+        .loader {
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Smooth transitions */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-ring {
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            background: linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #7C3AED, #06B6D4) border-box;
+            animation: rp 3s ease-in-out infinite;
+        }
+        @keyframes rp {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        /* OTP Input specifics */
+        .otp-letter-spacing {
+            letter-spacing: 0.5em;
+            font-family: 'Syne', monospace;
+            font-size: 1.25rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+
+    <!-- Ambient Glow Background -->
+    <div class="glow-bg"></div>
+
+    <!-- Back to site link -->
+    <a href="../index.html" class="absolute top-6 left-6 flex items-center gap-2 text-sm text-[#A89EC9] hover:text-white transition-colors" style="font-family: var(--fd);">
+        Back to Portfolio
+    </a>
+
+    <div class="glass-panel w-full max-w-md rounded-2xl overflow-hidden relative z-10 fade-in" style="animation-delay: 0.1s;">
+        <!-- Header area -->
+        <div class="p-8 border-b border-white/5 flex flex-col items-center justify-center relative">
+            <div class="relative mb-5 w-16 h-16 flex items-center justify-center">
+                <div class="logo-ring"></div>
+                <div class="bg-gradient-to-br from-[#7C3AED]/20 to-[#06B6D4]/20 rounded-full w-full h-full flex items-center justify-center relative z-10 border border-white/10">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-[#A78BFA]"></i>
+                </div>
+            </div>
+            <h2 class="text-2xl font-bold gradient-text tracking-tight">Admin Gateway</h2>
+            <p class="text-sm text-[#A89EC9] mt-2 text-center" style="font-family: var(--fb); font-weight: 300;">Passwordless access via OTP or Google OAuth.</p>
+        </div>
+
+        <div class="p-8">
+            <!-- Message Box (Hidden by default) -->
+            <div id="messageBox" class="hidden mb-6 p-4 rounded-xl text-sm font-medium flex items-start gap-3 fade-in border" style="backdrop-filter: blur(12px);">
+                <i id="messageIcon" data-lucide="info" class="w-5 h-5 mt-0.5 flex-shrink-0"></i>
+                <span id="messageText" class="leading-relaxed"></span>
+            </div>
+
+            <!-- Authentication Form -->
+            <form id="authForm" class="space-y-5">
+                
+                <!-- Step 1: Email Input -->
+                <div id="emailContainer">
+                    <label for="email" class="block text-[0.75rem] font-medium text-[#A89EC9] uppercase tracking-wider mb-1.5" style="font-family: var(--fd);">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i data-lucide="mail" class="w-4 h-4 text-[#5C5280]"></i>
+                        </div>
+                        <input type="email" id="email" required placeholder="admin@sayandutta.com"
+                            class="input-field block w-full pl-10 pr-4 py-3 rounded-xl" />
+                    </div>
+                </div>
+
+                <!-- Step 2: OTP Input (Hidden initially) -->
+                <div id="otpContainer" class="hidden fade-in">
+                    <label for="otp" class="flex justify-between items-center text-[0.75rem] font-medium text-[#A89EC9] uppercase tracking-wider mb-1.5" style="font-family: var(--fd);">
+                        <span>Enter 6-Digit OTP</span>
+                        <button type="button" id="editEmailBtn" class="text-[#06B6D4] hover:text-white capitalize tracking-normal text-xs transition-colors">Edit Email</button>
+                    </label>
+                    <div class="relative">
+                        <input type="text" id="otp" placeholder="------" maxlength="6" pattern="\d{6}"
+                            class="input-field block w-full px-4 py-3 rounded-xl otp-letter-spacing" autocomplete="one-time-code" />
+                    </div>
+                    <p class="text-xs text-[#5C5280] mt-2 text-center">Check your inbox. Code expires in 10 minutes.</p>
+                </div>
+
+                <button type="submit" id="primaryBtn"
+                    class="btn-primary w-full flex justify-center items-center gap-2 text-white font-semibold py-3 px-4 rounded-xl mt-2">
+                    <span id="primaryBtnText">Send OTP</span>
+                    <div id="primarySpinner" class="loader hidden"></div>
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div id="divider" class="mt-7 mb-7 flex items-center">
+                <div class="flex-grow border-t border-white/10"></div>
+                <span class="flex-shrink-0 mx-4 text-xs text-[#5C5280] uppercase tracking-widest font-medium">Or</span>
+                <div class="flex-grow border-t border-white/10"></div>
+            </div>
+
+            <!-- Google Auth Button -->
+            <div id="googleAuthContainer">
+                <button type="button" id="googleLoginBtn"
+                    class="btn-google w-full flex justify-center items-center gap-3 font-semibold py-3 px-4 rounded-xl text-sm" style="font-family: var(--fd);">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    <span>Sign in with Google</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase & Application Logic -->
+    <script type="module">
+        // 1. Initialize Icons
+        lucide.createIcons();
+
+        // 2. Firebase Modular SDK Imports (v11.6.1) - Only needed for OAuth now
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithPopup, 
+            GoogleAuthProvider 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // ==========================================
+        // 🛑 CONFIGURATION REQUIRED 🛑
+        // ==========================================
+        
+        // B. Your Google Apps Script Web App URL (Deploy as Web App, execute as 'Me', access 'Anyone')
+        const GOOGLE_APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+
+        // ==========================================
+
+        // Initialize Firebase variables (will be populated dynamically)
+        let app, auth, googleProvider;
+        
+        // DOM Elements
+        const form = document.getElementById('authForm');
+        const emailInput = document.getElementById('email');
+        const otpInput = document.getElementById('otp');
+        const otpContainer = document.getElementById('otpContainer');
+        const editEmailBtn = document.getElementById('editEmailBtn');
+        const primaryBtn = document.getElementById('primaryBtn');
+        const primaryBtnText = document.getElementById('primaryBtnText');
+        const primarySpinner = document.getElementById('primarySpinner');
+        const googleBtn = document.getElementById('googleLoginBtn');
+        const googleAuthContainer = document.getElementById('googleAuthContainer');
+        const divider = document.getElementById('divider');
+        
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const messageIcon = document.getElementById('messageIcon');
+
+        // State Management
+        let currentStep = 'EMAIL'; // 'EMAIL' or 'OTP'
+
+        // Initially disable Google Auth until config is fetched securely from backend
+        if (googleBtn) {
+            googleBtn.disabled = true;
+            googleBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            googleBtn.querySelector('span').textContent = "Loading OAuth...";
+        }
+
+        // Helper: UI Messaging System (Replaces alert())
+        function showMessage(msg, type = "error") {
+            messageBox.classList.remove('hidden', 'bg-red-500/10', 'border-red-500/30', 'text-red-400', 'bg-green-500/10', 'border-green-500/30', 'text-green-400', 'bg-blue-500/10', 'border-blue-500/30', 'text-blue-400');
+            
+            if (type === "error") {
+                messageBox.classList.add('bg-red-500/10', 'border-red-500/30', 'text-red-400');
+                messageIcon.setAttribute('data-lucide', 'alert-circle');
+            } else if (type === "success") {
+                messageBox.classList.add('bg-green-500/10', 'border-green-500/30', 'text-green-400');
+                messageIcon.setAttribute('data-lucide', 'check-circle-2');
+            } else {
+                messageBox.classList.add('bg-blue-500/10', 'border-blue-500/30', 'text-blue-400');
+                messageIcon.setAttribute('data-lucide', 'info');
+            }
+            
+            messageText.textContent = msg;
+            lucide.createIcons(); // Re-render icon
+        }
+
+        function setLoading(isLoading, text = "Processing...") {
+            if (isLoading) {
+                primaryBtnText.textContent = text;
+                primarySpinner.classList.remove('hidden');
+                form.querySelectorAll('input, button').forEach(el => el.disabled = true);
+                if(googleBtn) {
+                    googleBtn.disabled = true;
+                    googleBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            } else {
+                primaryBtnText.textContent = currentStep === 'EMAIL' ? "Send OTP" : "Verify OTP";
+                primarySpinner.classList.add('hidden');
+                form.querySelectorAll('input, button').forEach(el => el.disabled = false);
+                // Keep email disabled if we are on OTP step
+                if (currentStep === 'OTP') emailInput.disabled = true;
+                
+                if(googleBtn) {
+                    googleBtn.disabled = false;
+                    googleBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        }
+
+        function setStep(step) {
+            currentStep = step;
+            messageBox.classList.add('hidden');
+            
+            if (step === 'EMAIL') {
+                otpContainer.classList.add('hidden');
+                otpInput.required = false;
+                emailInput.disabled = false;
+                primaryBtnText.textContent = "Send OTP";
+                googleAuthContainer.classList.remove('hidden');
+                divider.classList.remove('hidden');
+            } else if (step === 'OTP') {
+                otpContainer.classList.remove('hidden');
+                otpInput.required = true;
+                otpInput.value = '';
+                emailInput.disabled = true;
+                primaryBtnText.textContent = "Verify OTP";
+                googleAuthContainer.classList.add('hidden');
+                divider.classList.add('hidden');
+                
+                setTimeout(() => otpInput.focus(), 100);
+            }
+        }
+
+        editEmailBtn.addEventListener('click', () => setStep('EMAIL'));
+
+        // API Communication with Apps Script
+        async function fetchAppsScript(payload) {
+            const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' }, // Avoids CORS preflight
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (result.status !== 'success') {
+                throw new Error(result.message || "An unknown error occurred.");
+            }
+            return result;
+        }
+
+        // Fetch OAuth config from backend and initialize Firebase
+        async function initOAuth() {
+            try {
+                const result = await fetchAppsScript({ action: 'get_oauth_config' });
+                
+                app = initializeApp(result.config);
+                auth = getAuth(app);
+                googleProvider = new GoogleAuthProvider();
+                
+                // Enable button now that Firebase is ready
+                if(googleBtn) {
+                    googleBtn.disabled = false;
+                    googleBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    googleBtn.querySelector('span').textContent = "Sign in with Google";
+                }
+            } catch (error) {
+                console.error("Failed to load OAuth config from backend:", error);
+                if(googleBtn) {
+                    googleBtn.querySelector('span').textContent = "OAuth Unavailable";
+                }
+            }
+        }
+        
+        // Boot up the OAuth fetcher on page load
+        if (GOOGLE_APPS_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
+            initOAuth();
+        }
+
+        // Handle Main Form Submit (Email -> OTP -> Verify)
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            messageBox.classList.add('hidden');
+            
+            if (currentStep === 'EMAIL') {
+                // Request OTP
+                const email = emailInput.value.trim();
+                setLoading(true, "Sending OTP...");
+                
+                try {
+                    await fetchAppsScript({ action: 'send_otp', email: email });
+                    showMessage(`OTP sent to ${email}`, "success");
+                    setStep('OTP');
+                } catch (error) {
+                    console.error(error);
+                    showMessage(error.message, "error");
+                } finally {
+                    setLoading(false);
+                }
+            } 
+            else if (currentStep === 'OTP') {
+                // Verify OTP
+                const email = emailInput.value.trim();
+                const otp = otpInput.value.trim();
+                setLoading(true, "Verifying...");
+                
+                try {
+                    const response = await fetchAppsScript({ action: 'verify_otp', email: email, otp: otp });
+                    showMessage("Authentication successful! Redirecting...", "success");
+                    
+                    // Save JWT session token locally and redirect
+                    localStorage.setItem('admin_token', response.token);
+                    setTimeout(() => {
+                        window.location.href = "/admin/dashboard"; 
+                    }, 800);
+                } catch (error) {
+                    console.error(error);
+                    showMessage(error.message, "error");
+                    setLoading(false);
+                }
+            }
+        });
+
+        // Handle Google OAuth Login
+        googleBtn.addEventListener('click', async () => {
+            if(!auth) {
+                showMessage("Firebase is not configured correctly.", "error");
+                return;
+            }
+            
+            messageBox.classList.add('hidden');
+            setLoading(true, "Authenticating...");
+
+            try {
+                // Trigger Google Popup
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                
+                showMessage("Verifying with server...", "info");
+                
+                // Notify Apps Script backend
+                const response = await fetchAppsScript({
+                    action: 'oauth_login',
+                    uid: user.uid,
+                    email: user.email,
+                    timestamp: new Date().toISOString()
+                });
+
+                showMessage("Login successful! Redirecting...", "success");
+                
+                // Save JWT session token locally and redirect
+                localStorage.setItem('admin_token', response.token);
+                setTimeout(() => {
+                    window.location.href = "/admin/dashboard";
+                }, 800);
+
+            } catch (error) {
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    console.error(error);
+                    showMessage(error.message || "Google sign-in failed.", "error");
+                }
+                setLoading(false);
+            }
+        });
+
+    </script>
+</body>
+</html>
