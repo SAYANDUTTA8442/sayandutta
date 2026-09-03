@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Sayan Dutta</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #04020C;
+            --text: #F0EEFF;
+            --text2: #A89EC9;
+            --text3: #5C5280;
+            --fd: 'Syne', sans-serif;
+            --fb: 'DM Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--fb);
+            overflow-x: hidden;
+        }
+
+        /* Ambient glow background */
+        .glow-bg {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 120vw;
+            height: 120vh;
+            background: radial-gradient(circle at 15% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism containers */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Typography */
+        .heading-font { font-family: var(--fd); }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #7C3AED, #06B6D4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Sidebar Navigation */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            color: var(--text2);
+            transition: all 0.2s ease;
+            font-family: var(--fd);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(6, 182, 212, 0.15));
+            color: #fff;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(124, 58, 237, 0.5); }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Quick Stat Card specific */
+        .stat-icon-wrap {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+
+        /* Mobile Sidebar toggle */
+        @media (max-width: 1024px) {
+            #sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            #sidebar.open { transform: translateX(0); }
+            #main-content { margin-left: 0 !important; }
+            #mobile-overlay { display: none; }
+            #mobile-overlay.open { display: block; }
+        }
+    </style>
+
+    <script>
+        // IMMEDIATELY check for authentication token before rendering the page.
+        // If not found, redirect to login page instantly.
+        const token = localStorage.getItem('admin_token');
+        if (!token) {
+            window.location.replace("login.html");
+        }
+    </script>
+</head>
+<body class="antialiased flex h-screen overflow-hidden">
+
+    <div class="glow-bg"></div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-opacity" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 border-r border-white/5 bg-[#04020C]/95 backdrop-blur-xl z-50 flex flex-col transition-transform duration-300 lg:translate-x-0">
+        
+        <!-- Logo Area -->
+        <div class="p-6 border-b border-white/5 flex items-center justify-between">
+            <a href="../index.html" class="flex items-center gap-3 text-white hover:opacity-80 transition-opacity">
+                <div class="w-10 h-10 rounded-full border border-[#7C3AED]/50 bg-gradient-to-br from-[#7C3AED]/20 to-[#06B6D4]/20 flex items-center justify-center">
+                    <i data-lucide="command" class="w-5 h-5 text-[#A78BFA]"></i>
+                </div>
+                <div>
+                    <h1 class="heading-font font-bold text-lg leading-tight tracking-tight">Sayan Dutta</h1>
+                    <p class="text-[0.65rem] text-[#A89EC9] uppercase tracking-widest">Admin Portal</p>
+                </div>
+            </a>
+            <!-- Mobile Close Button -->
+            <button onclick="toggleSidebar()" class="lg:hidden text-[#A89EC9] hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
+            <a href="#" class="nav-item active">
+                <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="message-square" class="w-4 h-4"></i> Messages
+                <span class="ml-auto bg-[#7C3AED] text-white text-[0.65rem] font-bold px-2 py-0.5 rounded-full">3</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="folder-code" class="w-4 h-4"></i> Projects
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="pen-tool" class="w-4 h-4"></i> Writing / Blog
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="bar-chart-2" class="w-4 h-4"></i> Analytics
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="settings" class="w-4 h-4"></i> Settings
+            </a>
+        </nav>
+
+        <!-- User Profile & Logout -->
+        <div class="p-4 border-t border-white/5">
+            <div class="glass-panel p-4 flex items-center gap-3 mb-2">
+                <div class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="user" class="w-4 h-4 text-[#A89EC9]"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="heading-font text-sm font-semibold text-white truncate">Administrator</p>
+                    <p id="userEmailDisplay" class="text-xs text-[#5C5280] truncate">Loading...</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold text-[#A89EC9] hover:text-white hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content" class="flex-1 lg:ml-72 h-screen overflow-y-auto relative">
+        
+        <!-- Header -->
+        <header class="sticky top-0 z-30 bg-[#04020C]/80 backdrop-blur-md border-b border-white/5 px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden text-[#A89EC9] hover:text-white">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <div>
+                    <h2 class="heading-font text-xl font-bold text-white">Dashboard Overview</h2>
+                    <p id="currentDate" class="text-xs text-[#5C5280]"></p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button class="w-9 h-9 rounded-full glass-panel flex items-center justify-center text-[#A89EC9] hover:text-white transition-colors relative">
+                    <i data-lucide="bell" class="w-4 h-4"></i>
+                    <span class="absolute top-2 right-2.5 w-1.5 h-1.5 bg-[#06B6D4] rounded-full"></span>
+                </button>
+                <a href="../index.html" target="_blank" class="text-xs font-semibold heading-font px-4 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors flex items-center gap-2">
+                    View Live Site <i data-lucide="external-link" class="w-3 h-3"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- Content Padding -->
+        <div class="p-6 max-w-7xl mx-auto space-y-6">
+            
+            <!-- Quick Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <!-- Stat 1 -->
+                <div class="glass-panel p-5 fade-in" style="animation-delay: 0.1s;">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-xs text-[#A89EC9] uppercase tracking-wider heading-font font-semibold mb-1">Total Views</p>
+                            <h3 class="text-3xl font-bold text-white heading-font">12,482</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl stat-icon-wrap flex items-center justify-center">
+                            <i data-lucide="eye" class="w-5 h-5 text-[#A78BFA]"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-[#10B981] flex items-center gap-1 font-medium">
+                        <i data-lucide="trending-up" class="w-3 h-3"></i> +14% this month
+                    </p>
+                </div>
+
+                <!-- Stat 2 -->
+                <div class="glass-panel p-5 fade-in" style="animation-delay: 0.2s;">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-xs text-[#A89EC9] uppercase tracking-wider heading-font font-semibold mb-1">Messages</p>
+                            <h3 class="text-3xl font-bold text-white heading-font">48</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl stat-icon-wrap flex items-center justify-center">
+                            <i data-lucide="mail" class="w-5 h-5 text-[#06B6D4]"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-[#10B981] flex items-center gap-1 font-medium">
+                        <i data-lucide="trending-up" class="w-3 h-3"></i> 3 new today
+                    </p>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="glass-panel p-5 fade-in" style="animation-delay: 0.3s;">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-xs text-[#A89EC9] uppercase tracking-wider heading-font font-semibold mb-1">Active Projects</p>
+                            <h3 class="text-3xl font-bold text-white heading-font">7</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl stat-icon-wrap flex items-center justify-center">
+                            <i data-lucide="folder-code" class="w-5 h-5 text-[#F59E0B]"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-[#5C5280] font-medium">
+                        Blix, TerSQL, +5 more
+                    </p>
+                </div>
+
+                <!-- Stat 4 -->
+                <div class="glass-panel p-5 fade-in" style="animation-delay: 0.4s;">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-xs text-[#A89EC9] uppercase tracking-wider heading-font font-semibold mb-1">System Status</p>
+                            <h3 class="text-xl font-bold text-white heading-font mt-2">All Ops Normal</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl stat-icon-wrap flex items-center justify-center">
+                            <i data-lucide="server" class="w-5 h-5 text-[#10B981]"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-[#A89EC9] font-medium">
+                        Apps Script Backend Online
+                    </p>
+                </div>
+            </div>
+
+            <!-- Two Column Layout for wider screens -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                
+                <!-- Main Activity Panel (Spans 2 columns) -->
+                <div class="xl:col-span-2 glass-panel p-6 fade-in" style="animation-delay: 0.5s;">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="heading-font font-bold text-lg">Recent Contact Messages</h3>
+                        <button class="text-xs font-semibold text-[#06B6D4] hover:text-white transition-colors">View All →</button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-xs uppercase tracking-wider text-[#5C5280] border-b border-white/5 heading-font">
+                                    <th class="pb-3 font-semibold">Name / Email</th>
+                                    <th class="pb-3 font-semibold">Subject</th>
+                                    <th class="pb-3 font-semibold">Date</th>
+                                    <th class="pb-3 font-semibold text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <!-- Mock Row 1 -->
+                                <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                    <td class="py-4">
+                                        <div class="font-medium text-white">Dr. Srishti Gupta</div>
+                                        <div class="text-xs text-[#A89EC9]">srishti@bits-pilani.edu</div>
+                                    </td>
+                                    <td class="py-4 text-[#A89EC9] truncate max-w-[200px]">EMNLP 2026 Submission Updates...</td>
+                                    <td class="py-4 text-[#5C5280] text-xs">Today, 10:42 AM</td>
+                                    <td class="py-4 text-right">
+                                        <button class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-white transition-colors">Read</button>
+                                    </td>
+                                </tr>
+                                <!-- Mock Row 2 -->
+                                <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                    <td class="py-4">
+                                        <div class="font-medium text-white">HR - Single Core Labs</div>
+                                        <div class="text-xs text-[#A89EC9]">careers@singlecorelabs.in</div>
+                                    </td>
+                                    <td class="py-4 text-[#A89EC9] truncate max-w-[200px]">Research Fellow Onboarding</td>
+                                    <td class="py-4 text-[#5C5280] text-xs">Yesterday, 4:15 PM</td>
+                                    <td class="py-4 text-right">
+                                        <button class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-white transition-colors">Read</button>
+                                    </td>
+                                </tr>
+                                <!-- Mock Row 3 -->
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4">
+                                        <div class="font-medium text-white">Open Source Contributor</div>
+                                        <div class="text-xs text-[#A89EC9]">dev@github.com</div>
+                                    </td>
+                                    <td class="py-4 text-[#A89EC9] truncate max-w-[200px]">PR Review Request for TerSQL</td>
+                                    <td class="py-4 text-[#5C5280] text-xs">Sep 1, 2026</td>
+                                    <td class="py-4 text-right">
+                                        <button class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-white transition-colors">Read</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Side Panel (Spans 1 column) -->
+                <div class="glass-panel p-6 fade-in flex flex-col" style="animation-delay: 0.6s;">
+                    <h3 class="heading-font font-bold text-lg mb-6">Server Actions</h3>
+                    
+                    <div class="space-y-3 flex-1">
+                        <button class="w-full flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-[#7C3AED]/10 to-transparent border border-[#7C3AED]/20 hover:border-[#7C3AED]/50 transition-colors group">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-[#7C3AED]/20 flex items-center justify-center">
+                                    <i data-lucide="refresh-cw" class="w-4 h-4 text-[#A78BFA] group-hover:animate-spin"></i>
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-sm font-semibold text-white">Sync Analytics</p>
+                                    <p class="text-[0.65rem] text-[#A89EC9]">Fetch latest from Apps Script</p>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-[#5C5280]"></i>
+                        </button>
+
+                        <button class="w-full flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-[#06B6D4]/10 to-transparent border border-[#06B6D4]/20 hover:border-[#06B6D4]/50 transition-colors group">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-[#06B6D4]/20 flex items-center justify-center">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-[#67E8F9]"></i>
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-sm font-semibold text-white">Export Logs</p>
+                                    <p class="text-[0.65rem] text-[#A89EC9]">Download CSV backup</p>
+                                </div>
+                            </div>
+                            <i data-lucide="download" class="w-4 h-4 text-[#5C5280] group-hover:translate-y-0.5 transition-transform"></i>
+                        </button>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-white/5">
+                        <p class="text-[0.65rem] text-[#5C5280] uppercase tracking-widest font-semibold mb-2">Security Data</p>
+                        <div class="bg-white/5 rounded-lg p-3 border border-white/5">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-[#A89EC9]">Session Status:</span>
+                                <span class="text-[#10B981] font-semibold">Active & Secured</span>
+                            </div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-[#A89EC9]">JWT Auth:</span>
+                                <span class="text-white font-mono text-[10px] truncate max-w-[120px]" id="jwtPreview">...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer area -->
+            <footer class="pt-6 pb-2 text-center fade-in" style="animation-delay: 0.7s;">
+                <p class="text-xs text-[#5C5280]">Admin Dashboard Engine · Connected to Google Apps Script</p>
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        // 1. Initialize Icons
+        lucide.createIcons();
+
+        // 2. Set Current Date dynamically
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', dateOptions);
+
+        // 3. UI Interactions (Sidebar Toggle for Mobile)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        // 4. Decode JWT (Client-side base64 decode for UI display only)
+        // Note: Real validation happens on the backend via HMAC signature.
+        function parseJWT(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch(e) {
+                return null;
+            }
+        }
+
+        // 5. Populate User Info from Token
+        const storedToken = localStorage.getItem('admin_token');
+        if (storedToken) {
+            const payload = parseJWT(storedToken);
+            if (payload && payload.email) {
+                document.getElementById('userEmailDisplay').textContent = payload.email;
+            } else {
+                document.getElementById('userEmailDisplay').textContent = "Secure Session Active";
+            }
+            
+            // Show a tiny preview of the token for the "Security Data" box
+            document.getElementById('jwtPreview').textContent = storedToken.substring(0, 15) + '...';
+        }
+
+        // 6. Logout Logic
+        function logout() {
+            // Add a little exit animation or immediate clear
+            localStorage.removeItem('admin_token');
+            
+            // Optional: You could fetch to Apps Script here to log the 'logout' action
+            // fetch(APPS_SCRIPT_URL, { action: 'logout', ... })
+
+            window.location.replace("login.html");
+        }
+    </script>
+</body>
+</html>
